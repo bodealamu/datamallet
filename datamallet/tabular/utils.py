@@ -83,15 +83,16 @@ def get_column_types(df):
 def get_unique(df, col_name):
     """
     Gets the unique values in the specified column of that dataframe and returns them
-    :param df:
-    :param col_name:
+    :param df: pandas dataframe
+    :param col_name:str, name of column in pandas dataframe
     :return:
     """
+    assert isinstance(str, col_name), "col_name must be a string"
     unique_values = None
 
     check = col_name in df.columns
 
-    if check:
+    if check and check_dataframe(df=df):
         unique_values = df[col_name].unique()
     return unique_values
 
