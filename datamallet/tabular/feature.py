@@ -15,6 +15,7 @@ class ColumnAdder(BaseEstimator, TransformerMixin):
         """
         self.column_list = column_list
         self.new_column_name = new_column_name
+        assert isinstance(column_list,list), "column_list must be a list"
 
     def fit(self, X, y=None):
         return self

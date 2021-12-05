@@ -114,7 +114,6 @@ def unique_count(df):
     return unique_count_dict
 
 
-
 def extract_numeric_cols(df):
     """
     Utility function for obtaining all numeric columns in a dataframe
