@@ -255,9 +255,10 @@ def calculate_correlation(df, method='pearson'):
     """
     Calculates the correlation of the entire dataframe based on the specified method
     :param df: pandas dataframe
-    :param method: one of pearson, kendall or spearman
+    :param method:str, one of pearson, kendall or spearman used to compute the correlation
     :return:
     """
+    assert method in ['pearson', 'kendall', 'spearman'], 'method must be one of pearson, kendall or spearman'
     corr = None
 
     check = check_dataframe(df)
