@@ -129,3 +129,31 @@ def __create_pairs(df):
     return pairs
 
 
+def treemap_path(df, limit=3):
+    """
+    It helps to determine the path for a tree map or sunburst chart,
+    the idea is to start the path from the column with the
+    least number of unique values to the one with the most
+    :param df: pandas dataframe
+    :param limit: the number of elements in the path list,
+                i.e maximum number of treemap/sunburst categories
+    :return:
+    """
+    check = check_dataframe(df=df)
+    col_list = list()
+    sorted_cols = None
+
+    if check:
+        column_type = extract_col_types(df)
+
+        col_list.extend(column_type['object'])
+        col_list.extend(column_type['boolean'])
+        col_list.extend(column_type['categorical'])
+
+        unique_counts = [len(get_unique(df=df,col_name=x)) for x in col_list]
+
+        sorted_columns = [col_name for _,col_name in sorted(zip(unique_counts, col_list))]
+
+        sorted_cols = sorted_columns[:limit]
+
+    return sorted_cols
