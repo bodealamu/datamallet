@@ -86,3 +86,21 @@ def column_use(df, threshold=5):
     return column_use_dict
 
 
+def figures_to_html(figs, filename):
+    """
+    Utility function that creates a single html file when given the list of plotly graph objects
+    :param figs: python list of plotly graph objects
+    :param filename: str, string nmae for file excluding any extension
+    :return: None
+    """
+    assert isinstance(figs, list), "figs is expected to be a list of plotly graph objects"
+    assert isinstance(filename, str), "filename must be a string"
+    html_filename = filename+'.html'
+
+    with open(html_filename, 'a') as f:
+        for fig in figs:
+            f.write(fig.to_html(full_html=False, include_plotlyjs='cdn'))
+
+    return None
+
+
