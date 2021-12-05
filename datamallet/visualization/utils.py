@@ -104,3 +104,28 @@ def figures_to_html(figs, filename):
     return None
 
 
+def __create_pairs(df):
+    """
+    Create a non repeat list of tuples which contains pairs of
+    numeric cols in df for visualization purpose as x and y axis
+    :param df: pandas dataframe
+    :return: list of tuple of non repeat pairing
+    """
+
+    numeric_cols = extract_numeric_cols(df=df)
+    passed_cols = set()
+    pairs = list()
+
+    for col1 in numeric_cols:
+        for col2 in numeric_cols:
+            if col1 == col2:
+                continue
+
+            if len(passed_cols) == 0 or col2 not in passed_cols:
+                pairs.append((col1,col2))
+
+        passed_cols.add(col1)
+
+    return pairs
+
+
