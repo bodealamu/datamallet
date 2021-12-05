@@ -94,3 +94,176 @@ def get_unique(df, col_name):
     if check:
         unique_values = df[col_name].unique()
     return unique_values
+
+
+def unique_count(df):
+    """
+    Determine the number of unique values for each column in the
+    dataframe and returns as a dictionary with col name as key and number of distinct values as value
+    :param df: pandas dataframe
+    :return:
+    """
+    unique_count_dict = dict()
+
+    if check_dataframe(df=df):
+        for col in df.columns:
+            unique_values = get_unique(df=df, col_name=col)
+            unique_count_dict[col] = len(unique_values)
+
+    return unique_count_dict
+
+
+
+def extract_numeric_cols(df):
+    """
+    Utility function for obtaining all numeric columns in a dataframe
+    :param df: pandas dataframe
+    :return: list of column names of numeric type
+    """
+    numeric_cols=None
+
+    if check_dataframe(df=df):
+        numeric_df = df.select_dtypes(include='number')
+        numeric_cols = list(numeric_df.columns)
+
+    return numeric_cols
+
+
+def extract_object_cols(df):
+    """
+    Extract columns with object data type from the dataframe
+    :param df: pandas dataframe
+    :return: list of column names of object type
+    """
+    object_cols = None
+
+    if check_dataframe(df=df):
+
+        object_df = df.select_dtypes(include='object')
+        object_cols = list(object_df.columns)
+
+    return object_cols
+
+
+def extract_datetime_cols(df):
+    """
+    Extract columns with datetime data type from the dataframe
+    :param df: pandas dataframe
+    :return: list of column names of datetime type
+    """
+    datetime_cols = None
+
+    if check_dataframe(df=df):
+        datetime_df = df.select_dtypes(include='datetime')
+        datetime_cols = list(datetime_df.columns)
+
+    return datetime_cols
+
+
+def extract_timedelta_cols(df):
+    """
+    Extract columns with timedelta data type from the dataframe
+    :param df: pandas dataframe
+    :return: list of column names of timedelta type
+    """
+    time_cols=None
+
+    if check_dataframe(df=df):
+        timedelta_df = df.select_dtypes(include='timedelta')
+        time_cols = list(timedelta_df.columns)
+
+    return time_cols
+
+
+def extract_categorical_cols(df):
+    """
+    Extract columns with categorical data type from the dataframe
+    :param df: pandas dataframe
+    :return: list of column names of categorical type
+    """
+    category_cols = None
+
+    if check_dataframe(df=df):
+        category_df = df.select_dtypes(include='category')
+        category_cols = list(category_df.columns)
+
+    return category_cols
+
+
+def extract_bool_cols(df):
+    """
+    Extract columns with boolean data type from the dataframe
+    :param df: pandas dataframe
+    :return: list of column names of boolean type
+    """
+    boolean_cols = None
+
+    if check_dataframe(df=df):
+
+        boolean_df = df.select_dtypes(include='bool')
+        boolean_cols = list(boolean_df.columns)
+
+    return boolean_cols
+
+
+def extract_datetimetz_cols(df):
+    """
+    Extract columns with datetimetz data type from the dataframe
+    :param df: pandas dataframe
+    :return: list of column names of datetimetz type
+    """
+    datetime_cols = None
+
+    if check_dataframe(df=df):
+        datetime_df = df.select_dtypes(include='datetimetz')
+        datetime_cols = list(datetime_df.columns)
+
+    return datetime_cols
+
+
+def extract_col_types(df):
+    """
+    Extract the different column types as a dictionary
+    where the key is the column type (numeric, boolean, datetime ...)
+    and the value is the list of column names of that type in the dataframe.
+    :param df: pandas dataframe
+    :return: dictionary containing data type and list of column names mapping
+    """
+    numeric_columns = extract_numeric_cols(df=df)
+    boolean_columns = extract_bool_cols(df=df)
+    datetime_columns = extract_datetime_cols(df=df)
+    timedelta_columns = extract_timedelta_cols(df=df)
+    object_columns = extract_object_cols(df=df)
+    categorical_columns = extract_categorical_cols(df=df)
+    timezone_cols = extract_datetimetz_cols(df=df)
+
+    datetime_columns.extend(timezone_cols)
+
+    column_type = {
+        'numeric':numeric_columns,
+        'object':object_columns,
+        'boolean':boolean_columns,
+        'categorical':categorical_columns,
+        'datetime':datetime_columns,
+        'timedelta':timedelta_columns
+    }
+
+    return column_type
+
+
+def calculate_correlation(df, method='pearson'):
+    """
+    Calculates the correlation of the entire dataframe based on the specified method
+    :param df: pandas dataframe
+    :param method: one of pearson, kendall or spearman
+    :return:
+    """
+    corr = None
+
+    check = check_dataframe(df)
+
+    if check:
+        corr = df.corr(method=method)
+
+    return corr
+
