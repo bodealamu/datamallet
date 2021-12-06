@@ -113,7 +113,7 @@ def create_box(df,
     :param notched: boolean, True or False, boxes are drawn with notches
     :param color:
     :param filename:
-    :param create_html:
+    :param create_html:boolean, whether to create an html file or not
     :return:
     """
     figure_list = list()
@@ -151,6 +151,15 @@ def create_treemap(df,
                    filename='treemap',
                    limit=2
                    ):
+    """
+
+    :param df:
+    :param numeric_cols:
+    :param create_html: boolean, whether to create an html file or not
+    :param filename:
+    :param limit:
+    :return:
+    """
     figure_list = list()
 
     path_list = treemap_path(df=df, limit=limit)
@@ -176,6 +185,15 @@ def create_sunburst(df, numeric_cols,
                     filename='sunburst',
                     limit=2
                     ):
+    """
+
+    :param df:
+    :param numeric_cols:
+    :param create_html: boolean, whether to create an html file or not
+    :param filename:
+    :param limit:
+    :return:
+    """
     figure_list = list()
 
     path_list = treemap_path(df=df, limit=limit)
@@ -230,6 +248,19 @@ def create_histogram(df,
                      filename='histogram',
                      create_html=True
                      ):
+    """
+
+    :param df:
+    :param numeric_cols:
+    :param nbins:
+    :param marginal:
+    :param cumulative:
+    :param histfunc:
+    :param histnorm:
+    :param filename:
+    :param create_html: boolean, whether to create an html file or not
+    :return:
+    """
 
     figure_list = list()
 
@@ -258,6 +289,18 @@ def create_scatter(df, basic=True,
                    log_x=False,
                    log_y=False,
                    create_html=True):
+    """
+
+    :param df:
+    :param basic:
+    :param filename:
+    :param marginal_x:
+    :param marginal_y:
+    :param log_x:
+    :param log_y:
+    :param create_html: boolean, whether to create an html file or not
+    :return:
+    """
     plot_pairs = create_pairs(df)
 
     figure_list = list()
