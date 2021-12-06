@@ -1,16 +1,301 @@
-from datamallet.visualization.utils import (create_box,
-                                            create_histogram,
-                                            create_correlation_plot,
-                                            create_scatter,
-                                            create_violin,
-                                            create_treemap,
-                                            create_sunburst,
-                                            pie_sectors,
-                                            create_pie,
-
+from datamallet.visualization.utils import (pie_sectors,
+                                            treemap_path,create_pairs,
+                                            column_use,
                                             figures_to_html)
 
-from datamallet.tabular.utils import (extract_col_types)
+from datamallet.tabular.utils import (extract_col_types,
+                                      check_dataframe,
+                                      calculate_correlation)
+import plotly.express as px
+
+
+def __create_pie(df,
+                 numeric_cols,
+                 pie_sector,
+                 create_html=False,
+                 hole=False,
+                 filename='pie'):
+    """
+    Creates a pie chart for every categorical variable in the dataset.
+    :param df: pandas dataframe,
+    :param numeric_cols: list of columns with numeric data
+    :param pie_sector:list,
+    :param create_html:boolean, whether the figures should be converted to HTML or not
+    :param hole:boolean, hole in the pie chart
+    :param filename:str, a suitable name for the produced html file, exclude the extension
+    :return:
+    """
+    figure_list = list()
+
+    for value in numeric_cols:
+        for name in pie_sector:
+            plot = px.pie(names=name,
+                          data_frame=df,
+                          values=value,
+                          hole=hole,
+                          title='Pie chart showing distribution of {} across {} segments'.format(value, name))
+
+            figure_list.append(plot)
+
+    if create_html:
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
+def __create_violin(df,
+                    numeric_cols,
+                    filename='violin',
+                    create_html=True,
+                    violinmode='group',
+                    points='all',
+                    display_box=True,
+                    color=None
+                    ):
+    figure_list = list()
+
+    column_use_dict = column_use(df,threshold=5)
+
+    hue_cols = column_use_dict['hue']
+
+    if len(hue_cols) == 0:
+        hue_cols.append(None)
+
+    for col in numeric_cols:
+        for hue in hue_cols:
+
+            plot = px.violin(data_frame=df,
+                             x=hue,
+                             y=col,
+                             points=points,
+                             violinmode=violinmode,
+                             box=display_box,
+                             color=color,
+                             title='Violinplot showing distribution of {} across {} categories'.format(col,hue))
+            figure_list.append(plot)
+
+    if create_html:
+
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
+def __create_box(df,
+                 numeric_cols,
+                 points='outliers',
+                 boxmode='group',
+                 notched=False,
+                 color=None,
+                 filename='box',
+                 create_html=True
+                 ):
+    """
+    Creates a list of boxplot figure objects created for the entire dataset
+    :param df: pandas dataframe
+    :param numeric_cols: list, list of column names which have numeric data type
+    :param points:str, whether to show the points in a box plot possible options are 'outliers', 'all',False, 'suspectedoutliers'
+    :param boxmode: str, how to display the boxes in a boxplot.
+                    Options are 'group' or 'overlay'. In group mode,
+                    boxes are placed beside each other, in overlay mode,
+                    boxes are placed on top of each other.
+    :param notched: boolean, True or False, boxes are drawn with notches
+    :param color:
+    :param filename:
+    :param create_html:
+    :return:
+    """
+    figure_list = list()
+
+    column_use_dict = column_use(df,threshold=5)
+
+    hue_cols = column_use_dict['hue']
+    if len(hue_cols) == 0:
+        hue_cols.append(None)
+
+    for col in numeric_cols:
+        for hue in hue_cols:
+
+            plot = px.box(data_frame=df,
+                          x=hue,
+                          y=col,
+                          points=points,
+                          boxmode=boxmode,
+                          notched=notched,
+                          color=color,
+                          title='Boxplot showing distribution of {} across {} categories'.format(col,hue)
+                          )
+            figure_list.append(plot)
+
+    if create_html:
+
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
+def __create_treemap(df,
+                     numeric_cols,
+                     create_html=True,
+                     filename='treemap',
+                     limit=2
+                     ):
+    figure_list = list()
+
+    path_list = treemap_path(df=df, limit=limit)
+
+    for col in numeric_cols:
+
+        plot = px.treemap(data_frame=df,
+                          path=path_list,
+                          values=col,
+                          title='Treemap of {} across paths {}'.format(col, str(path_list))
+                          )
+
+        figure_list.append(plot)
+
+    if create_html:
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
+def __create_sunburst(df, numeric_cols,
+                      create_html=True,
+                      filename='sunburst',
+                      limit=2
+                      ):
+    figure_list = list()
+
+    path_list = treemap_path(df=df, limit=limit)
+
+    for col in numeric_cols:
+
+        plot = px.sunburst(data_frame=df,
+                           path=path_list,
+                           values=col,
+                           title='Sunburst chart of {} across paths {}'.format(col, str(path_list))
+                           )
+
+        figure_list.append(plot)
+
+    if create_html:
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
+def __create_correlation_plot(df, correlation_method='pearson'):
+    """
+    Creates a correlation plot for the provided dataframe
+    based on the correlation method supplied and returns a list of plotly graph objects
+    :param df: pandas dataframe
+    :param correlation_method: str, method for computing correlation, one of kendall, pearson, spearman
+    :return: list of graph objects
+    """
+    figure_list = list()
+    check = check_dataframe(df=df)
+    available_method = correlation_method in ['pearson', 'kendall', 'spearman']
+
+    if check and available_method:
+
+        correlation = calculate_correlation(df=df, method=correlation_method)
+
+        plot = px.imshow(img=correlation,
+                         title='Correlation plot using {} method'.format(correlation_method))
+
+        figure_list.append(plot)
+
+    return figure_list
+
+
+def __create_histogram(df,
+                       numeric_cols,
+                       nbins=None,
+                       marginal=None,
+                       cumulative=False,
+                       histfunc=None,
+                       histnorm=None,
+                       filename='histogram',
+                       create_html=True
+                       ):
+
+    figure_list = list()
+
+    for col in numeric_cols:
+        plot = px.histogram(data_frame=df,
+                            nbins=nbins,
+                            x=col,
+                            marginal=marginal,
+                            cumulative=cumulative,
+                            histfunc=histfunc,
+                            histnorm=histnorm,
+                            title='Distribution of {}'.format(col)
+                            )
+        figure_list.append(plot)
+
+    if create_html:
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
+def __create_scatter(df, basic=True,
+                     filename='scatter',
+                     marginal_x=None,
+                     marginal_y=None,
+                     log_x=False,
+                     log_y=False,
+                     create_html=True):
+    plot_pairs = create_pairs(df)
+
+    figure_list = list()
+
+    if basic:
+        for pair in plot_pairs:
+            x,y = pair
+            plot = px.scatter(data_frame=df,
+                              x=x,
+                              y=y,
+                              log_y=log_y,
+                              log_x=log_x,
+                              marginal_x=marginal_x,
+                              marginal_y=marginal_y,
+                              title='Plot of {} vs {}'.format(x,y))
+            figure_list.append(plot)
+
+    else:
+        cols_use_dict = column_use(df, threshold=5)
+        name_list = cols_use_dict['name']
+        hue_list = cols_use_dict['hue']
+
+        if len(name_list) == 0:
+            name_list.append(None)
+
+        if len(hue_list) == 0:
+            hue_list.append(None)
+
+        for pair in plot_pairs:
+            x,y = pair
+            for names in name_list:
+                for hue in hue_list:
+                    plot = px.scatter(data_frame=df,
+                                      x=x,
+                                      y=y,
+                                      color=hue,
+                                      log_y=log_y,
+                                      log_x=log_x,
+                                      marginal_x=marginal_x,
+                                      marginal_y=marginal_y,
+                                      hover_name=names,
+                                      title='Plot of {} vs {} with color {} and hover name {}'.format(x, y, hue,names))
+
+                    figure_list.append(plot)
+
+    if create_html:
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
 
 
 class AutoPlot(object):
@@ -124,7 +409,7 @@ class AutoPlot(object):
             for chart in chart_types:
                 if chart == 'pie' and self.include_pie:
 
-                    pie_list = create_pie(df=self.df,
+                    pie_list = __create_pie(df=self.df,
                                             numeric_cols=numeric_cols,
                                             pie_sector=self.pie_sectors,
                                             create_html=False,
@@ -134,81 +419,81 @@ class AutoPlot(object):
                     figure_list.extend(pie_list)
                 if chart == 'scatter':
                     if len(categorical) == 0:
-                        scatter_plot_list = create_scatter(df=self.df,
-                                                           basic=True,
-                                                           marginal_x=self.marginals,
-                                                           marginal_y=self.marginals,
-                                                           log_x=self.log_x,
-                                                           log_y=self.log_y,
-                                                           create_html=False)
+                        scatter_plot_list = __create_scatter(df=self.df,
+                                                             basic=True,
+                                                             marginal_x=self.marginals,
+                                                             marginal_y=self.marginals,
+                                                             log_x=self.log_x,
+                                                             log_y=self.log_y,
+                                                             create_html=False)
 
                     else:
-                        scatter_plot_list = create_scatter(df=self.df,
-                                                           basic=False,
-                                                           marginal_x=self.marginals,
-                                                           marginal_y=self.marginals,
-                                                           log_x=self.log_x,
-                                                           log_y=self.log_y,
-                                                           create_html=False)
+                        scatter_plot_list = __create_scatter(df=self.df,
+                                                             basic=False,
+                                                             marginal_x=self.marginals,
+                                                             marginal_y=self.marginals,
+                                                             log_x=self.log_x,
+                                                             log_y=self.log_y,
+                                                             create_html=False)
 
                     figure_list.extend(scatter_plot_list)
 
                 if chart == 'correlation_plot' and self.include_correlation:
-                    correlation_plot_list = create_correlation_plot(df=self.df,
-                                                                    correlation_method=self.correlation_method)
+                    correlation_plot_list = __create_correlation_plot(df=self.df,
+                                                                      correlation_method=self.correlation_method)
                     figure_list.extend(correlation_plot_list)
 
                 if chart == 'histogram' and self.include_histogram:
-                    histogram_list = create_histogram(df=self.df,
-                                                      numeric_cols=numeric_cols,
-                                                      nbins=self.nbins,
-                                                      marginal=self.marginals,
-                                                      cumulative=self.cumulative,
-                                                      histfunc=self.histfunc,
-                                                      histnorm=self.histnorm,
-                                                      filename='histogram',
-                                                      create_html=False)
+                    histogram_list = __create_histogram(df=self.df,
+                                                        numeric_cols=numeric_cols,
+                                                        nbins=self.nbins,
+                                                        marginal=self.marginals,
+                                                        cumulative=self.cumulative,
+                                                        histfunc=self.histfunc,
+                                                        histnorm=self.histnorm,
+                                                        filename='histogram',
+                                                        create_html=False)
 
                     figure_list.extend(histogram_list)
 
                 if chart == 'boxplot' and self.include_box:
-                    box_list = create_box(df=self.df,
-                                          numeric_cols=numeric_cols,
-                                          points=self.points,
-                                          boxmode=self.boxmode,
-                                          notched=self.notched,
-                                          color=None,
-                                          filename='box',
-                                          create_html=False)
+                    box_list = __create_box(df=self.df,
+                                            numeric_cols=numeric_cols,
+                                            points=self.points,
+                                            boxmode=self.boxmode,
+                                            notched=self.notched,
+                                            color=None,
+                                            filename='box',
+                                            create_html=False)
 
                     figure_list.extend(box_list)
 
                 if chart == 'treemaps' and self.include_treemap:
-                    treemap_list = create_treemap(df=self.df,
-                                                  numeric_cols=numeric_cols,
-                                                  create_html=False,
-                                                  filename='treemap',
-                                                  limit=self.treemap_path_limit
-                                                  )
+                    treemap_list = __create_treemap(df=self.df,
+                                                    numeric_cols=numeric_cols,
+                                                    create_html=False,
+                                                    filename='treemap',
+                                                    limit=self.treemap_path_limit
+                                                    )
                     figure_list.extend(treemap_list)
 
                 if chart == 'sunburst' and self.include_sunburst:
-                    sunburst_list = create_sunburst(df=self.df,
-                                                    numeric_cols=numeric_cols,
-                                                    create_html=False,
-                                                    filename='sunburst',
-                                                    limit=self.sunburst_path_limit
-                                                  )
+                    sunburst_list = __create_sunburst(df=self.df,
+                                                      numeric_cols=numeric_cols,
+                                                      create_html=False,
+                                                      filename='sunburst',
+                                                      limit=self.sunburst_path_limit
+                                                      )
                     figure_list.extend(sunburst_list)
 
                 if chart == 'violinplot' and self.include_violin:
-                    violin_list = create_violin(df=self.df,
-                                                numeric_cols=numeric_cols,
-                                                filename='violin',
-                                                create_html=False,
-                                                points=self.violin_points,
-                                                display_box=self.violin_box,
-                                                color=None)
+                    violin_list = __create_violin(df=self.df,
+                                                  numeric_cols=numeric_cols,
+                                                  filename='violin',
+                                                  create_html=False,
+                                                  points=self.violin_points,
+                                                  display_box=self.violin_box,
+                                                  color=None)
 
                     figure_list.extend(violin_list)
 
