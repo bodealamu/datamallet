@@ -292,12 +292,12 @@ def create_scatter(df, basic=True,
     """
 
     :param df:
-    :param basic:
+    :param basic:boolean, whether to create a basic scatterplot or not
     :param filename:
-    :param marginal_x:
-    :param marginal_y:
-    :param log_x:
-    :param log_y:
+    :param marginal_x:options for including marginal charts on x axis
+    :param marginal_y:options for including marginal charts on y axis
+    :param log_x:boolean, whether to create a log axis
+    :param log_y:boolean, whether to create a log axis
     :param create_html: boolean, whether to create an html file or not
     :return:
     """
