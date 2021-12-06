@@ -2,9 +2,7 @@ from datamallet.tabular.utils import (extract_numeric_cols,
                                       extract_col_types,
                                       get_unique,
                                       check_dataframe,
-                                      unique_count,
-                                      calculate_correlation)
-
+                                      unique_count)
 import pandas as pd
 
 
@@ -36,7 +34,7 @@ def __combine_object_categorical(df):
     """
     Combined columns of types categorical, object, and boolean into a list
     :param df: pandas dataframe
-    :return:
+    :return: a list of column names of types categorical, object, and boolean
     """
 
     combined = list()
@@ -63,7 +61,8 @@ def column_use(df, threshold=5):
     :param df: pandas dataframe
     :param threshold: int, think of it as the number
            of distinct colors in a chart(e.g scatterplot)
-    :return:
+    :return: a dictionary that decides what columns to be used to color points in a chart,
+            and which should be used to name points
     """
     all_categorical_cols = __combine_object_categorical(df=df)
 
