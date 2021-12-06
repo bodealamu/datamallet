@@ -87,7 +87,7 @@ def get_unique(df, col_name):
     :param col_name:str, name of column in pandas dataframe
     :return:
     """
-    assert isinstance(str, col_name), "col_name must be a string"
+    assert isinstance(col_name, str), "col_name must be a string"
     unique_values = None
 
     check = col_name in df.columns
