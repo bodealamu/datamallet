@@ -9,12 +9,12 @@ from datamallet.tabular.utils import (extract_col_types,
 import plotly.express as px
 
 
-def __create_pie(df,
-                 numeric_cols,
-                 pie_sector,
-                 create_html=False,
-                 hole=False,
-                 filename='pie'):
+def create_pie(df,
+               numeric_cols,
+               pie_sector,
+               create_html=False,
+               hole=False,
+               filename='pie'):
     """
     Creates a pie chart for every categorical variable in the dataset.
     :param df: pandas dataframe,
@@ -43,15 +43,15 @@ def __create_pie(df,
     return figure_list
 
 
-def __create_violin(df,
-                    numeric_cols,
-                    filename='violin',
-                    create_html=True,
-                    violinmode='group',
-                    points='all',
-                    display_box=True,
-                    color=None
-                    ):
+def create_violin(df,
+                  numeric_cols,
+                  filename='violin',
+                  create_html=True,
+                  violinmode='group',
+                  points='all',
+                  display_box=True,
+                  color=None
+                  ):
     figure_list = list()
 
     column_use_dict = column_use(df,threshold=5)
@@ -81,15 +81,15 @@ def __create_violin(df,
     return figure_list
 
 
-def __create_box(df,
-                 numeric_cols,
-                 points='outliers',
-                 boxmode='group',
-                 notched=False,
-                 color=None,
-                 filename='box',
-                 create_html=True
-                 ):
+def create_box(df,
+               numeric_cols,
+               points='outliers',
+               boxmode='group',
+               notched=False,
+               color=None,
+               filename='box',
+               create_html=True
+               ):
     """
     Creates a list of boxplot figure objects created for the entire dataset
     :param df: pandas dataframe
@@ -134,12 +134,12 @@ def __create_box(df,
     return figure_list
 
 
-def __create_treemap(df,
-                     numeric_cols,
-                     create_html=True,
-                     filename='treemap',
-                     limit=2
-                     ):
+def create_treemap(df,
+                   numeric_cols,
+                   create_html=True,
+                   filename='treemap',
+                   limit=2
+                   ):
     figure_list = list()
 
     path_list = treemap_path(df=df, limit=limit)
@@ -160,11 +160,11 @@ def __create_treemap(df,
     return figure_list
 
 
-def __create_sunburst(df, numeric_cols,
-                      create_html=True,
-                      filename='sunburst',
-                      limit=2
-                      ):
+def create_sunburst(df, numeric_cols,
+                    create_html=True,
+                    filename='sunburst',
+                    limit=2
+                    ):
     figure_list = list()
 
     path_list = treemap_path(df=df, limit=limit)
@@ -185,7 +185,7 @@ def __create_sunburst(df, numeric_cols,
     return figure_list
 
 
-def __create_correlation_plot(df, correlation_method='pearson'):
+def create_correlation_plot(df, correlation_method='pearson'):
     """
     Creates a correlation plot for the provided dataframe
     based on the correlation method supplied and returns a list of plotly graph objects
@@ -209,16 +209,16 @@ def __create_correlation_plot(df, correlation_method='pearson'):
     return figure_list
 
 
-def __create_histogram(df,
-                       numeric_cols,
-                       nbins=None,
-                       marginal=None,
-                       cumulative=False,
-                       histfunc=None,
-                       histnorm=None,
-                       filename='histogram',
-                       create_html=True
-                       ):
+def create_histogram(df,
+                     numeric_cols,
+                     nbins=None,
+                     marginal=None,
+                     cumulative=False,
+                     histfunc=None,
+                     histnorm=None,
+                     filename='histogram',
+                     create_html=True
+                     ):
 
     figure_list = list()
 
@@ -240,13 +240,13 @@ def __create_histogram(df,
     return figure_list
 
 
-def __create_scatter(df, basic=True,
-                     filename='scatter',
-                     marginal_x=None,
-                     marginal_y=None,
-                     log_x=False,
-                     log_y=False,
-                     create_html=True):
+def create_scatter(df, basic=True,
+                   filename='scatter',
+                   marginal_x=None,
+                   marginal_y=None,
+                   log_x=False,
+                   log_y=False,
+                   create_html=True):
     plot_pairs = create_pairs(df)
 
     figure_list = list()
@@ -409,7 +409,7 @@ class AutoPlot(object):
             for chart in chart_types:
                 if chart == 'pie' and self.include_pie:
 
-                    pie_list = __create_pie(df=self.df,
+                    pie_list = create_pie(df=self.df,
                                             numeric_cols=numeric_cols,
                                             pie_sector=self.pie_sectors,
                                             create_html=False,
@@ -419,7 +419,7 @@ class AutoPlot(object):
                     figure_list.extend(pie_list)
                 if chart == 'scatter':
                     if len(categorical) == 0:
-                        scatter_plot_list = __create_scatter(df=self.df,
+                        scatter_plot_list = create_scatter(df=self.df,
                                                              basic=True,
                                                              marginal_x=self.marginals,
                                                              marginal_y=self.marginals,
@@ -428,7 +428,7 @@ class AutoPlot(object):
                                                              create_html=False)
 
                     else:
-                        scatter_plot_list = __create_scatter(df=self.df,
+                        scatter_plot_list = create_scatter(df=self.df,
                                                              basic=False,
                                                              marginal_x=self.marginals,
                                                              marginal_y=self.marginals,
@@ -439,12 +439,12 @@ class AutoPlot(object):
                     figure_list.extend(scatter_plot_list)
 
                 if chart == 'correlation_plot' and self.include_correlation:
-                    correlation_plot_list = __create_correlation_plot(df=self.df,
+                    correlation_plot_list = create_correlation_plot(df=self.df,
                                                                       correlation_method=self.correlation_method)
                     figure_list.extend(correlation_plot_list)
 
                 if chart == 'histogram' and self.include_histogram:
-                    histogram_list = __create_histogram(df=self.df,
+                    histogram_list = create_histogram(df=self.df,
                                                         numeric_cols=numeric_cols,
                                                         nbins=self.nbins,
                                                         marginal=self.marginals,
@@ -457,7 +457,7 @@ class AutoPlot(object):
                     figure_list.extend(histogram_list)
 
                 if chart == 'boxplot' and self.include_box:
-                    box_list = __create_box(df=self.df,
+                    box_list = create_box(df=self.df,
                                             numeric_cols=numeric_cols,
                                             points=self.points,
                                             boxmode=self.boxmode,
@@ -469,7 +469,7 @@ class AutoPlot(object):
                     figure_list.extend(box_list)
 
                 if chart == 'treemaps' and self.include_treemap:
-                    treemap_list = __create_treemap(df=self.df,
+                    treemap_list = create_treemap(df=self.df,
                                                     numeric_cols=numeric_cols,
                                                     create_html=False,
                                                     filename='treemap',
@@ -478,7 +478,7 @@ class AutoPlot(object):
                     figure_list.extend(treemap_list)
 
                 if chart == 'sunburst' and self.include_sunburst:
-                    sunburst_list = __create_sunburst(df=self.df,
+                    sunburst_list = create_sunburst(df=self.df,
                                                       numeric_cols=numeric_cols,
                                                       create_html=False,
                                                       filename='sunburst',
@@ -487,7 +487,7 @@ class AutoPlot(object):
                     figure_list.extend(sunburst_list)
 
                 if chart == 'violinplot' and self.include_violin:
-                    violin_list = __create_violin(df=self.df,
+                    violin_list = create_violin(df=self.df,
                                                   numeric_cols=numeric_cols,
                                                   filename='violin',
                                                   create_html=False,
