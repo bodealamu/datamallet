@@ -102,7 +102,7 @@ def unique_count(df):
     Determine the number of unique values for each column in the
     dataframe and returns as a dictionary with col name as key and number of distinct values as value
     :param df: pandas dataframe
-    :return:
+    :return: dictionary mapping column name in a dataframe to the number of unique values in that column
     """
     unique_count_dict = dict()
 

@@ -13,8 +13,11 @@ def pie_sectors(df, maximum_number_sectors=3):
     Determines columns in a dataframe whose unique value count is
     less than or equal to the maximum number of sectors
     :param df:
-    :param maximum_number_sectors:int,
-    :return:
+    :param maximum_number_sectors:int, the upper limit on
+            the number of sectors you desire in your pie chart.
+            The number of sectors in a pie chart translates to the number of unique entries in a column.
+    :return: a list of column names which conform to the columns
+                which have the number of distinct values less than the specified maximum
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(maximum_number_sectors, int), "maximum_number_sectors must be an integer"
