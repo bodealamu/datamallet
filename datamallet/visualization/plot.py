@@ -384,6 +384,38 @@ class AutoPlot(object):
                  pie_chart_hole=False,
                  create_html=True
                  ):
+        """
+        Entry point for automated data visualization
+        :param df:
+        :param nbins:
+        :param marginals:
+        :param cumulative:
+        :param filename:
+        :param box_points:
+        :param boxmode:
+        :param box_notched:
+        :param log_x:
+        :param log_y:
+        :param size:
+        :param histfunc:
+        :param histnorm:
+        :param include_box: boolean, whether to include box plots
+        :param include_treemap: boolean, whether to include treemaps
+        :param include_sunburst: boolean, whether to include sunburst
+        :param include_correlation: boolean, whether to include correlation plot
+        :param include_pie: boolean, whether to include pie
+        :param include_histogram: boolean, whether to include histogram
+        :param include_violin: boolean, whether to include violin plots
+        :param violinmode: str, display mode for violin charts
+        :param violin_box: boolean, whether to include box plot in violin
+        :param violin_points: str, how to display points in a violin plot
+        :param treemap_path_limit:
+        :param sunburst_path_limit:
+        :param correlation_method: str, method to use to compute correlation
+        :param maximum_number_sectors: int, maximum number of sectors in pie charts
+        :param pie_chart_hole: boolean, whether to include a hole in pie chart or not
+        :param create_html:
+        """
         self.df = df
         self.nbins = nbins
         self.marginals = marginals
