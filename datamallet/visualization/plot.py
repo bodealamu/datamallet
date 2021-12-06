@@ -2,7 +2,6 @@ from datamallet.visualization.utils import (pie_sectors,
                                             treemap_path,create_pairs,
                                             column_use,
                                             figures_to_html)
-
 from datamallet.tabular.utils import (extract_col_types,
                                       check_dataframe,
                                       calculate_correlation)
@@ -23,7 +22,7 @@ def create_pie(df,
     :param create_html:boolean, whether the figures should be converted to HTML or not
     :param hole:boolean, hole in the pie chart
     :param filename:str, a suitable name for the produced html file, exclude the extension
-    :return:
+    :return: list which contains graph objects
     """
     figure_list = list()
 
@@ -52,6 +51,18 @@ def create_violin(df,
                   display_box=True,
                   color=None
                   ):
+    """
+    Creates a list of violin plot figure objects
+    :param df: pandas dataframe
+    :param numeric_cols: list of column names with numeric data type
+    :param filename: str, filename for the html file
+    :param create_html: boolean, whether to create an html file or not
+    :param violinmode: str, how you want the charts to be displayed
+    :param points: str, how the points in the violin chart should be displayed
+    :param display_box: boolean, whether to display a box within the violin chart
+    :param color:
+    :return:
+    """
     figure_list = list()
 
     column_use_dict = column_use(df,threshold=5)
