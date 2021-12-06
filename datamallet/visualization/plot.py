@@ -153,11 +153,11 @@ def create_treemap(df,
                    ):
     """
 
-    :param df:
-    :param numeric_cols:
+    :param df:pandas dataframe
+    :param numeric_cols:list of column names of numeric columns
     :param create_html: boolean, whether to create an html file or not
     :param filename:
-    :param limit:
+    :param limit:int, maximum path depth
     :return:
     """
     figure_list = list()
@@ -188,10 +188,10 @@ def create_sunburst(df, numeric_cols,
     """
 
     :param df:
-    :param numeric_cols:
+    :param numeric_cols:list of column names of numeric columns
     :param create_html: boolean, whether to create an html file or not
     :param filename:
-    :param limit:
+    :param limit:int, maximum path depth
     :return:
     """
     figure_list = list()
