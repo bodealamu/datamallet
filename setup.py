@@ -14,7 +14,7 @@ with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
 # This call to setup() does all the work
 setup(
     name="datamallet",
-    version="0.1.0",
+    version="0.1.1",
     description="Helper tools for the data science workflow",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -33,7 +33,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent"
     ],
-    packages=["datamallet"],
+    packages=["datamallet", "datamallet.tabular", "datamallet.visualization"],
     include_package_data=True,
     install_requires=['pandas>=1.1.5',
                       'scikit-learn>=0.24.2',
