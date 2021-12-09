@@ -6,9 +6,9 @@ from .plot import (create_pie,
                    create_sunburst,
                    create_correlation_plot,
                    create_histogram)
-from datamallet.visualization.utils import (pie_sectors,
-                                            extract_col_types,
-                                            figures_to_html)
+from .utils import (pie_sectors,
+                    extract_col_types,
+                    figures_to_html)
 
 
 class AutoPlot(object):
