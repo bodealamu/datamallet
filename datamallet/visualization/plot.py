@@ -1,9 +1,8 @@
-from .utils import (
-                                            treemap_path,create_pairs,
-                                            column_use,
-                                            figures_to_html)
-from datamallet.tabular.utils import (
-                                      check_dataframe,
+from .utils import (treemap_path,
+                    create_pairs,
+                    column_use,
+                    figures_to_html)
+from datamallet.tabular.utils import (check_dataframe,
                                       calculate_correlation)
 import plotly.express as px
 
