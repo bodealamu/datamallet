@@ -268,3 +268,27 @@ def calculate_correlation(df, method='pearson'):
 
     return corr
 
+
+def combine_categorical_columns(df, col_types):
+    """
+    Combined columns of types categorical, object, and boolean into a list
+    :param df: pandas dataframe
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
+    :return: a list of column names of types categorical, object, or boolean
+    """
+
+    combined = list()
+
+    if check_dataframe(df=df):
+        #col_types = extract_col_types(df=df)
+
+        categorical = col_types['categorical']
+        object_cols = col_types['object']
+        boolean_cols = col_types['boolean']
+
+        combined.extend(categorical)
+        combined.extend(object_cols)
+        combined.extend(boolean_cols)
+
+    return combined

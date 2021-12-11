@@ -165,6 +165,7 @@ class AutoPlot(object):
                 if chart == 'scatter':
                     if len(categorical) == 0:
                         scatter_plot_list = create_scatter(df=self.df,
+                                                           col_types= self.column_types,
                                                              basic=True,
                                                              marginal_x=self.marginals,
                                                              marginal_y=self.marginals,
@@ -174,6 +175,7 @@ class AutoPlot(object):
 
                     else:
                         scatter_plot_list = create_scatter(df=self.df,
+                                                           col_types= self.column_types,
                                                              basic=False,
                                                              marginal_x=self.marginals,
                                                              marginal_y=self.marginals,
@@ -203,7 +205,7 @@ class AutoPlot(object):
 
                 if chart == 'boxplot' and self.include_box:
                     box_list = create_box(df=self.df,
-                                            numeric_cols=numeric_cols,
+                                          col_types= self.column_types,
                                             points=self.points,
                                             boxmode=self.boxmode,
                                             notched=self.notched,
@@ -233,7 +235,7 @@ class AutoPlot(object):
 
                 if chart == 'violinplot' and self.include_violin:
                     violin_list = create_violin(df=self.df,
-                                                  numeric_cols=numeric_cols,
+                                                col_types= self.column_types,
                                                   filename='violin',
                                                   create_html=False,
                                                   points=self.violin_points,

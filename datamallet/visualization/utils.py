@@ -1,8 +1,8 @@
-from datamallet.tabular.utils import (extract_numeric_cols,
+from datamallet.tabular.utils import (check_columns,
                                       extract_col_types,
                                       get_unique,
                                       check_dataframe,
-                                      unique_count)
+                                      unique_count, combine_categorical_columns)
 import pandas as pd
 
 
@@ -10,10 +10,10 @@ def pie_sectors(df, maximum_number_sectors=3):
     """
     Determines columns in a dataframe whose unique value count is
     less than or equal to the maximum number of sectors
-    :param df:
+    :param df: pandas dataframe
     :param maximum_number_sectors:int, the upper limit on
             the number of sectors you desire in your pie chart.
-            The number of sectors in a pie chart translates to the number of unique entries in a column.
+            (The number of sectors in a pie chart translates to the number of unique entries in a column.)
     :return: a list of column names which conform to the columns
                 which have the number of distinct values less than the specified maximum
     """
@@ -30,41 +30,20 @@ def pie_sectors(df, maximum_number_sectors=3):
     return columns_list
 
 
-def __combine_object_categorical(df):
-    """
-    Combined columns of types categorical, object, and boolean into a list
-    :param df: pandas dataframe
-    :return: a list of column names of types categorical, object, and boolean
-    """
-
-    combined = list()
-
-    if check_dataframe(df=df):
-        col_types = extract_col_types(df=df)
-
-        categorical = col_types['categorical']
-        object_cols = col_types['object']
-        boolean_cols = col_types['boolean']
-
-        combined.extend(categorical)
-        combined.extend(object_cols)
-        combined.extend(boolean_cols)
-
-    return combined
-
-
-def column_use(df, threshold=5):
+def column_use(df,col_types ,threshold=5):
     """
     This function helps in determining whether a column in a dataframe
        should be used to color the data points in a chart or if it is
         okay for simply naming the points
     :param df: pandas dataframe
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
     :param threshold: int, think of it as the number
            of distinct colors in a chart(e.g scatterplot)
     :return: a dictionary that decides what columns to be used to color points in a chart,
             and which should be used to name points
     """
-    all_categorical_cols = __combine_object_categorical(df=df)
+    all_categorical_cols = combine_categorical_columns(df=df, col_types=col_types)
 
     number_of_rows = df.shape[0]
 
@@ -106,27 +85,29 @@ def figures_to_html(figs, filename):
     return None
 
 
-def create_pairs(df):
+def create_pairs(df, numeric_cols):
     """
     Create a non repeat list of tuples which contains pairs of
     numeric cols in df for visualization purpose as x and y axis
     :param df: pandas dataframe
+    :param numeric_cols: list of column names which have numeric data, output of extract_numeric_cols(df=df)
     :return: list of tuple of non repeat pairing
     """
 
-    numeric_cols = extract_numeric_cols(df=df)
     passed_cols = set()
     pairs = list()
 
-    for col1 in numeric_cols:
-        for col2 in numeric_cols:
-            if col1 == col2:
-                continue
+    if check_columns(df=df,column_list=numeric_cols) and check_dataframe(df=df):
 
-            if len(passed_cols) == 0 or col2 not in passed_cols:
-                pairs.append((col1,col2))
+        for col1 in numeric_cols:
+            for col2 in numeric_cols:
+                if col1 == col2:
+                    continue
 
-        passed_cols.add(col1)
+                if len(passed_cols) == 0 or col2 not in passed_cols:
+                    pairs.append((col1,col2))
+
+            passed_cols.add(col1)
 
     return pairs
 

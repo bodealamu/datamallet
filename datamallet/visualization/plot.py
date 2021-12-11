@@ -42,7 +42,7 @@ def create_pie(df,
 
 
 def create_violin(df,
-                  numeric_cols,
+                  col_types,
                   filename='violin',
                   create_html=True,
                   violinmode='group',
@@ -53,7 +53,8 @@ def create_violin(df,
     """
     Creates a list of violin plot figure objects
     :param df: pandas dataframe
-    :param numeric_cols: list of column names with numeric data type
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
     :param filename: str, filename for the html file
     :param create_html: boolean, whether to create an html file or not
     :param violinmode: str, how you want the charts to be displayed
@@ -64,9 +65,11 @@ def create_violin(df,
     """
     figure_list = list()
 
-    column_use_dict = column_use(df,threshold=5)
+    column_use_dict = column_use(df, col_types=col_types, threshold=5)
 
     hue_cols = column_use_dict['hue']
+
+    numeric_cols = col_types['numeric']
 
     if len(hue_cols) == 0:
         hue_cols.append(None)
@@ -92,7 +95,7 @@ def create_violin(df,
 
 
 def create_box(df,
-               numeric_cols,
+               col_types,
                points='outliers',
                boxmode='group',
                notched=False,
@@ -103,7 +106,8 @@ def create_box(df,
     """
     Creates a list of boxplot figure objects created for the entire dataset
     :param df: pandas dataframe
-    :param numeric_cols: list, list of column names which have numeric data type
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
     :param points:str, whether to show the points in a box plot possible options are 'outliers', 'all',False, 'suspectedoutliers'
     :param boxmode: str, how to display the boxes in a boxplot.
                     Options are 'group' or 'overlay'. In group mode,
@@ -116,8 +120,9 @@ def create_box(df,
     :return:
     """
     figure_list = list()
+    numeric_cols = col_types['numeric']
 
-    column_use_dict = column_use(df,threshold=5)
+    column_use_dict = column_use(df, col_types=col_types, threshold=5)
 
     hue_cols = column_use_dict['hue']
     if len(hue_cols) == 0:
@@ -179,7 +184,8 @@ def create_treemap(df,
     return figure_list
 
 
-def create_sunburst(df, numeric_cols,
+def create_sunburst(df,
+                    numeric_cols,
                     create_html=True,
                     filename='sunburst',
                     limit=2
@@ -281,7 +287,9 @@ def create_histogram(df,
     return figure_list
 
 
-def create_scatter(df, basic=True,
+def create_scatter(df,
+                   col_types,
+                   basic=True,
                    filename='scatter',
                    marginal_x=None,
                    marginal_y=None,
@@ -291,6 +299,8 @@ def create_scatter(df, basic=True,
     """
 
     :param df:
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
     :param basic:boolean, whether to create a basic scatterplot or not
     :param filename:
     :param marginal_x:options for including marginal charts on x axis
@@ -300,7 +310,8 @@ def create_scatter(df, basic=True,
     :param create_html: boolean, whether to create an html file or not
     :return:
     """
-    plot_pairs = create_pairs(df)
+    numeric_cols = col_types['numeric']
+    plot_pairs = create_pairs(df, numeric_cols=numeric_cols)
 
     figure_list = list()
 
@@ -318,7 +329,7 @@ def create_scatter(df, basic=True,
             figure_list.append(plot)
 
     else:
-        cols_use_dict = column_use(df, threshold=5)
+        cols_use_dict = column_use(df, col_types=col_types, threshold=5)
         name_list = cols_use_dict['name']
         hue_list = cols_use_dict['hue']
 
