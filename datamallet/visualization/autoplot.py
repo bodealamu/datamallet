@@ -26,6 +26,7 @@ class AutoPlot(object):
                  size=None,
                  histfunc=None,
                  histnorm=None,
+                 include_scatter=False,
                  include_box=True,
                  include_treemap=True,
                  include_sunburst=True,
@@ -58,6 +59,7 @@ class AutoPlot(object):
         :param size:
         :param histfunc:
         :param histnorm:
+        :param include_scatter: boolean, whether to include scatter plots
         :param include_box: boolean, whether to include box plots
         :param include_treemap: boolean, whether to include treemaps
         :param include_sunburst: boolean, whether to include sunburst
@@ -89,6 +91,7 @@ class AutoPlot(object):
         self.histfunc = histfunc
         self.histnorm = histnorm
         self.column_types = extract_col_types(df=df)
+        self.include_scatter = include_scatter
         self.include_box = include_box
         self.include_treemap = include_treemap
         self.include_sunburst = include_sunburst
@@ -162,7 +165,7 @@ class AutoPlot(object):
                                             filename='pie')
 
                     figure_list.extend(pie_list)
-                if chart == 'scatter':
+                if chart == 'scatter' and self.include_scatter:
                     if len(categorical) == 0:
                         scatter_plot_list = create_scatter(df=self.df,
                                                            col_types= self.column_types,
