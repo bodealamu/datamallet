@@ -7,8 +7,6 @@ df = pd.DataFrame({'A':[1,2,3,4,5],
                    'D':['male','male','male','female','female'],
                    'E':[True,True,False,True,True]})
 
-df['D'] = df['D'].astype('category')
-
 
 def test_column_dropper():
     column_dropper = ColumnDropper(column_list=['C','D','E'])

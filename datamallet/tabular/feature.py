@@ -8,14 +8,15 @@ class ColumnAdder(BaseEstimator, TransformerMixin):
     """
     def __init__(self, column_list, new_column_name):
         """
-        Adds columns together and creates a new column
+        Adds columns together in a dataframe and creates a new column
 
-        :param column_list:
-        :param new_column_name:
+        :param column_list: list of columns to be added together
+        :param new_column_name:str, name of new column created from adding the columns in column list together
         """
         self.column_list = column_list
         self.new_column_name = new_column_name
         assert isinstance(column_list,list), "column_list must be a list"
+        assert isinstance(new_column_name, str), "new_column_name must be a string"
 
     def fit(self, X, y=None):
         return self
