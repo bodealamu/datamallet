@@ -40,12 +40,15 @@ class ColumnMultiplier(BaseEstimator,TransformerMixin):
         """
         self.column_list = column_list
         self.new_column_name = new_column_name
+        assert isinstance(column_list, list),"column_list must be a list"
+        assert isinstance(new_column_name, str), "new_column_name must be a string"
 
     def fit(self, X, y=None):
         return self
 
     def transform(self,X, y=None):
-        if check_dataframe(X) and check_columns(X, self.column_list):
+        if check_dataframe(X) and \
+                check_columns(X, self.column_list) and check_numeric(df=X, column_list=self.column_list):
             X[self.new_column_name] = X.loc[:, self.column_list].prod(axis=1,
                                                                       numeric_only=True,
                                                                       skipna=True)
