@@ -7,7 +7,8 @@ from datamallet.tabular.utils import (extract_numeric_cols,
                                       extract_bool_cols,
                                       calculate_correlation,
                                       combine_categorical_columns,
-                                      get_column_types)
+                                      get_column_types,
+                                      check_numeric)
 import pandas as pd
 
 # test data, dont alter
@@ -73,3 +74,7 @@ def test_combine_categorical_columns():
     assert combine_categorical_columns(df=df, col_types=col_types) == ['D','C']
 
     assert isinstance(combine_categorical_columns(df=df, col_types=col_types), list)
+
+
+def test_check_numeric():
+    assert check_numeric(df=df, column_list=['A']) is True
