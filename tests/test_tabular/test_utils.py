@@ -78,3 +78,5 @@ def test_combine_categorical_columns():
 
 def test_check_numeric():
     assert check_numeric(df=df, column_list=['A']) is True
+    assert check_numeric(df=df, column_list=['A','B']) is True
+    assert check_numeric(df=df, column_list=['C','D']) is False
