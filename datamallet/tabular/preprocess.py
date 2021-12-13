@@ -77,11 +77,13 @@ class ColumnRename(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
+        assert isinstance(self.rename_dictionary, dict), 'Rename dictionary must be a dictionary'
+
         col_list = list()
         for old_name, new_name in self.rename_dictionary.items():
             col_list.append(old_name)
 
-        if check_columns(df=X, column_list=col_list):
+        if check_columns(df=X, column_list=col_list) and check_dataframe(df=X):
             X.rename(columns=self.rename_dictionary, inplace=True)
 
         return X

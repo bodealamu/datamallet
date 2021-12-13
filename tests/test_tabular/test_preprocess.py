@@ -16,3 +16,14 @@ def test_column_dropper():
 
     assert 'A' in droped_df.columns
     assert 'B' in droped_df.columns
+
+
+def test_column_rename():
+    columnrenamer = ColumnRename(rename_dictionary={'A':'V',
+                                                    'B':'W'})
+    renamed_df = columnrenamer.transform(X=df)
+
+    assert 'A' not in renamed_df.columns
+    assert 'V' in renamed_df.columns
+    assert 'B' not in renamed_df.columns
+    assert 'W' in renamed_df.columns
