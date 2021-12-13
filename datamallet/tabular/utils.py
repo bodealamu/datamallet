@@ -49,6 +49,20 @@ def check_columns(df, column_list):
     return count == length_column_list
 
 
+def check_numeric(df,column_list):
+    """
+    Checks whether column_list is a subset of all numeric columns
+    :param df:
+    :param column_list:
+    :return:
+    """
+    assert isinstance(column_list, list), "column_list must be a list"
+    assert isinstance(df, pd.DataFrame), "df must be a dataframe"
+    numeric_cols = extract_numeric_cols(df=df)
+
+    return set(column_list).issubset(set(numeric_cols))
+
+
 def column_mean(df, skipna=True, numeric_only=True):
     """
     Calculates the mean value for all columns in dataframe
