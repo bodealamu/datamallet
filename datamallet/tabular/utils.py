@@ -58,8 +58,8 @@ def check_numeric(df,column_list):
     """
     assert isinstance(column_list, list), "column_list must be a list"
     assert isinstance(df, pd.DataFrame), "df must be a dataframe"
-    numeric_cols = extract_numeric_cols(df=df)
 
+    numeric_cols = extract_numeric_cols(df=df)
     return set(column_list).issubset(set(numeric_cols))
 
 

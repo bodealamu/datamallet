@@ -1,5 +1,5 @@
 from sklearn.base import BaseEstimator, TransformerMixin
-from .utils import check_columns, check_dataframe, column_mean
+from .utils import check_columns, check_dataframe, check_numeric
 
 
 class ColumnAdder(BaseEstimator, TransformerMixin):
@@ -22,7 +22,9 @@ class ColumnAdder(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
-        if check_dataframe(X) and check_columns(X, self.column_list):
+        if check_dataframe(X) \
+                and check_columns(X, self.column_list) \
+                and check_numeric(df=X, column_list=self.column_list):
             X[self.new_column_name] = X.loc[:, self.column_list].sum(axis=1)
 
         return X
