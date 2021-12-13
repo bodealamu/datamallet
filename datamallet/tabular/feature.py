@@ -71,7 +71,9 @@ class ColumnSubtraction(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
-        if check_dataframe(X) and check_columns(X, [self.left,self.right]):
+        if check_dataframe(X) and \
+                check_columns(X, [self.left,self.right]) and \
+                check_numeric(df=X, column_list=[self.left,self.right]):
             X[self.new_column_name] = X.loc[:, self.left] - X.loc[:, self.right]
         return X
 
