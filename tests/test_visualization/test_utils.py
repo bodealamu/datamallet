@@ -18,3 +18,9 @@ def test_pie_sectors():
     assert 'D' in column_list
     assert 'E' in column_list
     assert 'F' not in column_list, "the number of unique items in column F exceeds the maximum"
+
+
+def test_treemap_path():
+    treemap_paths = treemap_path(df=df,limit=3)
+    # treemap_paths is a list with the order in which the treemap rectangles need to be arranged
+    assert treemap_paths[-1] == 'C', "C has the 3rd most number of distinct rows"
