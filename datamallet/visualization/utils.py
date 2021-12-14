@@ -1,7 +1,7 @@
 from datamallet.tabular.utils import (check_columns,
                                       extract_col_types,
                                       get_unique,
-                                      check_dataframe,
+                                      check_dataframe,check_numeric,
                                       unique_count, combine_categorical_columns)
 import pandas as pd
 
@@ -97,7 +97,8 @@ def create_pairs(df, numeric_cols):
     passed_cols = set()
     pairs = list()
 
-    if check_columns(df=df,column_list=numeric_cols) and check_dataframe(df=df):
+    if check_columns(df=df,column_list=numeric_cols) \
+            and check_dataframe(df=df) and check_numeric(df=df,column_list=numeric_cols):
 
         for col1 in numeric_cols:
             for col2 in numeric_cols:
