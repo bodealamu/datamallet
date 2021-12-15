@@ -30,7 +30,7 @@ def pie_sectors(df, maximum_number_sectors=3):
     return columns_list
 
 
-def column_use(df,col_types ,threshold=5):
+def column_use(df,col_types,threshold=5):
     """
     This function helps in determining whether a column in a dataframe
        should be used to color the data points in a chart or if it is

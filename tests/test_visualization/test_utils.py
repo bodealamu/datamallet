@@ -1,7 +1,8 @@
 from datamallet.visualization.utils import (pie_sectors,
                                             create_pairs,
+                                            column_use,
                                             treemap_path)
-from datamallet.tabular.utils import extract_col_types, combine_categorical_columns
+from datamallet.tabular.utils import extract_col_types
 import pandas as pd
 
 df = pd.DataFrame({'A':[1,2,3,4,5],
@@ -17,6 +18,7 @@ df2 = pd.DataFrame({'A':[1,2,3,4,5],
                    'D':[4,7,2,5,7],
                    'E':[True,True,False,True,True],
                    'F':['chess', 'scrabble','checkers', 'card games', 'dominoes']})
+
 
 def test_pie_sectors():
     column_list = pie_sectors(df, maximum_number_sectors=3)
@@ -37,4 +39,16 @@ def test_create_pairs():
     pairs1 = create_pairs(df=df, numeric_cols=['A', 'B', 'C', 'D'])
     assert len(pairs) != 0
     assert len(pairs1) == 0
+
+
+def test_column_use():
+    col_types = extract_col_types(df=df)
+    column_use_dict = column_use(df, col_types, threshold=5)
+    column_use_dict2 = column_use(df, col_types, threshold=2)
+    assert isinstance(column_use_dict, dict)
+    assert len(column_use_dict['name']) != 0
+    assert len(column_use_dict['hue']) == 0
+    assert len(column_use_dict2['name']) != 0
+    assert len(column_use_dict2['hue']) != 0
+
 
