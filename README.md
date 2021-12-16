@@ -13,7 +13,7 @@ At the moment, it features the following:
 In the future, modules concerned with other parts of Machine learning 
 (e.g. Computer vision, NLP, recommendation engine etc) can be added.<br> 
 The idea is for this library to be the de-facto tool for expediting data science tasks
-<hr>
+
 <br>
 
 # Tests<br>
