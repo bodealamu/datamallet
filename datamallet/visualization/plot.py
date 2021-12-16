@@ -2,7 +2,8 @@ from .utils import (hierachial_path,
                     create_pairs,
                     column_use,
                     figures_to_html)
-from datamallet.tabular.utils import (check_dataframe,extract_numeric_cols,
+from datamallet.tabular.utils import (check_dataframe,
+                                      extract_numeric_cols,
                                       calculate_correlation)
 import plotly.express as px
 
