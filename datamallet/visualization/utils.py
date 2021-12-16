@@ -6,25 +6,25 @@ from datamallet.tabular.utils import (check_columns,
 import pandas as pd
 
 
-def pie_sectors(df, maximum_number_sectors=3):
+def columns_with_distinct_values(df, maximum_number_distinct_values=3):
     """
     Determines columns in a dataframe whose unique value count is
-    less than or equal to the maximum number of sectors
+    less than or equal to the maximum_number_distinct_values
     :param df: pandas dataframe
-    :param maximum_number_sectors:int, the upper limit on
-            the number of sectors you desire in your pie chart.
-            (The number of sectors in a pie chart translates to the number of unique entries in a column.)
+    :param maximum_number_distinct_values:int, the upper limit on
+            the number of distinct values in a column (translates into number of sectors in pie chart).
+            A value of 3 is good for pie charts, 7 for boxplots or violin plots.
     :return: a list of column names which conform to the columns
                 which have the number of distinct values less than the specified maximum
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
-    assert isinstance(maximum_number_sectors, int), "maximum_number_sectors must be an integer"
+    assert isinstance(maximum_number_distinct_values, int), "maximum_number_sectors must be an integer"
 
     columns_list = list()
     unique_count_dict = unique_count(df=df)
 
     for column_name, distinct_count in unique_count_dict.items():
-        if distinct_count <= maximum_number_sectors:
+        if distinct_count <= maximum_number_distinct_values:
             columns_list.append(column_name)
 
     return columns_list
@@ -113,7 +113,7 @@ def create_pairs(df, numeric_cols):
     return pairs
 
 
-def treemap_path(df, limit=3):
+def hierachial_path(df, limit=3):
     """
     It helps to determine the path for a tree map or sunburst chart,
     the idea is to start the path from the column with the

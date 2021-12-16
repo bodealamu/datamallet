@@ -6,7 +6,7 @@ from .plot import (create_pie,
                    create_sunburst,
                    create_correlation_plot,
                    create_histogram)
-from .utils import (pie_sectors,
+from .utils import (columns_with_distinct_values,
                     extract_col_types,
                     figures_to_html)
 
@@ -108,7 +108,7 @@ class AutoPlot(object):
         self.maximum_number_sectors = maximum_number_sectors
         self.create_html = create_html
         self.pie_chart_hole = pie_chart_hole
-        self.pie_sectors = pie_sectors(df=self.df, maximum_number_sectors=self.maximum_number_sectors)
+        self.pie_sectors = columns_with_distinct_values(df=self.df, maximum_number_distinct_values=self.maximum_number_sectors)
 
     def chart_type(self):
         column_types = self.column_types
