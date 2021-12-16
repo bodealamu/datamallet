@@ -158,11 +158,11 @@ class AutoPlot(object):
                 if chart == 'pie' and self.include_pie:
 
                     pie_list = create_pie(df=self.df,
-                                            numeric_cols=numeric_cols,
-                                            pie_sector=self.pie_sectors,
-                                            create_html=False,
-                                            hole=self.pie_chart_hole,
-                                            filename='pie')
+                                          numeric_cols=numeric_cols,
+                                          list_of_categorical_columns=self.pie_sectors,
+                                          create_html=False,
+                                          hole=self.pie_chart_hole,
+                                          filename='pie')
 
                     figure_list.extend(pie_list)
                 if chart == 'scatter' and self.include_scatter:

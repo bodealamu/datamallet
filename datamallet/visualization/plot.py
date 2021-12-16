@@ -9,7 +9,7 @@ import plotly.express as px
 
 def create_pie(df,
                numeric_cols,
-               pie_sector,
+               list_of_categorical_columns,
                create_html=False,
                hole=False,
                filename='pie'):
@@ -17,7 +17,7 @@ def create_pie(df,
     Creates a pie chart for every categorical variable in the dataset.
     :param df: pandas dataframe,
     :param numeric_cols: list of columns with numeric data
-    :param pie_sector:list,
+    :param list_of_categorical_columns:list of column names which have categorical data
     :param create_html:boolean, whether the figures should be converted to HTML or not
     :param hole:boolean, hole in the pie chart
     :param filename:str, a suitable name for the produced html file, exclude the extension
@@ -26,7 +26,7 @@ def create_pie(df,
     figure_list = list()
 
     for value in numeric_cols:
-        for name in pie_sector:
+        for name in list_of_categorical_columns:
             plot = px.pie(names=name,
                           data_frame=df,
                           values=value,
@@ -101,7 +101,8 @@ def create_box(df,
                notched=False,
                color=None,
                filename='box',
-               create_html=True
+               create_html=True,
+               hue_threshold=5
                ):
     """
     Creates a list of boxplot figure objects created for the entire dataset
@@ -117,12 +118,13 @@ def create_box(df,
     :param color:
     :param filename:
     :param create_html:boolean, whether to create an html file or not
+    :param hue_threshold: int,
     :return:
     """
     figure_list = list()
     numeric_cols = col_types['numeric']
 
-    column_use_dict = column_use(df, col_types=col_types, threshold=5)
+    column_use_dict = column_use(df, col_types=col_types, threshold=hue_threshold)
 
     hue_cols = column_use_dict['hue']
     if len(hue_cols) == 0:
