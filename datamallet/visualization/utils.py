@@ -21,7 +21,7 @@ def columns_with_distinct_values(df, maximum_number_distinct_values=3):
     assert isinstance(maximum_number_distinct_values, int), "maximum_number_sectors must be an integer"
 
     columns_list = list()
-    unique_count_dict = unique_count(df=df)
+    unique_count_dict = unique_count(df=df) # dictionary of column name with count of unique values as key
 
     for column_name, distinct_count in unique_count_dict.items():
         if distinct_count <= maximum_number_distinct_values:

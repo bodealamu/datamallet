@@ -143,7 +143,7 @@ def create_box(df,
                           boxmode=boxmode,
                           notched=notched,
                           color=color,
-                          title='Boxplot showing distribution of {} across {} categories'.format(col,hue)
+                          title='Boxplot showing distribution of {} across {} categories'.format(col,category)
                           )
             figure_list.append(plot)
 
