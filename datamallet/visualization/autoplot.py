@@ -141,7 +141,7 @@ class AutoPlot(object):
 
         return chart_types
 
-    def plot(self):
+    def show(self):
         chart_types = self.chart_type()
 
         object_cols = self.column_types['object']
