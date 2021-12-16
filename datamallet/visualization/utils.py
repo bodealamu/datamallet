@@ -23,9 +23,9 @@ def pie_sectors(df, maximum_number_sectors=3):
     columns_list = list()
     unique_count_dict = unique_count(df=df)
 
-    for column, count in unique_count_dict.items():
-        if count <= maximum_number_sectors:
-            columns_list.append(column)
+    for column_name, distinct_count in unique_count_dict.items():
+        if distinct_count <= maximum_number_sectors:
+            columns_list.append(column_name)
 
     return columns_list
 
