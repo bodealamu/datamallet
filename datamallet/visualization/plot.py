@@ -1,4 +1,4 @@
-from .utils import (hierachial_path,
+from .utils import (hierachial_path,columns_with_distinct_values,
                     create_pairs,
                     column_use,
                     figures_to_html)
@@ -103,7 +103,7 @@ def create_box(df,
                color=None,
                filename='box',
                create_html=True,
-               hue_threshold=5
+               maximum_number_boxplots=7
                ):
     """
     Creates a list of boxplot figure objects created for the entire dataset
@@ -125,17 +125,19 @@ def create_box(df,
     figure_list = list()
     numeric_cols = col_types['numeric']
 
-    column_use_dict = column_use(df, col_types=col_types, threshold=hue_threshold)
+    # column_use_dict = column_use(df, col_types=col_types, threshold=hue_threshold)
 
-    hue_cols = column_use_dict['hue']
-    if len(hue_cols) == 0:
-        hue_cols.append(None)
+    # hue_cols = column_use_dict['hue']
+    # if len(hue_cols) == 0:
+    #     hue_cols.append(None)
+
+    categorical_columns = columns_with_distinct_values(df=df,maximum_number_distinct_values=maximum_number_boxplots)
 
     for col in numeric_cols:
-        for hue in hue_cols:
+        for category in categorical_columns:
 
             plot = px.box(data_frame=df,
-                          x=hue,
+                          x=category,
                           y=col,
                           points=points,
                           boxmode=boxmode,
