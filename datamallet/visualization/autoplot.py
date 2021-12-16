@@ -214,11 +214,11 @@ class AutoPlot(object):
                                           maximum_number_boxplots=self.maximum_number_boxplots,
                                           col_types= self.column_types,
                                           points=self.points,
-                                            boxmode=self.boxmode,
-                                            notched=self.notched,
-                                            color=None,
-                                            filename='box',
-                                            create_html=False)
+                                          boxmode=self.boxmode,
+                                          notched=self.notched,
+                                          color=None,
+                                          filename='box',
+                                          create_html=False)
 
                     figure_list.extend(box_list)
 
