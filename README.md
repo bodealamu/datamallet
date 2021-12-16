@@ -7,11 +7,14 @@ At the moment, it features the following:
 (data which can be found in a table either pure tabular/timeseries).
 
 <br>
-## Future roadmap
+
+# Future roadmap
+<br>
 In the future, modules concerned with other parts of Machine learning 
 (e.g. Computer vision, NLP, recommendation engine etc) can be added.<br> 
 The idea is for this library to be the de-facto tool for expediting data science tasks
-
+<hr>
 <br>
-## Tests
+
+# Tests<br>
 from the main directory, you can run the tests by simply unning the pytest command
