@@ -221,12 +221,17 @@ def create_sunburst(df,
     return figure_list
 
 
-def create_correlation_plot(df, correlation_method='pearson'):
+def create_correlation_plot(df,
+                            correlation_method='pearson',
+                            create_html=False,
+                            filename='correlation_plot'):
     """
     Creates a correlation plot for the provided dataframe
     based on the correlation method supplied and returns a list of plotly graph objects
     :param df: pandas dataframe
     :param correlation_method: str, method for computing correlation, one of kendall, pearson, spearman
+    :param create_html: boolean, whether to create html file or not
+    :param filename:str, name of file, the extension is excluded
     :return: list of graph objects
     """
     figure_list = list()
@@ -241,6 +246,9 @@ def create_correlation_plot(df, correlation_method='pearson'):
                          title='Correlation plot using {} method'.format(correlation_method))
 
         figure_list.append(plot)
+
+    if create_html:
+        figures_to_html(figs=figure_list, filename=filename)
 
     return figure_list
 

@@ -67,5 +67,8 @@ def test_create_histogram():
 
 def test_create_correlation_plot():
     corr_plots = create_correlation_plot(df=c)
+    corr_plots2 = create_correlation_plot(df=df2)
     assert isinstance(corr_plots, list)
     assert len(corr_plots) == 0
+    assert isinstance(corr_plots2, list)
+    assert isinstance(corr_plots2[0], plotly.graph_objs.Figure)
