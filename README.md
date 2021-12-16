@@ -17,4 +17,4 @@ The idea is for this library to be the de-facto tool for expediting data science
 <br>
 
 # Tests<br>
-from the main directory, you can run the tests by simply unning the pytest command
+from the main directory, you can run the tests by simply running the pytest command
