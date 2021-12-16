@@ -119,7 +119,7 @@ def create_box(df,
     :param color:
     :param filename:
     :param create_html:boolean, whether to create an html file or not
-    :param hue_threshold: int,
+    :param maximum_number_boxplots: int,
     :return:
     """
     figure_list = list()

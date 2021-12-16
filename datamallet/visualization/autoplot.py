@@ -41,6 +41,7 @@ class AutoPlot(object):
                  sunburst_path_limit=2,
                  correlation_method='pearson',
                  maximum_number_sectors=3,
+                 maximum_number_boxplots=5,
                  pie_chart_hole=False,
                  create_html=True
                  ):
@@ -74,6 +75,7 @@ class AutoPlot(object):
         :param sunburst_path_limit:
         :param correlation_method: str, method to use to compute correlation
         :param maximum_number_sectors: int, maximum number of sectors in pie charts
+        :param maximum_number_boxplots:int, maximum_number_boxplots
         :param pie_chart_hole: boolean, whether to include a hole in pie chart or not
         :param create_html:
         """
@@ -106,6 +108,7 @@ class AutoPlot(object):
         self.sunburst_path_limit = sunburst_path_limit
         self.correlation_method = correlation_method
         self.maximum_number_sectors = maximum_number_sectors
+        self.maximum_number_boxplots = maximum_number_boxplots
         self.create_html = create_html
         self.pie_chart_hole = pie_chart_hole
         self.pie_sectors = columns_with_distinct_values(df=self.df, maximum_number_distinct_values=self.maximum_number_sectors)
@@ -208,8 +211,9 @@ class AutoPlot(object):
 
                 if chart == 'boxplot' and self.include_box:
                     box_list = create_box(df=self.df,
+                                          maximum_number_boxplots=self.maximum_number_boxplots,
                                           col_types= self.column_types,
-                                            points=self.points,
+                                          points=self.points,
                                             boxmode=self.boxmode,
                                             notched=self.notched,
                                             color=None,
