@@ -2,7 +2,7 @@ from .utils import (treemap_path,
                     create_pairs,
                     column_use,
                     figures_to_html)
-from datamallet.tabular.utils import (check_dataframe,
+from datamallet.tabular.utils import (check_dataframe,extract_numeric_cols,
                                       calculate_correlation)
 import plotly.express as px
 
@@ -233,7 +233,7 @@ def create_correlation_plot(df, correlation_method='pearson'):
     check = check_dataframe(df=df)
     available_method = correlation_method in ['pearson', 'kendall', 'spearman']
 
-    if check and available_method:
+    if check and available_method and len(extract_numeric_cols(df=df))>1:
 
         correlation = calculate_correlation(df=df, method=correlation_method)
 

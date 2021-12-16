@@ -19,6 +19,10 @@ df2 = pd.DataFrame({'A':[1,2,3,4,5],
 
 col_type2 = extract_col_types(df=df2)
 
+c = pd.DataFrame({'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'F':['chess', 'scrabble','checkers', 'card games', 'dominoes']})
+
 
 def test_create_box():
     box_plots = create_box(df=df2,
@@ -59,3 +63,9 @@ def test_create_histogram():
 
     assert isinstance(histogram_list, list)
     assert isinstance(histogram_list[0], plotly.graph_objs.Figure)
+
+
+def test_create_correlation_plot():
+    corr_plots = create_correlation_plot(df=c)
+    assert isinstance(corr_plots, list)
+    assert len(corr_plots) == 0
