@@ -49,7 +49,9 @@ def create_violin(df,
                   violinmode='group',
                   points='all',
                   display_box=True,
-                  color=None
+                  color=None,
+                  maximum_number_violinplots=7
+
                   ):
     """
     Creates a list of violin plot figure objects
@@ -62,30 +64,26 @@ def create_violin(df,
     :param points: str, how the points in the violin chart should be displayed
     :param display_box: boolean, whether to display a box within the violin chart
     :param color:
+    :param maximum_number_violinplots:
     :return:
     """
     figure_list = list()
 
-    column_use_dict = column_use(df, col_types=col_types, threshold=5)
-
-    hue_cols = column_use_dict['hue']
-
     numeric_cols = col_types['numeric']
 
-    if len(hue_cols) == 0:
-        hue_cols.append(None)
+    categorical_columns = columns_with_distinct_values(df=df,maximum_number_distinct_values=maximum_number_violinplots)
 
     for col in numeric_cols:
-        for hue in hue_cols:
+        for category in categorical_columns:
 
             plot = px.violin(data_frame=df,
-                             x=hue,
+                             x=category,
                              y=col,
                              points=points,
                              violinmode=violinmode,
                              box=display_box,
                              color=color,
-                             title='Violinplot showing distribution of {} across {} categories'.format(col,hue))
+                             title='Violinplot showing distribution of {} across {} categories'.format(col,category))
             figure_list.append(plot)
 
     if create_html:
