@@ -71,7 +71,8 @@ def create_violin(df,
 
     numeric_cols = col_types['numeric']
 
-    categorical_columns = columns_with_distinct_values(df=df,maximum_number_distinct_values=maximum_number_violinplots)
+    categorical_columns = columns_with_distinct_values(df=df,
+                                                       maximum_number_distinct_values=maximum_number_violinplots)
 
     for col in numeric_cols:
         for category in categorical_columns:
@@ -123,13 +124,8 @@ def create_box(df,
     figure_list = list()
     numeric_cols = col_types['numeric']
 
-    # column_use_dict = column_use(df, col_types=col_types, threshold=hue_threshold)
-
-    # hue_cols = column_use_dict['hue']
-    # if len(hue_cols) == 0:
-    #     hue_cols.append(None)
-
-    categorical_columns = columns_with_distinct_values(df=df,maximum_number_distinct_values=maximum_number_boxplots)
+    categorical_columns = columns_with_distinct_values(df=df,
+                                                       maximum_number_distinct_values=maximum_number_boxplots)
 
     for col in numeric_cols:
         for category in categorical_columns:
@@ -205,16 +201,19 @@ def create_sunburst(df,
     figure_list = list()
 
     path_list = hierachial_path(df=df, limit=limit)
+    print('path_list')
+    print(path_list)
 
-    for col in numeric_cols:
+    if len(path_list) >1:
+        for col in numeric_cols:
 
-        plot = px.sunburst(data_frame=df,
-                           path=path_list,
-                           values=col,
-                           title='Sunburst chart of {} across paths {}'.format(col, str(path_list))
-                           )
+            plot = px.sunburst(data_frame=df,
+                               path=path_list,
+                               values=col,
+                               title='Sunburst chart of {} across paths {}'.format(col, str(path_list))
+                               )
 
-        figure_list.append(plot)
+            figure_list.append(plot)
 
     if create_html:
         figures_to_html(figs=figure_list, filename=filename)

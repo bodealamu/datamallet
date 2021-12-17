@@ -31,6 +31,23 @@ df3 = pd.DataFrame({'A':[1,2,3,4,5],
 col_type3 = extract_col_types(df=df3)
 
 
+def test_create_sunburst():
+    sunburst_list = create_sunburst(df=df2,
+                                    numeric_cols=['A','B','C','D'],
+                                    create_html=False,
+                                    filename='sunburst',
+                                    limit=2)
+    sunburst_list3 = create_sunburst(df=df3,
+                                     numeric_cols=['A','B','C','D'],
+                                     create_html=False,
+                                     filename='sunburst',
+                                     limit=2)
+    assert isinstance(sunburst_list, list)
+    assert len(sunburst_list) != 0, 'an actual chart has been created'
+    assert isinstance(sunburst_list[0], plotly.graph_objs.Figure)
+    assert len(sunburst_list3) == 0,"no categorical variable, no chart created"
+
+
 def test_create_violin():
     violin_plots = create_violin(df=df2,
                                  col_types=col_type2,
