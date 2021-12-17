@@ -14,7 +14,7 @@ with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
 # This call to setup() does all the work
 setup(
     name="datamallet",
-    version="0.2.0",
+    version="0.3.0",
     description="Helper tools for the data science workflow",
     long_description=long_description,
     long_description_content_type="text/markdown",
