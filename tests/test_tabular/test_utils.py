@@ -1,6 +1,6 @@
 from datamallet.tabular.utils import (extract_numeric_cols,
                                       check_columns,
-                                      get_unique,
+                                      get_unique,extract_col_types,
                                       unique_count,
                                       extract_object_cols,
                                       extract_categorical_cols,
@@ -19,6 +19,12 @@ df = pd.DataFrame({'A':[1,2,3,4,5],
                    'E':[True,True,False,True,True]})
 
 df['D'] = df['D'].astype('category')
+
+df3 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7],
+                   })
 
 
 def test_extract_numeric_cols():
@@ -71,9 +77,12 @@ def test_combine_categorical_columns():
                  'datetime': [],
                  'timedelta': []}
 
+    col_types3 = extract_col_types(df=df3)
+
     assert combine_categorical_columns(df=df, col_types=col_types) == ['D','C']
 
     assert isinstance(combine_categorical_columns(df=df, col_types=col_types), list)
+    assert isinstance(combine_categorical_columns(df=df3, col_types=col_types3), list)
 
 
 def test_check_numeric():

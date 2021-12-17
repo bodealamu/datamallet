@@ -23,6 +23,40 @@ c = pd.DataFrame({'C':['dog','cat', 'sheep','dog','cat'],
                    'D':['male','male','male','female','female'],
                    'F':['chess', 'scrabble','checkers', 'card games', 'dominoes']})
 
+df3 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7],
+                   })
+col_type3 = extract_col_types(df=df3)
+
+
+def test_create_violin():
+    violin_plots = create_violin(df=df2,
+                                 col_types=col_type2,
+                                 filename='violin',
+                                 create_html=True,
+                                 violinmode='group',
+                                 points='all',
+                                 display_box=True,
+                                 color=None,
+                                 maximum_number_violinplots=7 )
+
+    violin_plots2 = create_violin(df=df3,
+                                 col_types=col_type3,
+                                 filename='violin',
+                                 create_html=True,
+                                 violinmode='group',
+                                 points='all',
+                                 display_box=True,
+                                 color=None,
+                                 maximum_number_violinplots=3)
+
+    assert isinstance(violin_plots, list)
+    assert isinstance(violin_plots[0], plotly.graph_objs.Figure)
+    assert isinstance(violin_plots2, list)
+    assert len(violin_plots2) == 0, "no chart created because there are no categorical columns"
+
 
 def test_create_box():
     box_plots = create_box(df=df2,
@@ -35,7 +69,20 @@ def test_create_box():
                            create_html=False
                            )
 
+    box_plots2 = create_box(df=df3,
+                           col_types=col_type3,
+                           points='outliers',
+                           boxmode='group',
+                           notched=False,
+                           color=None,
+                           filename='box',
+                           create_html=False
+                           )
+
     assert isinstance(box_plots, list)
+    assert isinstance(box_plots[0], plotly.graph_objs.Figure)
+    assert isinstance(box_plots2, list)
+    assert len(box_plots2) == 0, "no chart created because there are no categorical columns"
 
 
 def test_create_pie():

@@ -6,7 +6,7 @@ from datamallet.tabular.utils import (check_columns,
 import pandas as pd
 
 
-def columns_with_distinct_values(df, maximum_number_distinct_values=3):
+def columns_with_distinct_values(df, maximum_number_distinct_values=3, categorical_only=True):
     """
     Determines columns in a dataframe whose unique value count is
     less than or equal to the maximum_number_distinct_values
@@ -14,6 +14,7 @@ def columns_with_distinct_values(df, maximum_number_distinct_values=3):
     :param maximum_number_distinct_values:int, the upper limit on
             the number of distinct values in a column (translates into number of sectors in pie chart).
             A value of 3 is good for pie charts, 7 for boxplots or violin plots.
+    :param categorical_only: boolean, whether to include categorical columns in the final list or not
     :return: a list of column names which conform to the columns
                 which have the number of distinct values less than the specified maximum
     """
@@ -22,6 +23,13 @@ def columns_with_distinct_values(df, maximum_number_distinct_values=3):
 
     columns_list = list()
     unique_count_dict = unique_count(df=df) # dictionary of column name with count of unique values as key
+
+    col_types = extract_col_types(df=df)
+    if categorical_only:
+        categorical_cols = combine_categorical_columns(df, col_types)
+        for col in df.columns:
+            if col not in categorical_cols:
+                del unique_count_dict[col] # delete non categorical columns
 
     for column_name, distinct_count in unique_count_dict.items():
         if distinct_count <= maximum_number_distinct_values:

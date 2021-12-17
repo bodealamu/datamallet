@@ -295,7 +295,6 @@ def combine_categorical_columns(df, col_types):
     combined = list()
 
     if check_dataframe(df=df):
-        #col_types = extract_col_types(df=df)
 
         categorical = col_types['categorical']
         object_cols = col_types['object']
