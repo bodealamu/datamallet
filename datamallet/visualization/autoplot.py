@@ -42,6 +42,7 @@ class AutoPlot(object):
                  correlation_method='pearson',
                  maximum_number_sectors=3,
                  maximum_number_boxplots=5,
+                 maximum_number_violinplots=5,
                  pie_chart_hole=False,
                  create_html=True
                  ):
@@ -109,6 +110,7 @@ class AutoPlot(object):
         self.correlation_method = correlation_method
         self.maximum_number_sectors = maximum_number_sectors
         self.maximum_number_boxplots = maximum_number_boxplots
+        self.maximum_number_violinplots = maximum_number_violinplots
         self.create_html = create_html
         self.pie_chart_hole = pie_chart_hole
         self.pie_sectors = columns_with_distinct_values(df=self.df, maximum_number_distinct_values=self.maximum_number_sectors)
@@ -243,11 +245,12 @@ class AutoPlot(object):
                 if chart == 'violinplot' and self.include_violin:
                     violin_list = create_violin(df=self.df,
                                                 col_types= self.column_types,
-                                                  filename='violin',
-                                                  create_html=False,
-                                                  points=self.violin_points,
-                                                  display_box=self.violin_box,
-                                                  color=None)
+                                                maximum_number_violinplots=self.maximum_number_violinplots,
+                                                filename='violin',
+                                                create_html=False,
+                                                points=self.violin_points,
+                                                display_box=self.violin_box,
+                                                color=None)
 
                     figure_list.extend(violin_list)
 
