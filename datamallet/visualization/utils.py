@@ -6,7 +6,9 @@ from datamallet.tabular.utils import (check_columns,
 import pandas as pd
 
 
-def columns_with_distinct_values(df, maximum_number_distinct_values=3, categorical_only=True):
+def columns_with_distinct_values(df,
+                                 maximum_number_distinct_values=3,
+                                 categorical_only=True):
     """
     Determines columns in a dataframe whose unique value count is
     less than or equal to the maximum_number_distinct_values
@@ -20,6 +22,7 @@ def columns_with_distinct_values(df, maximum_number_distinct_values=3, categoric
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(maximum_number_distinct_values, int), "maximum_number_sectors must be an integer"
+    assert isinstance(categorical_only, bool), "category_only must be a boolean"
 
     columns_list = list()
     unique_count_dict = unique_count(df=df) # dictionary of column name with count of unique values as key
@@ -38,7 +41,9 @@ def columns_with_distinct_values(df, maximum_number_distinct_values=3, categoric
     return columns_list
 
 
-def column_use(df,col_types,threshold=5):
+def column_use(df,
+               col_types,
+               threshold=5):
     """
     This function helps in determining whether a column in a dataframe
        should be used to color the data points in a chart or if it is
@@ -51,6 +56,9 @@ def column_use(df,col_types,threshold=5):
     :return: a dictionary that decides what columns to be used to color points in a chart,
             and which should be used to name points
     """
+    assert isinstance(col_types, dict), "col_types must be a dictionary"
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(threshold, int), "threshold must be an integer"
     all_categorical_cols = combine_categorical_columns(df=df, col_types=col_types)
 
     number_of_rows = df.shape[0]
@@ -101,6 +109,8 @@ def create_pairs(df, numeric_cols):
     :param numeric_cols: list of column names which have numeric data, output of extract_numeric_cols(df=df)
     :return: list of tuple of non repeat pairing
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(numeric_cols, list), "numeric_cols must be a list"
 
     passed_cols = set()
     pairs = list()
@@ -132,6 +142,8 @@ def hierachial_path(df, limit=3):
     :return:sorted_cols: list of column names which are categorical in nature,
             starting with the columns with least number of unique to the most.
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(limit, int), "limit must be a int"
     check = check_dataframe(df=df)
     col_list = list()
     sorted_cols = None

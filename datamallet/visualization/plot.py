@@ -5,6 +5,7 @@ from .utils import (hierachial_path,columns_with_distinct_values,
 from datamallet.tabular.utils import (check_dataframe,
                                       extract_numeric_cols,
                                       calculate_correlation)
+import pandas as pd
 import plotly.express as px
 
 
@@ -24,6 +25,12 @@ def create_pie(df,
     :param filename:str, a suitable name for the produced html file, exclude the extension
     :return: list which contains graph objects
     """
+    assert isinstance(numeric_cols, list), "numeric_cols must be a list"
+    assert isinstance(list_of_categorical_columns, list), "list_of_categorical_columns must be a list"
+    assert isinstance(create_html, bool), "create_html must be a boolean"
+    assert isinstance(hole, bool), "hole must be a boolean"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+
     figure_list = list()
 
     for value in numeric_cols:
@@ -67,6 +74,14 @@ def create_violin(df,
     :param maximum_number_violinplots:
     :return:
     """
+    assert isinstance(df,pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(col_types, dict), "col_types must be a dictionary"
+    assert isinstance(create_html, bool), "create_html must be a boolean"
+    assert isinstance(violinmode,str), "violinmode must be a string"
+    assert isinstance(points,str), "points must be a string"
+    assert isinstance(display_box,bool), "display_box must be a boolean"
+    assert isinstance(maximum_number_violinplots, int), "maximum_number_violinplots must be an integer"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     figure_list = list()
 
     numeric_cols = col_types['numeric']
@@ -121,6 +136,15 @@ def create_box(df,
     :param maximum_number_boxplots: int,
     :return:
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
+                                        "name as keys and column type as value"
+    assert isinstance(points, str), "points must be a string"
+    assert isinstance(boxmode, str), "boxmode must be a string"
+    assert isinstance(notched, bool), "notched must be a boolean"
+    assert isinstance(create_html,bool), "create_html must be a boolean"
+    assert isinstance(maximum_number_boxplots,int), "maximum_number_boxplots must be an integer"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     figure_list = list()
     numeric_cols = col_types['numeric']
 
@@ -163,6 +187,11 @@ def create_treemap(df,
     :param limit:int, maximum path depth
     :return:
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(numeric_cols,list),"numeric_cols must be a list"
+    assert isinstance(create_html, bool),"create_html must be a boolean"
+    assert isinstance(limit, int),"limit must be a int"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     figure_list = list()
 
     path_list = hierachial_path(df=df, limit=limit)
@@ -198,6 +227,12 @@ def create_sunburst(df,
     :param limit:int, maximum path depth
     :return:
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(numeric_cols,list),"numeric_cols must be a list"
+    assert isinstance(create_html, bool),"create_html must be a boolean"
+    assert isinstance(limit, int),"limit must be a int"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+
     figure_list = list()
 
     path_list = hierachial_path(df=df, limit=limit)
@@ -234,6 +269,10 @@ def create_correlation_plot(df,
     :param filename:str, name of file, the extension is excluded
     :return: list of graph objects
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(create_html, bool), "create_html must be a boolean"
+    assert isinstance(correlation_method, str), "correlation method must be a string"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     figure_list = list()
     check = check_dataframe(df=df)
     available_method = correlation_method in ['pearson', 'kendall', 'spearman']
@@ -276,6 +315,10 @@ def create_histogram(df,
     :param create_html: boolean, whether to create an html file or not
     :return:
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(numeric_cols, list), "numeric_cols must be a list"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert isinstance(create_html, bool), "create_html must be a boolean"
 
     figure_list = list()
 
@@ -320,6 +363,11 @@ def create_scatter(df,
     :param create_html: boolean, whether to create an html file or not
     :return:
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
+                                        "name as keys and column type as value"
+    assert isinstance(create_html, bool), "create_html must be a boolean"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     numeric_cols = col_types['numeric']
     plot_pairs = create_pairs(df, numeric_cols=numeric_cols)
 

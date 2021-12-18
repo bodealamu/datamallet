@@ -243,6 +243,7 @@ def extract_col_types(df):
     :param df: pandas dataframe
     :return: dictionary containing data type and list of column names mapping
     """
+    assert isinstance(df, pd.DataFrame), 'df must be of type pandas dataframe'
     numeric_columns = extract_numeric_cols(df=df)
     boolean_columns = extract_bool_cols(df=df)
     datetime_columns = extract_datetime_cols(df=df)
@@ -291,6 +292,8 @@ def combine_categorical_columns(df, col_types):
                     It is the output of extract_col_types in tabular module
     :return: a list of column names of types categorical, object, or boolean
     """
+    assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
+                                        "name as keys and column type as value"
 
     combined = list()
 
