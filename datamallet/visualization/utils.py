@@ -1,7 +1,7 @@
 from datamallet.tabular.utils import (check_columns,
                                       extract_col_types,
                                       get_unique,
-                                      check_dataframe,check_numeric,
+                                      check_numeric,
                                       unique_count, combine_categorical_columns)
 import pandas as pd
 
@@ -59,6 +59,12 @@ def column_use(df,
     assert isinstance(col_types, dict), "col_types must be a dictionary"
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(threshold, int), "threshold must be an integer"
+    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
+    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
+    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
+    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
+    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
+    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
     all_categorical_cols = combine_categorical_columns(df=df, col_types=col_types)
 
     number_of_rows = df.shape[0]
