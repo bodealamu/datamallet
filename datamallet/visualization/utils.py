@@ -152,6 +152,7 @@ def hierarchical_path(df,col_types, limit=3):
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(limit, int), "limit must be a int"
+    assert limit >1, "limit must be at least 2, to have a meaningful hierarchical chart"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
     assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
     assert 'object' in col_types.keys(), "col_types dictionary missing key object"

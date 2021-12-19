@@ -229,8 +229,15 @@ def create_treemap(df,
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(create_html, bool),"create_html must be a boolean"
     assert isinstance(limit, int),"limit must be a int"
+    assert limit > 1, "limit must be at least 2, to have a meaningful hierarchical chart"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
+    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
+    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
+    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
+    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
+    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
+    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
     assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
@@ -239,15 +246,16 @@ def create_treemap(df,
 
     numeric_cols = col_types['numeric']
 
-    for col in numeric_cols:
+    if len(path_list) != 0:
+        for col in numeric_cols:
 
-        plot = px.treemap(data_frame=df,
-                          path=path_list,
-                          values=col,
-                          title='Treemap of {} across paths {}'.format(col, str(path_list))
-                          )
+            plot = px.treemap(data_frame=df,
+                              path=path_list,
+                              values=col,
+                              title='Treemap of {} across paths {}'.format(col, str(path_list))
+                              )
 
-        figure_list.append(plot)
+            figure_list.append(plot)
 
     if create_html:
         figures_to_html(figs=figure_list, filename=filename)
@@ -274,6 +282,7 @@ def create_sunburst(df,
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(create_html, bool),"create_html must be a boolean"
     assert isinstance(limit, int),"limit must be a int"
+    assert limit > 1, "limit must be at least 2, to have a meaningful hierarchical chart"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
     assert '.' not in filename, "filename doesn't need an extension"
