@@ -142,7 +142,8 @@ def create_box(df,
     :param df: pandas dataframe
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
-    :param points:str, whether to show the points in a box plot possible options are 'outliers', 'all',False, 'suspectedoutliers'
+    :param points:str, whether to show the points in a box plot possible options are 'outliers', 'all',False,
+                 'suspectedoutliers'
     :param boxmode: str, how to display the boxes in a boxplot.
                     Options are 'group' or 'overlay'. In group mode,
                     boxes are placed beside each other, in overlay mode,
@@ -157,32 +158,45 @@ def create_box(df,
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
+    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
+    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
+    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
+    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
+    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
+    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
     assert isinstance(points, str), "points must be a string"
+    assert points in ['all', 'outliers', 'suspectedoutliers', False],"accepted values for points 'all', " \
+                                                                     "'outliers', " \
+                                                                     "'suspectedoutliers'"
     assert isinstance(boxmode, str), "boxmode must be a string"
+    assert boxmode in ['group', 'overlay'], "boxmode must be either group or overlay"
     assert isinstance(notched, bool), "notched must be a boolean"
     assert isinstance(create_html,bool), "create_html must be a boolean"
     assert isinstance(maximum_number_boxplots,int), "maximum_number_boxplots must be an integer"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
+
     figure_list = list()
     numeric_cols = col_types['numeric']
 
     categorical_columns = columns_with_distinct_values(df=df,
                                                        maximum_number_distinct_values=maximum_number_boxplots)
 
-    for col in numeric_cols:
-        for category in categorical_columns:
+    if len(numeric_cols) != 0 and len(categorical_columns) != 0:
 
-            plot = px.box(data_frame=df,
-                          x=category,
-                          y=col,
-                          points=points,
-                          boxmode=boxmode,
-                          notched=notched,
-                          color=color,
-                          title='Boxplot showing distribution of {} across {} categories'.format(col,category)
-                          )
-            figure_list.append(plot)
+        for col in numeric_cols:
+            for category in categorical_columns:
+
+                plot = px.box(data_frame=df,
+                              x=category,
+                              y=col,
+                              points=points,
+                              boxmode=boxmode,
+                              notched=notched,
+                              color=color,
+                              title='Boxplot showing distribution of {} across {} categories'.format(col,category)
+                              )
+                figure_list.append(plot)
 
     if create_html:
 
