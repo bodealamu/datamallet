@@ -135,7 +135,8 @@ def create_box(df,
                color=None,
                filename='box',
                create_html=True,
-               maximum_number_boxplots=7
+               maximum_number_boxplots=7,
+               orientation='v'
                ):
     """
     Creates a list of boxplot figure objects created for the entire dataset
@@ -153,6 +154,7 @@ def create_box(df,
     :param filename:
     :param create_html:boolean, whether to create an html file or not
     :param maximum_number_boxplots: int,
+    :param orientation: str, how the plot should be orientated, 'v' for vertical, 'h' for horizontal
     :return:
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
@@ -175,6 +177,8 @@ def create_box(df,
     assert isinstance(maximum_number_boxplots,int), "maximum_number_boxplots must be an integer"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
+    assert isinstance(orientation,str), "orientation must be a string"
+    assert orientation in ['v','h'], "options for orientation are 'v' or 'h' "
 
     figure_list = list()
     numeric_cols = col_types['numeric']
@@ -194,6 +198,7 @@ def create_box(df,
                               boxmode=boxmode,
                               notched=notched,
                               color=color,
+                              orientation=orientation,
                               title='Boxplot showing distribution of {} across {} categories'.format(col,category)
                               )
                 figure_list.append(plot)
