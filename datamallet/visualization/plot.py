@@ -19,7 +19,9 @@ def create_pie(df,
     Creates a pie chart for every categorical variable in the dataset.
     :param df: pandas dataframe,
     :param numeric_cols: list of columns with numeric data
-    :param list_of_categorical_columns:list of column names which have categorical data
+    :param list_of_categorical_columns:list of column names which have categorical data.
+            Output of function columns_with_distinct_values(df=self.df, categorical_only=True,
+                                                        maximum_number_distinct_values=maximum_number_sectors)
     :param create_html:boolean, whether the figures should be converted to HTML or not
     :param hole:boolean, hole in the pie chart
     :param filename:str, a suitable name for the produced html file, exclude the extension

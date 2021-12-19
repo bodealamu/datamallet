@@ -113,7 +113,8 @@ class AutoPlot(object):
         self.maximum_number_violinplots = maximum_number_violinplots
         self.create_html = create_html
         self.pie_chart_hole = pie_chart_hole
-        self.pie_sectors = columns_with_distinct_values(df=self.df, maximum_number_distinct_values=self.maximum_number_sectors)
+        self.pie_sectors = columns_with_distinct_values(df=self.df, categorical_only=True,
+                                                        maximum_number_distinct_values=self.maximum_number_sectors)
 
     def chart_type(self):
         column_types = self.column_types
