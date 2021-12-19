@@ -33,12 +33,12 @@ col_type3 = extract_col_types(df=df3)
 
 def test_create_sunburst():
     sunburst_list = create_sunburst(df=df2,
-                                    numeric_cols=['A','B','C','D'],
+                                    col_types=col_type2,
                                     create_html=False,
                                     filename='sunburst',
                                     limit=2)
     sunburst_list3 = create_sunburst(df=df3,
-                                     numeric_cols=['A','B','C','D'],
+                                     col_types=col_type3,
                                      create_html=False,
                                      filename='sunburst',
                                      limit=2)

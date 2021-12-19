@@ -29,7 +29,7 @@ def test_columns_with_distinct_values():
 
 
 def test_hierachial_path():
-    treemap_paths = hierarchical_path(df=df, limit=3)
+    treemap_paths = hierarchical_path(df=df, limit=3, col_types=extract_col_types(df=df))
     # treemap_paths is a list with the order in which the treemap rectangles need to be arranged
     assert treemap_paths[-1] == 'C', "C has the 3rd most number of distinct rows"
 
