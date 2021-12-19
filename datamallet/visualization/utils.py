@@ -146,7 +146,7 @@ def hierarchical_path(df, limit=3):
     assert isinstance(limit, int), "limit must be a int"
 
     col_list = list()
-    sorted_cols = None
+    sorted_cols = list()
 
     column_type = extract_col_types(df)
 
