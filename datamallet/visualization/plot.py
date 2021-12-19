@@ -98,6 +98,8 @@ def create_violin(df,
     assert violinmode in ['group', 'overlay'],"violinmode must be either group or overlay"
     assert points in ['all', 'outliers', 'suspectedoutliers', False],"accepted values for points 'all', 'outliers', " \
                                                                      "'suspectedoutliers'"
+    assert '.' not in filename, "filename doesn't need an extension"
+
     figure_list = list()
 
     numeric_cols = col_types['numeric']
@@ -105,21 +107,21 @@ def create_violin(df,
     categorical_columns = columns_with_distinct_values(df=df,
                                                        maximum_number_distinct_values=maximum_number_violinplots)
 
-    for col in numeric_cols:
-        for category in categorical_columns:
+    if len(numeric_cols) != 0 and len(categorical_columns) != 0:
+        for col in numeric_cols:
+            for category in categorical_columns:
 
-            plot = px.violin(data_frame=df,
-                             x=category,
-                             y=col,
-                             points=points,
-                             violinmode=violinmode,
-                             box=display_box,
-                             color=color,
-                             title='Violinplot showing distribution of {} across {} categories'.format(col,category))
-            figure_list.append(plot)
+                plot = px.violin(data_frame=df,
+                                 x=category,
+                                 y=col,
+                                 points=points,
+                                 violinmode=violinmode,
+                                 box=display_box,
+                                 color=color,
+                                 title='Violinplot showing distribution of {} across {} categories'.format(col,category))
+                figure_list.append(plot)
 
     if create_html:
-
         figures_to_html(figs=figure_list, filename=filename)
 
     return figure_list
@@ -161,6 +163,7 @@ def create_box(df,
     assert isinstance(create_html,bool), "create_html must be a boolean"
     assert isinstance(maximum_number_boxplots,int), "maximum_number_boxplots must be an integer"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert '.' not in filename, "filename doesn't need an extension"
     figure_list = list()
     numeric_cols = col_types['numeric']
 
@@ -209,6 +212,7 @@ def create_treemap(df,
     assert isinstance(limit, int),"limit must be a int"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
+    assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
 
@@ -253,6 +257,7 @@ def create_sunburst(df,
     assert isinstance(limit, int),"limit must be a int"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
+    assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
 
@@ -294,6 +299,7 @@ def create_correlation_plot(df,
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(correlation_method, str), "correlation method must be a string"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert '.' not in filename, "filename doesn't need an extension"
     figure_list = list()
     check = check_dataframe(df=df)
     available_method = correlation_method in ['pearson', 'kendall', 'spearman']
@@ -340,6 +346,7 @@ def create_histogram(df,
     assert isinstance(numeric_cols, list), "numeric_cols must be a list"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(create_html, bool), "create_html must be a boolean"
+    assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
 
@@ -389,6 +396,7 @@ def create_scatter(df,
                                         "name as keys and column type as value"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert '.' not in filename, "filename doesn't need an extension"
     numeric_cols = col_types['numeric']
     plot_pairs = create_pairs(df, numeric_cols=numeric_cols)
 
