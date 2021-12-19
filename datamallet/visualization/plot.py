@@ -173,7 +173,7 @@ def create_box(df,
 
 
 def create_treemap(df,
-                   numeric_cols,
+                   col_types,
                    create_html=True,
                    filename='treemap',
                    limit=2
@@ -181,20 +181,24 @@ def create_treemap(df,
     """
 
     :param df:pandas dataframe
-    :param numeric_cols:list of column names of numeric columns
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
     :param filename:
     :param limit:int, maximum path depth
     :return:
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
-    assert isinstance(numeric_cols,list),"numeric_cols must be a list"
     assert isinstance(create_html, bool),"create_html must be a boolean"
     assert isinstance(limit, int),"limit must be a int"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert isinstance(col_types, dict), "col_types must be a dictionary"
+
     figure_list = list()
 
-    path_list = hierarchical_path(df=df, limit=limit)
+    path_list = hierarchical_path(df=df, limit=limit, col_types=col_types)
+
+    numeric_cols = col_types['numeric']
 
     for col in numeric_cols:
 
@@ -213,7 +217,7 @@ def create_treemap(df,
 
 
 def create_sunburst(df,
-                    numeric_cols,
+                    col_types,
                     create_html=True,
                     filename='sunburst',
                     limit=2
@@ -221,23 +225,24 @@ def create_sunburst(df,
     """
 
     :param df:
-    :param numeric_cols:list of column names of numeric columns
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
     :param filename:
     :param limit:int, maximum path depth
     :return:
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
-    assert isinstance(numeric_cols,list),"numeric_cols must be a list"
     assert isinstance(create_html, bool),"create_html must be a boolean"
     assert isinstance(limit, int),"limit must be a int"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert isinstance(col_types, dict), "col_types must be a dictionary"
 
     figure_list = list()
 
-    path_list = hierarchical_path(df=df, limit=limit)
-    print('path_list')
-    print(path_list)
+    path_list = hierarchical_path(df=df, limit=limit,col_types=col_types )
+
+    numeric_cols = col_types['numeric']
 
     if len(path_list) >1:
         for col in numeric_cols:

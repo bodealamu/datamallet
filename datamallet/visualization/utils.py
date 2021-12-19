@@ -131,12 +131,14 @@ def create_pairs(df, numeric_cols):
     return pairs
 
 
-def hierarchical_path(df, limit=3):
+def hierarchical_path(df,col_types, limit=3):
     """
     It helps to determine the path for a tree map or sunburst chart (hierarchical charts),
     the idea is to start the path from the column with the
     least number of unique values to the one with the most
     :param df: pandas dataframe
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
     :param limit: the number of elements in the path list,
                 i.e maximum number of treemap/sunburst categories
     :return:sorted_cols: list of column names which are categorical in nature,
@@ -144,15 +146,16 @@ def hierarchical_path(df, limit=3):
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(limit, int), "limit must be a int"
+    assert isinstance(col_types, dict), "col_types must be a dictionary"
 
     col_list = list()
     sorted_cols = list()
 
-    column_type = extract_col_types(df)
+    # column_type = extract_col_types(df)
 
-    col_list.extend(column_type['object'])
-    col_list.extend(column_type['boolean'])
-    col_list.extend(column_type['categorical'])
+    col_list.extend(col_types['object'])
+    col_list.extend(col_types['boolean'])
+    col_list.extend(col_types['categorical'])
 
     if len(col_list) > 1:
         unique_counts = [len(get_unique(df=df,col_name=x)) for x in col_list]
