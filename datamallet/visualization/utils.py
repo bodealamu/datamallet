@@ -157,8 +157,6 @@ def hierarchical_path(df,col_types, limit=3):
     col_list = list()
     sorted_cols = list()
 
-    # column_type = extract_col_types(df)
-
     col_list.extend(col_types['object'])
     col_list.extend(col_types['boolean'])
     col_list.extend(col_types['categorical'])
