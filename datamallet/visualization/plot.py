@@ -96,6 +96,8 @@ def create_violin(df,
     assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
     assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
     assert violinmode in ['group', 'overlay'],"violinmode must be either group or overlay"
+    assert points in ['all', 'outliers', 'suspectedoutliers', False],"accepted values for points 'all', 'outliers', " \
+                                                                     "'suspectedoutliers'"
     figure_list = list()
 
     numeric_cols = col_types['numeric']
