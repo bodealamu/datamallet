@@ -66,7 +66,6 @@ def create_violin(df,
                   display_box=True,
                   color=None,
                   maximum_number_violinplots=7
-
                   ):
     """
     Creates a list of violin plot figure objects
@@ -90,6 +89,13 @@ def create_violin(df,
     assert isinstance(display_box,bool), "display_box must be a boolean"
     assert isinstance(maximum_number_violinplots, int), "maximum_number_violinplots must be an integer"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
+    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
+    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
+    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
+    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
+    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    assert violinmode in ['group', 'overlay'],"violinmode must be either group or overlay"
     figure_list = list()
 
     numeric_cols = col_types['numeric']
