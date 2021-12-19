@@ -54,7 +54,7 @@ def column_use(df,
     :param threshold: int, think of it as the number
            of distinct colors in a chart(e.g scatterplot)
     :return: a dictionary that decides what columns to be used to color points in a chart,
-            and which should be used to name points
+            and which should be used to name points, they keys are name and hue, values are list of column names
     """
     assert isinstance(col_types, dict), "col_types must be a dictionary"
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
@@ -86,12 +86,13 @@ def column_use(df,
 def figures_to_html(figs, filename):
     """
     Utility function that creates a single html file when given the list of plotly graph objects
-    :param figs: python list of plotly graph objects
+    :param figs: python list of plotly graph objects (plotly chart objects).
     :param filename: str, string nmae for file excluding any extension
     :return: None
     """
     assert isinstance(figs, list), "figs is expected to be a list of plotly graph objects"
     assert isinstance(filename, str), "filename must be a string"
+    assert '.' not in filename, "no dot should be in filename"
     html_filename = filename+'.html'
 
     with open(html_filename, 'a') as f:
@@ -107,17 +108,16 @@ def create_pairs(df, numeric_cols):
     numeric cols in df for visualization purpose as x and y axis
     :param df: pandas dataframe
     :param numeric_cols: list of column names which have numeric data, output of extract_numeric_cols(df=df)
-    :return: list of tuple of non repeat pairing
+    :return: list of tuple of non repeat pairing of columns in numeric_cols
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(numeric_cols, list), "numeric_cols must be a list"
+    assert len(numeric_cols) > 2, "the length of numeric_cols must be greater than 2"
 
     passed_cols = set()
     pairs = list()
 
-    if check_columns(df=df,column_list=numeric_cols) \
-            and check_dataframe(df=df) and check_numeric(df=df,column_list=numeric_cols):
-
+    if check_columns(df=df,column_list=numeric_cols) and check_numeric(df=df,column_list=numeric_cols):
         for col1 in numeric_cols:
             for col2 in numeric_cols:
                 if col1 == col2:
