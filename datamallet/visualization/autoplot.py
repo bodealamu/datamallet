@@ -226,7 +226,7 @@ class AutoPlot(object):
 
                 if chart == 'treemaps' and self.include_treemap:
                     treemap_list = create_treemap(df=self.df,
-                                                    numeric_cols=numeric_cols,
+                                                    col_types=self.column_types,
                                                     create_html=False,
                                                     filename='treemap',
                                                     limit=self.treemap_path_limit
@@ -235,7 +235,7 @@ class AutoPlot(object):
 
                 if chart == 'sunburst' and self.include_sunburst:
                     sunburst_list = create_sunburst(df=self.df,
-                                                      numeric_cols=numeric_cols,
+                                                      col_types=self.column_types,
                                                       create_html=False,
                                                       filename='sunburst',
                                                       limit=self.sunburst_path_limit
