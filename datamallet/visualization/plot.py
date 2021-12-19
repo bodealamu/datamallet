@@ -32,6 +32,10 @@ def create_pie(df,
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(hole, bool), "hole must be a boolean"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert len(list_of_categorical_columns) != 0, "list_of_categorical_columns must not be empty"
+    assert len(numeric_cols) != 0, "numeric_cols must not be empty"
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
 
