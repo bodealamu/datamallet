@@ -1,4 +1,4 @@
-from .utils import (hierachial_path,columns_with_distinct_values,
+from .utils import (hierarchical_path, columns_with_distinct_values,
                     create_pairs,
                     column_use,
                     figures_to_html)
@@ -194,7 +194,7 @@ def create_treemap(df,
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     figure_list = list()
 
-    path_list = hierachial_path(df=df, limit=limit)
+    path_list = hierarchical_path(df=df, limit=limit)
 
     for col in numeric_cols:
 
@@ -235,7 +235,7 @@ def create_sunburst(df,
 
     figure_list = list()
 
-    path_list = hierachial_path(df=df, limit=limit)
+    path_list = hierarchical_path(df=df, limit=limit)
     print('path_list')
     print(path_list)
 

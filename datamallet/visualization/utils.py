@@ -131,9 +131,9 @@ def create_pairs(df, numeric_cols):
     return pairs
 
 
-def hierachial_path(df, limit=3):
+def hierarchical_path(df, limit=3):
     """
-    It helps to determine the path for a tree map or sunburst chart (hierachial charts),
+    It helps to determine the path for a tree map or sunburst chart (hierarchical charts),
     the idea is to start the path from the column with the
     least number of unique values to the one with the most
     :param df: pandas dataframe
@@ -144,21 +144,19 @@ def hierachial_path(df, limit=3):
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(limit, int), "limit must be a int"
-    check = check_dataframe(df=df)
+
     col_list = list()
     sorted_cols = None
 
-    if check:
-        column_type = extract_col_types(df)
+    column_type = extract_col_types(df)
 
-        col_list.extend(column_type['object'])
-        col_list.extend(column_type['boolean'])
-        col_list.extend(column_type['categorical'])
+    col_list.extend(column_type['object'])
+    col_list.extend(column_type['boolean'])
+    col_list.extend(column_type['categorical'])
 
+    if len(col_list) > 1:
         unique_counts = [len(get_unique(df=df,col_name=x)) for x in col_list]
-
         sorted_columns = [col_name for _,col_name in sorted(zip(unique_counts, col_list))]
-
         sorted_cols = sorted_columns[:limit]
 
     return sorted_cols
