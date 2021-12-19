@@ -16,9 +16,9 @@ def columns_with_distinct_values(df,
     :param maximum_number_distinct_values:int, the upper limit on
             the number of distinct values in a column (translates into number of sectors in pie chart).
             A value of 3 is good for pie charts, 7 for boxplots or violin plots.
-    :param categorical_only: boolean, whether to include categorical columns in the final list or not
+    :param categorical_only: boolean, whether to include categorical columns only in the final list or not
     :return: a list of column names which conform to the columns
-                which have the number of distinct values less than the specified maximum
+                which have the number of distinct values less than the specified maximum_number_distinct_values
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(maximum_number_distinct_values, int), "maximum_number_sectors must be an integer"
