@@ -2,7 +2,7 @@ from .utils import (hierarchical_path, columns_with_distinct_values,
                     create_pairs,
                     column_use,
                     figures_to_html)
-from datamallet.tabular.utils import (check_dataframe,
+from datamallet.tabular.utils import (check_dataframe,check_numeric, check_columns,
                                       extract_numeric_cols,
                                       calculate_correlation)
 import pandas as pd
@@ -39,15 +39,17 @@ def create_pie(df,
 
     figure_list = list()
 
-    for value in numeric_cols:
-        for name in list_of_categorical_columns:
-            plot = px.pie(names=name,
-                          data_frame=df,
-                          values=value,
-                          hole=hole,
-                          title='Pie chart showing distribution of {} across {} segments'.format(value, name))
+    if check_numeric(df=df,column_list=numeric_cols) and check_columns(df=df,column_list=numeric_cols):
 
-            figure_list.append(plot)
+        for value in numeric_cols:
+            for name in list_of_categorical_columns:
+                plot = px.pie(names=name,
+                              data_frame=df,
+                              values=value,
+                              hole=hole,
+                              title='Pie chart showing distribution of {} across {} segments'.format(value, name))
+
+                figure_list.append(plot)
 
     if create_html:
         figures_to_html(figs=figure_list, filename=filename)
