@@ -102,11 +102,10 @@ def get_unique(df, col_name):
     :return:
     """
     assert isinstance(col_name, str), "col_name must be a string"
+    assert isinstance(df, pd.DataFrame)
     unique_values = None
 
-    check = col_name in df.columns
-
-    if check and check_dataframe(df=df):
+    if check_columns(df=df, column_list=[col_name]):
         unique_values = df[col_name].unique()
     return unique_values
 
@@ -294,6 +293,12 @@ def combine_categorical_columns(df, col_types):
     """
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
+    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
+    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
+    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
+    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
+    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
+    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
 
     combined = list()
 
