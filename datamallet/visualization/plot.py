@@ -356,7 +356,7 @@ def create_correlation_plot(df,
 
 def create_histogram(df,
                      numeric_cols,
-                     nbins=None,
+                     nbins=20,
                      marginal=None,
                      cumulative=False,
                      histfunc='sum',
@@ -384,21 +384,18 @@ def create_histogram(df,
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(nbins, int), "nbins must be an integer"
-    assert isinstance(marginal,str),"marginal must be a string"
     assert isinstance(cumulative, bool), "cumulative must be a boolean"
-    assert marginal in ['rug','box','violin','histogram'], "marginal must be one of 'rug','box','violin','histogram'"
+    assert marginal in ['rug','box','violin','histogram',None], "marginal must be one of 'rug','box','violin','histogram'"
     assert '.' not in filename, "filename doesn't need an extension"
     assert isinstance(histfunc, str),"histfunc must be a string"
-    assert isinstance(histnorm, str),"histnorm must be a string"
     assert isinstance(orientation,str)
     assert orientation in ['v','h']
-    assert histnorm in ['percent','probability','density','probability density']
+    assert histnorm in ['percent','probability','density','probability density',None]
     assert histfunc in ['count', 'sum', 'avg','min','max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
 
     figure_list = list()
 
     if check_numeric(df=df,column_list=numeric_cols):
-
         for col in numeric_cols:
             plot = px.histogram(data_frame=df,
                                 nbins=nbins,

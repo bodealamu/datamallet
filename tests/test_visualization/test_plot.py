@@ -117,10 +117,9 @@ def test_create_pie():
 def test_create_histogram():
     histogram_list = create_histogram(df=df2,
                                       numeric_cols=['A','B','C','D'],
-                                      nbins=None,
+                                      nbins=20,
                                       marginal=None,
                                       cumulative=False,
-                                      histfunc=None,
                                       histnorm=None,
                                       filename='histogram',
                                       create_html=False)
