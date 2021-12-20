@@ -423,9 +423,10 @@ def create_scatter(df,
                    marginal_y=None,
                    log_x=False,
                    log_y=False,
+                   orientation='v',
+                   opacity=1.0,
                    create_html=True):
     """
-
     :param df:
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
@@ -435,7 +436,9 @@ def create_scatter(df,
     :param marginal_y:options for including marginal charts on y axis
     :param log_x:boolean, whether to create a log axis
     :param log_y:boolean, whether to create a log axis
+    :param orientation: str, the orientation of the figure, 'v' or 'h'
     :param create_html: boolean, whether to create an html file or not
+    :param opacity: float, value between 0 and 1. Sets the opacity for markers
     :return:
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
@@ -443,7 +446,23 @@ def create_scatter(df,
                                         "name as keys and column type as value"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert isinstance(opacity, float), "opacity must be a float"
+    assert isinstance(log_y, bool)
+    assert isinstance(log_x, bool)
+    assert opacity <= 1, "opacity must be between 0 and 1"
     assert '.' not in filename, "filename doesn't need an extension"
+    assert marginal_x in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
+                                                                     "'box','violin','histogram'"
+    assert marginal_y in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
+                                                                     "'box','violin','histogram'"
+    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
+    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
+    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
+    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
+    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
+    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    assert orientation in ['v', 'h']
+
     numeric_cols = col_types['numeric']
     plot_pairs = create_pairs(df, numeric_cols=numeric_cols)
 
@@ -457,6 +476,8 @@ def create_scatter(df,
                               y=y,
                               log_y=log_y,
                               log_x=log_x,
+                              opacity=opacity,
+                              orientation=orientation,
                               marginal_x=marginal_x,
                               marginal_y=marginal_y,
                               title='Plot of {} vs {}'.format(x,y))
@@ -483,6 +504,8 @@ def create_scatter(df,
                                       color=hue,
                                       log_y=log_y,
                                       log_x=log_x,
+                                      opacity=opacity,
+                                      orientation=orientation,
                                       marginal_x=marginal_x,
                                       marginal_y=marginal_y,
                                       hover_name=names,
