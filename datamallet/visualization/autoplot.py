@@ -9,12 +9,13 @@ from .plot import (create_pie,
 from .utils import (columns_with_distinct_values,
                     extract_col_types,
                     figures_to_html)
+import pandas as pd
 
 
 class AutoPlot(object):
     def __init__(self,
                  df,
-                 nbins=None,
+                 nbins=30,
                  marginals=None,
                  cumulative=False,
                  filename='autoplot',
@@ -24,7 +25,7 @@ class AutoPlot(object):
                  log_x=False,
                  log_y=False,
                  size=None,
-                 histfunc=None,
+                 histfunc='count',
                  histnorm=None,
                  include_scatter=False,
                  include_box=True,
@@ -115,6 +116,30 @@ class AutoPlot(object):
         self.pie_chart_hole = pie_chart_hole
         self.pie_sectors = columns_with_distinct_values(df=self.df, categorical_only=True,
                                                         maximum_number_distinct_values=self.maximum_number_sectors)
+        assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+        assert isinstance(nbins, int), "nbins must be an integer"
+        assert marginals in ['rug', 'box', 'violin', 'histogram', None]
+        assert isinstance(cumulative, bool), "cumulative must be a boolean"
+        assert '.' not in filename, "filename doesn't need an extension"
+        assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+        assert box_points in ['all', 'outliers', 'suspectedoutliers', False], "accepted values for points 'all', " \
+                                                                          "'outliers', " \
+                                                                          "'suspectedoutliers'"
+        assert isinstance(boxmode, str), "boxmode must be a string"
+        assert boxmode in ['group', 'overlay'], "boxmode must be either group or overlay"
+        assert isinstance(box_notched, bool), "notched must be a boolean"
+        assert isinstance(log_y, bool),"log_x must be a boolean"
+        assert isinstance(log_x, bool),"log_y must be a boolean"
+        assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
+        assert histfunc in ['count', 'sum', 'avg', 'min',
+                            'max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
+        assert violinmode in ['group', 'overlay'], "violinmode must be either group or overlay"
+        assert violin_points in ['all', 'outliers', 'suspectedoutliers', False]
+        assert treemap_path_limit > 1
+        assert sunburst_path_limit > 1
+        assert correlation_method in ['pearson', 'kendall', 'spearman']
+        assert maximum_number_sectors > 1
+        assert isinstance(pie_chart_hole, bool)
 
     def chart_type(self):
         column_types = self.column_types
