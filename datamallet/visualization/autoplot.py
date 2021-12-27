@@ -16,7 +16,9 @@ class AutoPlot(object):
     def __init__(self,
                  df,
                  nbins=30,
-                 marginals=None,
+                 scatter_maximum_color_groups=5,
+                 marginal_x=None,
+                 marginal_y=None,
                  cumulative=False,
                  filename='autoplot',
                  box_points='outliers',
@@ -45,7 +47,9 @@ class AutoPlot(object):
                  maximum_number_boxplots=5,
                  maximum_number_violinplots=5,
                  pie_chart_hole=False,
-                 create_html=True
+                 create_html=True,
+                 scatter_orientation='v',
+                 opacity = 1.0
                  ):
         """
         Entry point for automated data visualization
@@ -83,7 +87,11 @@ class AutoPlot(object):
         """
         self.df = df
         self.nbins = nbins
-        self.marginals = marginals
+        self.scatter_maximum_color_groups = scatter_maximum_color_groups
+        self.scatter_orientation = scatter_orientation
+        self.opacity=opacity
+        self.marginal_x = marginal_x
+        self.marginal_y = marginal_y
         self.cumulative = cumulative
         self.filename = filename
         self.points = box_points
@@ -118,7 +126,8 @@ class AutoPlot(object):
                                                         maximum_number_distinct_values=self.maximum_number_sectors)
         assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
         assert isinstance(nbins, int), "nbins must be an integer"
-        assert marginals in ['rug', 'box', 'violin', 'histogram', None]
+        assert marginal_x in ['rug', 'box', 'violin', 'histogram', None]
+        assert marginal_y in ['rug', 'box', 'violin', 'histogram', None]
         assert isinstance(cumulative, bool), "cumulative must be a boolean"
         assert '.' not in filename, "filename doesn't need an extension"
         assert isinstance(filename, str), "filename must be a string with a dot or an extension"
@@ -197,25 +206,18 @@ class AutoPlot(object):
 
                     figure_list.extend(pie_list)
                 if chart == 'scatter' and self.include_scatter:
-                    if len(categorical) == 0:
-                        scatter_plot_list = create_scatter(df=self.df,
-                                                           col_types= self.column_types,
-                                                             basic=True,
-                                                             marginal_x=self.marginals,
-                                                             marginal_y=self.marginals,
-                                                             log_x=self.log_x,
-                                                             log_y=self.log_y,
-                                                             create_html=False)
+                    # if len(categorical) == 0:
 
-                    else:
-                        scatter_plot_list = create_scatter(df=self.df,
-                                                           col_types= self.column_types,
-                                                             basic=False,
-                                                             marginal_x=self.marginals,
-                                                             marginal_y=self.marginals,
-                                                             log_x=self.log_x,
-                                                             log_y=self.log_y,
-                                                             create_html=False)
+                    scatter_plot_list = create_scatter(df=self.df,
+                                                       col_types= self.column_types,
+                                                       marginal_y=self.marginal_x,
+                                                       marginal_x=self.marginal_y,
+                                                       orientation=self.scatter_orientation,
+                                                       opacity=self.opacity,
+                                                       maximum_color_groups=self.scatter_maximum_color_groups,
+                                                       log_x=self.log_x,
+                                                       log_y=self.log_y,
+                                                       create_html=False)
 
                     figure_list.extend(scatter_plot_list)
 
@@ -228,7 +230,7 @@ class AutoPlot(object):
                     histogram_list = create_histogram(df=self.df,
                                                         numeric_cols=numeric_cols,
                                                         nbins=self.nbins,
-                                                        marginal=self.marginals,
+                                                        marginal=self.marginal_x,
                                                         cumulative=self.cumulative,
                                                         histfunc=self.histfunc,
                                                         histnorm=self.histnorm,
