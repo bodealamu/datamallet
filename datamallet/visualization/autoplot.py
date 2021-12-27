@@ -126,8 +126,11 @@ class AutoPlot(object):
                                                         maximum_number_distinct_values=self.maximum_number_sectors)
         assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
         assert isinstance(nbins, int), "nbins must be an integer"
+        assert isinstance(scatter_maximum_color_groups, int)
         assert marginal_x in ['rug', 'box', 'violin', 'histogram', None]
         assert marginal_y in ['rug', 'box', 'violin', 'histogram', None]
+        assert isinstance(scatter_orientation, str)
+        assert scatter_orientation in ['v', 'h']
         assert isinstance(cumulative, bool), "cumulative must be a boolean"
         assert '.' not in filename, "filename doesn't need an extension"
         assert isinstance(filename, str), "filename must be a string with a dot or an extension"
@@ -139,16 +142,35 @@ class AutoPlot(object):
         assert isinstance(box_notched, bool), "notched must be a boolean"
         assert isinstance(log_y, bool),"log_x must be a boolean"
         assert isinstance(log_x, bool),"log_y must be a boolean"
+        assert isinstance(size, str)
         assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
         assert histfunc in ['count', 'sum', 'avg', 'min',
                             'max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
         assert violinmode in ['group', 'overlay'], "violinmode must be either group or overlay"
+        assert isinstance(violin_box, bool)
         assert violin_points in ['all', 'outliers', 'suspectedoutliers', False]
         assert treemap_path_limit > 1
         assert sunburst_path_limit > 1
         assert correlation_method in ['pearson', 'kendall', 'spearman']
         assert maximum_number_sectors > 1
+        assert isinstance(maximum_number_sectors,int)
+        assert isinstance(maximum_number_boxplots,int)
+        assert isinstance(maximum_number_violinplots,int)
         assert isinstance(pie_chart_hole, bool)
+        assert isinstance(opacity, float)
+        assert opacity <= 1.0
+        assert isinstance(include_pie, bool)
+        assert isinstance(include_treemap,bool)
+        assert isinstance(include_box, bool)
+        assert isinstance(include_correlation, bool)
+        assert isinstance(include_histogram, bool)
+        assert isinstance(include_scatter,bool)
+        assert isinstance(include_sunburst,bool)
+        assert isinstance(include_violin, bool)
+        assert isinstance(create_html,bool)
+        # assert marginal_x in ['rug', 'box', 'violin', 'histogram', None]
+        # assert marginal_y in ['rug', 'box', 'violin', 'histogram', None]
+        # assert isinstance(cumulative, bool), "cumulative must be a boolean"
 
     def chart_type(self):
         column_types = self.column_types
