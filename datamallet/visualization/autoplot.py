@@ -223,19 +223,19 @@ class AutoPlot(object):
 
                 if chart == 'correlation_plot' and self.include_correlation:
                     correlation_plot_list = create_correlation_plot(df=self.df,
-                                                                      correlation_method=self.correlation_method)
+                                                                    correlation_method=self.correlation_method)
                     figure_list.extend(correlation_plot_list)
 
                 if chart == 'histogram' and self.include_histogram:
                     histogram_list = create_histogram(df=self.df,
-                                                        numeric_cols=numeric_cols,
-                                                        nbins=self.nbins,
-                                                        marginal=self.marginal_x,
-                                                        cumulative=self.cumulative,
-                                                        histfunc=self.histfunc,
-                                                        histnorm=self.histnorm,
-                                                        filename='histogram',
-                                                        create_html=False)
+                                                      numeric_cols=numeric_cols,
+                                                      nbins=self.nbins,
+                                                      marginal=self.marginal_x,
+                                                      cumulative=self.cumulative,
+                                                      histfunc=self.histfunc,
+                                                      histnorm=self.histnorm,
+                                                      filename='histogram',
+                                                      create_html=False)
 
                     figure_list.extend(histogram_list)
 
@@ -254,11 +254,10 @@ class AutoPlot(object):
 
                 if chart == 'treemaps' and self.include_treemap:
                     treemap_list = create_treemap(df=self.df,
-                                                    col_types=self.column_types,
-                                                    create_html=False,
-                                                    filename='treemap',
-                                                    limit=self.treemap_path_limit
-                                                    )
+                                                  col_types=self.column_types,
+                                                  create_html=False,
+                                                  filename='treemap',
+                                                  limit=self.treemap_path_limit)
                     figure_list.extend(treemap_list)
 
                 if chart == 'sunburst' and self.include_sunburst:
