@@ -48,6 +48,24 @@ def test_create_sunburst():
     assert len(sunburst_list3) == 0,"no categorical variable, no chart created"
 
 
+def test_create_treemap():
+    treemap_list = create_treemap(df=df2,
+                                   col_types=col_type2,
+                                   create_html=False,
+                                   filename='treemap',
+                                   limit=2)
+    treemap_list3 = create_treemap(df=df3,
+                                  col_types=col_type3,
+                                  create_html=False,
+                                  filename='treemap',
+                                  limit=2)
+    assert isinstance(treemap_list, list)
+    assert isinstance(treemap_list3, list)
+    assert len(treemap_list) != 0, 'an actual chart has been created'
+    assert isinstance(treemap_list[0], plotly.graph_objs.Figure)
+    assert len(treemap_list3) == 0,"no categorical variable, no chart created"
+
+
 def test_create_violin():
     violin_plots = create_violin(df=df2,
                                  col_types=col_type2,
