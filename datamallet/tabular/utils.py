@@ -77,6 +77,7 @@ def column_mean(df, skipna=True, numeric_only=True):
     assert isinstance(numeric_only, bool), 'numeric_only must be boolean'
 
     mean = df.mean(skipna=skipna,numeric_only=numeric_only)
+
     return mean
 
 
