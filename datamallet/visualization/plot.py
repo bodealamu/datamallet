@@ -431,7 +431,7 @@ def create_scatter(df,
     :param df:
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
-    :param basic:boolean, whether to create a basic scatterplot or not
+    :param basic:boolean, whether to create a basic scatterplot or not, deprecated in version 0.5.0 and newer
     :param filename:
     :param marginal_x:options for including marginal charts on x axis
     :param marginal_y:options for including marginal charts on y axis
@@ -470,10 +470,15 @@ def create_scatter(df,
     plot_pairs = create_pairs(df, numeric_cols=numeric_cols)
 
     figure_list = list()
+    columns_with_distinct = columns_with_distinct_values(df,
+                                                         maximum_number_distinct_values=maximum_color_groups,
+                                                         categorical_only=True)
+    if len(columns_with_distinct) == 0:
+        columns_with_distinct.append(None)
 
-    if basic:
-        for pair in plot_pairs:
-            x,y = pair
+    for pair in plot_pairs:
+        x,y = pair
+        for color in columns_with_distinct:
             plot = px.scatter(data_frame=df,
                               x=x,
                               y=y,
@@ -483,38 +488,39 @@ def create_scatter(df,
                               orientation=orientation,
                               marginal_x=marginal_x,
                               marginal_y=marginal_y,
-                              title='Plot of {} vs {}'.format(x,y))
+                              color=color,
+                              title='Plot of {} vs {} with color {}'.format(x,y,color))
             figure_list.append(plot)
 
-    else:
-        cols_use_dict = column_use(df, col_types=col_types, threshold=5)
-        name_list = cols_use_dict['name']
-        hue_list = cols_use_dict['hue']
+    # else:
+    #     cols_use_dict = column_use(df, col_types=col_types, threshold=5)
+    #     name_list = cols_use_dict['name']
+    #     hue_list = cols_use_dict['hue']
+    #
+    #     if len(name_list) == 0:
+    #         name_list.append(None)
+    #
+    #     if len(hue_list) == 0:
+    #         hue_list.append(None)
 
-        if len(name_list) == 0:
-            name_list.append(None)
-
-        if len(hue_list) == 0:
-            hue_list.append(None)
-
-        for pair in plot_pairs:
-            x,y = pair
-            for names in name_list:
-                for hue in hue_list:
-                    plot = px.scatter(data_frame=df,
-                                      x=x,
-                                      y=y,
-                                      color=hue,
-                                      log_y=log_y,
-                                      log_x=log_x,
-                                      opacity=opacity,
-                                      orientation=orientation,
-                                      marginal_x=marginal_x,
-                                      marginal_y=marginal_y,
-                                      hover_name=names,
-                                      title='Plot of {} vs {} with color {} and hover name {}'.format(x, y, hue,names))
-
-                    figure_list.append(plot)
+        # for pair in plot_pairs:
+        #     x,y = pair
+        #     for names in name_list:
+        #         for hue in hue_list:
+        #             plot = px.scatter(data_frame=df,
+        #                               x=x,
+        #                               y=y,
+        #                               color=hue,
+        #                               log_y=log_y,
+        #                               log_x=log_x,
+        #                               opacity=opacity,
+        #                               orientation=orientation,
+        #                               marginal_x=marginal_x,
+        #                               marginal_y=marginal_y,
+        #                               hover_name=names,
+        #                               title='Plot of {} vs {} with color {} and hover name {}'.format(x, y, hue,names))
+        #
+        #             figure_list.append(plot)
 
     if create_html:
         figures_to_html(figs=figure_list, filename=filename)
