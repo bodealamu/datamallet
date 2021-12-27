@@ -417,7 +417,6 @@ def create_histogram(df,
 
 def create_scatter(df,
                    col_types,
-                   basic=True,
                    filename='scatter',
                    marginal_x=None,
                    marginal_y=None,
@@ -431,7 +430,6 @@ def create_scatter(df,
     :param df:
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
-    :param basic:boolean, whether to create a basic scatterplot or not, deprecated in version 0.5.0 and newer
     :param filename:
     :param marginal_x:options for including marginal charts on x axis
     :param marginal_y:options for including marginal charts on y axis
