@@ -494,36 +494,6 @@ def create_scatter(df,
                               title='Plot of {} vs {} with color {}'.format(x,y,color))
             figure_list.append(plot)
 
-    # else:
-    #     cols_use_dict = column_use(df, col_types=col_types, threshold=5)
-    #     name_list = cols_use_dict['name']
-    #     hue_list = cols_use_dict['hue']
-    #
-    #     if len(name_list) == 0:
-    #         name_list.append(None)
-    #
-    #     if len(hue_list) == 0:
-    #         hue_list.append(None)
-
-        # for pair in plot_pairs:
-        #     x,y = pair
-        #     for names in name_list:
-        #         for hue in hue_list:
-        #             plot = px.scatter(data_frame=df,
-        #                               x=x,
-        #                               y=y,
-        #                               color=hue,
-        #                               log_y=log_y,
-        #                               log_x=log_x,
-        #                               opacity=opacity,
-        #                               orientation=orientation,
-        #                               marginal_x=marginal_x,
-        #                               marginal_y=marginal_y,
-        #                               hover_name=names,
-        #                               title='Plot of {} vs {} with color {} and hover name {}'.format(x, y, hue,names))
-        #
-        #             figure_list.append(plot)
-
     if create_html:
         figures_to_html(figs=figure_list, filename=filename)
 
