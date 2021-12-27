@@ -262,11 +262,11 @@ class AutoPlot(object):
 
                 if chart == 'sunburst' and self.include_sunburst:
                     sunburst_list = create_sunburst(df=self.df,
-                                                      col_types=self.column_types,
-                                                      create_html=False,
-                                                      filename='sunburst',
-                                                      limit=self.sunburst_path_limit
-                                                      )
+                                                    col_types=self.column_types,
+                                                    create_html=False,
+                                                    filename='sunburst',
+                                                    limit=self.sunburst_path_limit)
+
                     figure_list.extend(sunburst_list)
 
                 if chart == 'violinplot' and self.include_violin:
