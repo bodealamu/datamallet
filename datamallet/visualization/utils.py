@@ -168,10 +168,15 @@ def hierarchical_path(df,col_types, limit=3):
     col_list.extend(col_types['boolean'])
     col_list.extend(col_types['categorical'])
 
-    if len(col_list) > 1:
-        unique_counts = [len(get_unique(df=df,col_name=x)) for x in col_list]
-        sorted_columns = [col_name for _,col_name in sorted(zip(unique_counts, col_list))]
-        sorted_cols = sorted_columns[:limit]
+    if len(col_list) >= 1:
+        if len(col_list) == 1:
+            # no need to sort if there is only one element in the list
+            return col_list
+        else:
+            # returns a count of unique values in each column
+            unique_counts = [len(get_unique(df=df,col_name=x)) for x in col_list]
+            sorted_columns = [col_name for _,col_name in sorted(zip(unique_counts, col_list))]
+            sorted_cols = sorted_columns[:limit]
 
     return sorted_cols
 

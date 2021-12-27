@@ -425,6 +425,7 @@ def create_scatter(df,
                    log_y=False,
                    orientation='v',
                    opacity=1.0,
+                   maximum_color_groups=5,
                    create_html=True):
     """
     :param df:
@@ -439,6 +440,7 @@ def create_scatter(df,
     :param orientation: str, the orientation of the figure, 'v' or 'h'
     :param create_html: boolean, whether to create an html file or not
     :param opacity: float, value between 0 and 1. Sets the opacity for markers
+    :param maximum_color_groups: int, maximum number of color groups in the scatter plot
     :return:
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
@@ -449,7 +451,7 @@ def create_scatter(df,
     assert isinstance(opacity, float), "opacity must be a float"
     assert isinstance(log_y, bool)
     assert isinstance(log_x, bool)
-    assert opacity <= 1, "opacity must be between 0 and 1"
+    assert opacity <= 1.0, "opacity must be between 0 and 1"
     assert '.' not in filename, "filename doesn't need an extension"
     assert marginal_x in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
                                                                      "'box','violin','histogram'"
@@ -462,6 +464,7 @@ def create_scatter(df,
     assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
     assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
     assert orientation in ['v', 'h']
+    assert isinstance(maximum_color_groups, int)
 
     numeric_cols = col_types['numeric']
     plot_pairs = create_pairs(df, numeric_cols=numeric_cols)

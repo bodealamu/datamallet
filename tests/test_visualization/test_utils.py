@@ -19,6 +19,17 @@ df2 = pd.DataFrame({'A':[1,2,3,4,5],
                    'E':[True,True,False,True,True],
                    'F':['chess', 'scrabble','checkers', 'card games', 'dominoes']})
 
+df3 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7],
+                   'E':[True,True,False,True,True]})
+
+df4 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7]})
+
 
 def test_columns_with_distinct_values():
     column_list = columns_with_distinct_values(df, maximum_number_distinct_values=3)
@@ -30,8 +41,15 @@ def test_columns_with_distinct_values():
 
 def test_hierachial_path():
     treemap_paths = hierarchical_path(df=df, limit=3, col_types=extract_col_types(df=df))
+    treemap_paths3 = hierarchical_path(df=df3, limit=3, col_types=extract_col_types(df=df3))
+    treemap_paths4 = hierarchical_path(df=df4, limit=3, col_types=extract_col_types(df=df4))
     # treemap_paths is a list with the order in which the treemap rectangles need to be arranged
+    assert isinstance(treemap_paths, list)
     assert treemap_paths[-1] == 'C', "C has the 3rd most number of distinct rows"
+    assert isinstance(treemap_paths3, list)
+    assert len(treemap_paths3) == 1
+    assert len(treemap_paths4) == 0
+    assert isinstance(treemap_paths4, list)
 
 
 def test_create_pairs():
