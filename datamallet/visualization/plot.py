@@ -466,10 +466,14 @@ def create_scatter(df,
     assert orientation in ['v', 'h']
     assert isinstance(maximum_color_groups, int)
 
+    figure_list = list()
     numeric_cols = col_types['numeric']
+
+    if len(numeric_cols) < 2:
+        # scatter plots need at least 2 columns of numeric type
+        return figure_list
     plot_pairs = create_pairs(df, numeric_cols=numeric_cols)
 
-    figure_list = list()
     columns_with_distinct = columns_with_distinct_values(df,
                                                          maximum_number_distinct_values=maximum_color_groups,
                                                          categorical_only=True)

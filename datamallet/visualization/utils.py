@@ -118,7 +118,7 @@ def create_pairs(df, numeric_cols):
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(numeric_cols, list), "numeric_cols must be a list"
-    assert len(numeric_cols) > 2, "the length of numeric_cols must be greater than 2"
+    assert len(numeric_cols) >= 2, "the length of numeric_cols must be greater than 2"
 
     passed_cols = set()
     pairs = list()

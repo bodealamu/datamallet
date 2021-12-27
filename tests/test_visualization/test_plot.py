@@ -31,6 +31,51 @@ df3 = pd.DataFrame({'A':[1,2,3,4,5],
 col_type3 = extract_col_types(df=df3)
 
 
+def test_create_scatter():
+    scatter_list = create_scatter(df=df2,
+                                  col_types=extract_col_types(df2),
+                                  filename='scatter',
+                                  marginal_x=None,
+                                  marginal_y=None,
+                                  log_x=False,
+                                  log_y=False,
+                                  orientation='v',
+                                  opacity=1.0,
+                                  maximum_color_groups=5,
+                                  create_html=False)
+    scatter_list3 = create_scatter(df=df3,
+                                   col_types=extract_col_types(df3),
+                                   filename='scatter',
+                                   marginal_x=None,
+                                   marginal_y=None,
+                                   log_x=False,
+                                   log_y=False,
+                                   orientation='v',
+                                   opacity=1.0,
+                                   maximum_color_groups=5,
+                                   create_html=False)
+    scatter_listc = create_scatter(df=c,
+                                   col_types=extract_col_types(c),
+                                   filename='scatter',
+                                   marginal_x=None,
+                                   marginal_y=None,
+                                   log_x=False,
+                                   log_y=False,
+                                   orientation='v',
+                                   opacity=1.0,
+                                   maximum_color_groups=5,
+                                   create_html=False)
+    assert isinstance(scatter_list,list),'the output is expected to be a list of plotly graph objects'
+    assert len(scatter_list) != 0, 'charts are created'
+    assert isinstance(scatter_list[0], plotly.graph_objs.Figure)
+    assert isinstance(scatter_list3,list),'the output is expected to be a list of plotly graph objects'
+    assert len(scatter_list3) != 0, 'charts are created'
+    assert isinstance(scatter_list3[0], plotly.graph_objs.Figure)
+    assert isinstance(scatter_listc, list), 'the output is expected to be an empty list '
+    assert len(scatter_listc) == 0, 'no charts are created because no numeric cols'
+
+
+
 def test_create_sunburst():
     sunburst_list = create_sunburst(df=df2,
                                     col_types=col_type2,
