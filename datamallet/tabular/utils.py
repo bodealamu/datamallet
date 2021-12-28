@@ -63,6 +63,23 @@ def check_numeric(df,column_list):
     return set(column_list).issubset(set(numeric_cols))
 
 
+def check_categorical(df, column_list):
+    """
+    Checks whether column_list ia a subset of all categorical columns
+     (Categorical columns are columns of the types - Categorical, object or boolean.
+    :param df:
+    :param column_list:
+    :return:
+    """
+    assert isinstance(column_list, list), "column_list must be a list"
+    assert isinstance(df, pd.DataFrame), "df must be a dataframe"
+    col_types = extract_col_types(df=df)
+    combined_categorical = combine_categorical_columns(df=df,
+                                                       col_types=col_types)
+
+    return set(column_list).issubset(set(combined_categorical))
+
+
 def column_mean(df, skipna=True, numeric_only=True):
     """
     Calculates the mean value for all columns in dataframe
