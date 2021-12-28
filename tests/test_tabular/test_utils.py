@@ -5,7 +5,9 @@ from datamallet.tabular.utils import (extract_numeric_cols,
                                       unique_count,time_index,
                                       extract_object_cols,
                                       extract_categorical_cols,
-                                      extract_bool_cols,
+                                      extract_bool_cols,extract_datetime_cols,
+                                      extract_datetimetz_cols,
+                                      extract_timedelta_cols,
                                       calculate_correlation,
                                       combine_categorical_columns,
                                       get_column_types,
@@ -32,8 +34,12 @@ df4 = pd.DataFrame({'A':[1,2,3,4,5],
                    'C':[2,3,4,5,6],
                    'D':[4,7,2,5,7],
                     'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
+                    'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
                    })
 df4.index = pd.to_datetime(df4['E'])
+df4['E'] = pd.to_datetime(df4['E'])
+df4['F'] = pd.to_datetime(df4['F'])
+df4['G'] = df4['F'] - df4['E']
 
 
 def test_time_index():
@@ -86,12 +92,30 @@ def test_extract_object_cols():
     assert extract_object_cols(df=df) == ['C']
 
 
+def test_extract_datetime_cols():
+    datetime_cols = extract_datetime_cols(df=df4)
+    assert isinstance(datetime_cols, list)
+    assert datetime_cols == ['E','F']
+
+
+def test_extract_timedelta_cols():
+    timedelta_cols = extract_timedelta_cols(df=df4)
+    assert isinstance(timedelta_cols, list)
+    assert timedelta_cols == ['G']
+
+
 def test_extract_categorical_cols():
     assert extract_categorical_cols(df=df) == ['D']
 
 
 def test_extract_bool_cols():
     assert extract_bool_cols(df=df) == ['E']
+
+
+def test_extract_datetimetz_cols():
+    datetime_cols = extract_datetimetz_cols(df=df4)
+    assert isinstance(datetime_cols, list)
+    assert len(datetime_cols) == 0
 
 
 def test_extract_col_types():
