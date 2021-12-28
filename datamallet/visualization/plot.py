@@ -1,7 +1,7 @@
 from .utils import (hierarchical_path, columns_with_distinct_values,
                     create_pairs,
                     figures_to_html)
-from datamallet.tabular.utils import (check_dataframe,
+from datamallet.tabular.utils import (check_dataframe,check_categorical,
                                       check_numeric,
                                       check_columns,
                                       extract_numeric_cols,
@@ -41,7 +41,7 @@ def create_pie(df,
 
     figure_list = list()
 
-    if check_numeric(df=df,column_list=numeric_cols) and check_columns(df=df,column_list=list_of_categorical_columns):
+    if check_numeric(df=df,column_list=numeric_cols) and check_categorical(df=df,column_list=list_of_categorical_columns):
 
         for value in numeric_cols:
             for name in list_of_categorical_columns:
