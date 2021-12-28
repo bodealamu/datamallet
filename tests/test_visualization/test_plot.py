@@ -31,6 +31,36 @@ df3 = pd.DataFrame({'A':[1,2,3,4,5],
 col_type3 = extract_col_types(df=df3)
 
 
+def test_create_pie():
+    pie_charts_list = create_pie(df=df2,
+                                 numeric_cols=['A','B','C','D'],
+                                 list_of_categorical_columns=['E'],
+                                 create_html=False,
+                                 hole=False,
+                                 filename='pie'
+                                 )
+    pie_charts_list2 = create_pie(df=df2,
+                                  numeric_cols=['A','B','C','D'],
+                                  list_of_categorical_columns=['E','F'],
+                                  create_html=False,
+                                  hole=False,
+                                  filename='pie'
+                                 )
+    pie_charts_list3 = create_pie(df=df2,
+                                  numeric_cols=['A','B','C','D'],
+                                  list_of_categorical_columns=['A','B','C','D'],
+                                  create_html=False,
+                                  hole=False,
+                                  filename='pie'
+                                 )
+    assert isinstance(pie_charts_list, list)
+    assert isinstance(pie_charts_list2, list)
+    assert isinstance(pie_charts_list3, list)
+    assert isinstance(pie_charts_list[0], plotly.graph_objs.Figure)
+    assert isinstance(pie_charts_list2[0], plotly.graph_objs.Figure)
+    assert len(pie_charts_list3) == 0
+
+
 def test_create_scatter():
     scatter_list = create_scatter(df=df2,
                                   col_types=extract_col_types(df2),
@@ -73,7 +103,6 @@ def test_create_scatter():
     assert isinstance(scatter_list3[0], plotly.graph_objs.Figure)
     assert isinstance(scatter_listc, list), 'the output is expected to be an empty list '
     assert len(scatter_listc) == 0, 'no charts are created because no numeric cols'
-
 
 
 def test_create_sunburst():
@@ -165,16 +194,7 @@ def test_create_box():
     assert len(box_plots2) == 0, "no chart created because there are no categorical columns"
 
 
-def test_create_pie():
-    pie_charts_list = create_pie(df=df2,
-                                 numeric_cols=['A','B','C','D'],
-                                 list_of_categorical_columns=['E'],
-                                 create_html=False,
-                                 hole=False,
-                                 filename='pie'
-                                 )
-    assert isinstance(pie_charts_list, list)
-    assert isinstance(pie_charts_list[0], plotly.graph_objs.Figure)
+
 
 
 def test_create_histogram():

@@ -1,8 +1,9 @@
 from .utils import (hierarchical_path, columns_with_distinct_values,
                     create_pairs,
-                    column_use,
                     figures_to_html)
-from datamallet.tabular.utils import (check_dataframe,check_numeric, check_columns,
+from datamallet.tabular.utils import (check_dataframe,
+                                      check_numeric,
+                                      check_columns,
                                       extract_numeric_cols,
                                       calculate_correlation)
 import pandas as pd
@@ -22,24 +23,25 @@ def create_pie(df,
     :param list_of_categorical_columns:list of column names which have categorical data.
             Output of function columns_with_distinct_values(df=self.df, categorical_only=True,
                                                         maximum_number_distinct_values=maximum_number_sectors)
+            Also output of extract_categorical_cols in tabular/utils module
     :param create_html:boolean, whether the figures should be converted to HTML or not
     :param hole:boolean, hole in the pie chart
     :param filename:str, a suitable name for the produced html file, exclude the extension
     :return: list which contains graph objects
     """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(numeric_cols, list), "numeric_cols must be a list"
     assert isinstance(list_of_categorical_columns, list), "list_of_categorical_columns must be a list"
+    assert len(list_of_categorical_columns) != 0, "list_of_categorical_columns must not be empty"
+    assert len(numeric_cols) != 0, "numeric_cols must not be empty"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(hole, bool), "hole must be a boolean"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
-    assert len(list_of_categorical_columns) != 0, "list_of_categorical_columns must not be empty"
-    assert len(numeric_cols) != 0, "numeric_cols must not be empty"
-    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
 
-    if check_numeric(df=df,column_list=numeric_cols) and check_columns(df=df,column_list=numeric_cols):
+    if check_numeric(df=df,column_list=numeric_cols) and check_columns(df=df,column_list=list_of_categorical_columns):
 
         for value in numeric_cols:
             for name in list_of_categorical_columns:
