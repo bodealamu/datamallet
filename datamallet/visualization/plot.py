@@ -36,12 +36,13 @@ def create_pie(df,
     assert len(numeric_cols) != 0, "numeric_cols must not be empty"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(hole, bool), "hole must be a boolean"
-    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert isinstance(filename, str), "filename must be a string without a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
 
-    if check_numeric(df=df,column_list=numeric_cols) and check_categorical(df=df,column_list=list_of_categorical_columns):
+    if check_numeric(df=df,column_list=numeric_cols) and check_categorical(df=df,
+                                                                           column_list=list_of_categorical_columns):
 
         for value in numeric_cols:
             for name in list_of_categorical_columns:
@@ -336,12 +337,11 @@ def create_correlation_plot(df,
     assert isinstance(correlation_method, str), "correlation method must be a string"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
+    assert correlation_method in ['pearson', 'kendall', 'spearman']
 
     figure_list = list()
 
-    available_method = correlation_method in ['pearson', 'kendall', 'spearman']
-
-    if available_method and len(extract_numeric_cols(df=df))>1:
+    if len(extract_numeric_cols(df=df))>1:
 
         correlation = calculate_correlation(df=df, method=correlation_method)
 
@@ -383,17 +383,16 @@ def create_histogram(df,
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(numeric_cols, list), "numeric_cols must be a list"
-    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
-    assert isinstance(create_html, bool), "create_html must be a boolean"
     assert isinstance(nbins, int), "nbins must be an integer"
+    assert marginal in ['rug','box','violin','histogram',None], "marginal options 'rug','box','violin','histogram'"
     assert isinstance(cumulative, bool), "cumulative must be a boolean"
-    assert marginal in ['rug','box','violin','histogram',None], "marginal must be one of 'rug','box','violin','histogram'"
+    assert histfunc in ['count', 'sum', 'avg', 'min',
+                        'max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
+    assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
-    assert isinstance(histfunc, str),"histfunc must be a string"
-    assert isinstance(orientation,str)
+    assert isinstance(create_html, bool), "create_html must be a boolean"
     assert orientation in ['v','h']
-    assert histnorm in ['percent','probability','density','probability density',None]
-    assert histfunc in ['count', 'sum', 'avg','min','max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
 
     figure_list = list()
 
@@ -446,23 +445,23 @@ def create_scatter(df,
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
-    assert isinstance(create_html, bool), "create_html must be a boolean"
-    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
-    assert isinstance(opacity, float), "opacity must be a float"
-    assert isinstance(log_y, bool)
-    assert isinstance(log_x, bool)
-    assert opacity <= 1.0, "opacity must be between 0 and 1"
-    assert '.' not in filename, "filename doesn't need an extension"
-    assert marginal_x in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
-                                                                     "'box','violin','histogram'"
-    assert marginal_y in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
-                                                                     "'box','violin','histogram'"
     assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
     assert 'object' in col_types.keys(), "col_types dictionary missing key object"
     assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
     assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
     assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
     assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert '.' not in filename, "filename doesn't need an extension"
+    assert isinstance(log_y, bool)
+    assert isinstance(log_x, bool)
+    assert marginal_x in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
+                                                                     "'box','violin','histogram'"
+    assert marginal_y in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
+                                                                     "'box','violin','histogram'"
+    assert isinstance(opacity, float), "opacity must be a float"
+    assert opacity <= 1.0, "opacity must be between 0 and 1"
+    assert isinstance(create_html, bool), "create_html must be a boolean"
     assert orientation in ['v', 'h']
     assert isinstance(maximum_color_groups, int)
 

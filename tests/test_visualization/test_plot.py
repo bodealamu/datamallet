@@ -58,7 +58,131 @@ def test_create_pie():
     assert isinstance(pie_charts_list3, list)
     assert isinstance(pie_charts_list[0], plotly.graph_objs.Figure)
     assert isinstance(pie_charts_list2[0], plotly.graph_objs.Figure)
-    assert len(pie_charts_list3) == 0
+    assert len(pie_charts_list3) == 0, "the columns provided as categorical are not all categorical"
+
+
+def test_create_violin():
+    violin_plots = create_violin(df=df2,
+                                 col_types=col_type2,
+                                 filename='violin',
+                                 create_html=True,
+                                 violinmode='group',
+                                 points='all',
+                                 display_box=True,
+                                 color=None,
+                                 maximum_number_violinplots=7 )
+
+    violin_plots2 = create_violin(df=df3,
+                                 col_types=col_type3,
+                                 filename='violin',
+                                 create_html=True,
+                                 violinmode='group',
+                                 points='all',
+                                 display_box=True,
+                                 color=None,
+                                 maximum_number_violinplots=3)
+
+    assert isinstance(violin_plots, list)
+    assert isinstance(violin_plots[0], plotly.graph_objs.Figure)
+    assert isinstance(violin_plots2, list)
+    assert len(violin_plots2) == 0, "no chart created because there are no categorical columns"
+
+
+def test_create_box():
+    box_plots = create_box(df=df2,
+                           col_types=col_type2,
+                           points='outliers',
+                           boxmode='group',
+                           notched=False,
+                           color=None,
+                           filename='box',
+                           create_html=False,
+                           orientation='h'
+                           )
+
+    box_plots2 = create_box(df=df3,
+                            col_types=col_type3,
+                            points='outliers',
+                            boxmode='group',
+                            notched=False,
+                            color=None,
+                            filename='box',
+                            create_html=False,
+                            orientation='v'
+                           )
+
+    assert isinstance(box_plots, list)
+    assert isinstance(box_plots[0], plotly.graph_objs.Figure)
+    assert isinstance(box_plots2, list)
+    assert len(box_plots2) == 0, "no chart created because there are no categorical columns"
+
+
+def test_create_treemap():
+    treemap_list = create_treemap(df=df2,
+                                   col_types=col_type2,
+                                   create_html=False,
+                                   filename='treemap',
+                                   limit=2)
+    treemap_list3 = create_treemap(df=df3,
+                                  col_types=col_type3,
+                                  create_html=False,
+                                  filename='treemap',
+                                  limit=2)
+    assert isinstance(treemap_list, list)
+    assert isinstance(treemap_list3, list)
+    assert len(treemap_list) != 0, 'an actual chart has been created'
+    assert isinstance(treemap_list[0], plotly.graph_objs.Figure)
+    assert len(treemap_list3) == 0,"no categorical variable, no chart created"
+
+
+def test_create_sunburst():
+    sunburst_list = create_sunburst(df=df2,
+                                    col_types=col_type2,
+                                    create_html=False,
+                                    filename='sunburst',
+                                    limit=2)
+    sunburst_list3 = create_sunburst(df=df3,
+                                     col_types=col_type3,
+                                     create_html=False,
+                                     filename='sunburst',
+                                     limit=2)
+    assert isinstance(sunburst_list, list)
+    assert len(sunburst_list) != 0, 'an actual chart has been created'
+    assert isinstance(sunburst_list[0], plotly.graph_objs.Figure)
+    assert len(sunburst_list3) == 0,"no categorical variable, no chart created"
+
+
+def test_create_correlation_plot():
+    corr_plots = create_correlation_plot(df=c)
+    corr_plots2 = create_correlation_plot(df=df2)
+    assert isinstance(corr_plots, list)
+    assert len(corr_plots) == 0
+    assert isinstance(corr_plots2, list)
+    assert isinstance(corr_plots2[0], plotly.graph_objs.Figure)
+
+
+def test_create_histogram():
+    histogram_list = create_histogram(df=df2,
+                                      numeric_cols=['A','B','C','D'],
+                                      nbins=20,
+                                      marginal=None,
+                                      cumulative=False,
+                                      histnorm=None,
+                                      filename='histogram',
+                                      create_html=False)
+    histogram_list2 = create_histogram(df=c,
+                                      numeric_cols=[],
+                                      nbins=20,
+                                      marginal=None,
+                                      cumulative=False,
+                                      histnorm=None,
+                                      filename='histogram',
+                                      create_html=False)
+
+    assert isinstance(histogram_list, list)
+    assert isinstance(histogram_list2, list)
+    assert isinstance(histogram_list[0], plotly.graph_objs.Figure)
+    assert len(histogram_list2) == 0, "not numeric column"
 
 
 def test_create_scatter():
@@ -105,116 +229,6 @@ def test_create_scatter():
     assert len(scatter_listc) == 0, 'no charts are created because no numeric cols'
 
 
-def test_create_sunburst():
-    sunburst_list = create_sunburst(df=df2,
-                                    col_types=col_type2,
-                                    create_html=False,
-                                    filename='sunburst',
-                                    limit=2)
-    sunburst_list3 = create_sunburst(df=df3,
-                                     col_types=col_type3,
-                                     create_html=False,
-                                     filename='sunburst',
-                                     limit=2)
-    assert isinstance(sunburst_list, list)
-    assert len(sunburst_list) != 0, 'an actual chart has been created'
-    assert isinstance(sunburst_list[0], plotly.graph_objs.Figure)
-    assert len(sunburst_list3) == 0,"no categorical variable, no chart created"
-
-
-def test_create_treemap():
-    treemap_list = create_treemap(df=df2,
-                                   col_types=col_type2,
-                                   create_html=False,
-                                   filename='treemap',
-                                   limit=2)
-    treemap_list3 = create_treemap(df=df3,
-                                  col_types=col_type3,
-                                  create_html=False,
-                                  filename='treemap',
-                                  limit=2)
-    assert isinstance(treemap_list, list)
-    assert isinstance(treemap_list3, list)
-    assert len(treemap_list) != 0, 'an actual chart has been created'
-    assert isinstance(treemap_list[0], plotly.graph_objs.Figure)
-    assert len(treemap_list3) == 0,"no categorical variable, no chart created"
-
-
-def test_create_violin():
-    violin_plots = create_violin(df=df2,
-                                 col_types=col_type2,
-                                 filename='violin',
-                                 create_html=True,
-                                 violinmode='group',
-                                 points='all',
-                                 display_box=True,
-                                 color=None,
-                                 maximum_number_violinplots=7 )
-
-    violin_plots2 = create_violin(df=df3,
-                                 col_types=col_type3,
-                                 filename='violin',
-                                 create_html=True,
-                                 violinmode='group',
-                                 points='all',
-                                 display_box=True,
-                                 color=None,
-                                 maximum_number_violinplots=3)
-
-    assert isinstance(violin_plots, list)
-    assert isinstance(violin_plots[0], plotly.graph_objs.Figure)
-    assert isinstance(violin_plots2, list)
-    assert len(violin_plots2) == 0, "no chart created because there are no categorical columns"
-
-
-def test_create_box():
-    box_plots = create_box(df=df2,
-                           col_types=col_type2,
-                           points='outliers',
-                           boxmode='group',
-                           notched=False,
-                           color=None,
-                           filename='box',
-                           create_html=False
-                           )
-
-    box_plots2 = create_box(df=df3,
-                           col_types=col_type3,
-                           points='outliers',
-                           boxmode='group',
-                           notched=False,
-                           color=None,
-                           filename='box',
-                           create_html=False
-                           )
-
-    assert isinstance(box_plots, list)
-    assert isinstance(box_plots[0], plotly.graph_objs.Figure)
-    assert isinstance(box_plots2, list)
-    assert len(box_plots2) == 0, "no chart created because there are no categorical columns"
 
 
 
-
-
-def test_create_histogram():
-    histogram_list = create_histogram(df=df2,
-                                      numeric_cols=['A','B','C','D'],
-                                      nbins=20,
-                                      marginal=None,
-                                      cumulative=False,
-                                      histnorm=None,
-                                      filename='histogram',
-                                      create_html=False)
-
-    assert isinstance(histogram_list, list)
-    assert isinstance(histogram_list[0], plotly.graph_objs.Figure)
-
-
-def test_create_correlation_plot():
-    corr_plots = create_correlation_plot(df=c)
-    corr_plots2 = create_correlation_plot(df=df2)
-    assert isinstance(corr_plots, list)
-    assert len(corr_plots) == 0
-    assert isinstance(corr_plots2, list)
-    assert isinstance(corr_plots2[0], plotly.graph_objs.Figure)
