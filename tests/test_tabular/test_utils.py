@@ -1,6 +1,7 @@
 from datamallet.tabular.utils import (extract_numeric_cols,
                                       check_columns,
                                       check_dataframe,column_mean,
+                                      check_categorical,
                                       get_unique,extract_col_types,
                                       unique_count,time_index,
                                       extract_object_cols,
@@ -62,6 +63,13 @@ def test_check_numeric():
     assert check_numeric(df=df, column_list=['A']) is True
     assert check_numeric(df=df, column_list=['A','B']) is True
     assert check_numeric(df=df, column_list=['C','D']) is False
+
+
+def test_check_categorical():
+    assert check_categorical(df=df, column_list=['C','D']) is True
+    assert check_categorical(df=df, column_list=['C', 'D','E']) is True
+    assert check_categorical(df=df, column_list=['C', 'D', 'E','A']) is False
+    assert check_categorical(df=df, column_list=['A', 'B']) is False
 
 
 def test_column_mean():
