@@ -4,3 +4,6 @@ numpy>=1.19.5
 scipy==1.5.4
 plotly>=5.3.1
 pytest
+sphinx
+recommonmark
+sphinx_rtd_theme
