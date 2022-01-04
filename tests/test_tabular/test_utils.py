@@ -57,6 +57,7 @@ def test_check_columns():
     assert check_columns(df, column_list=['A','C']) is True
     assert check_columns(df, column_list=['A','B', 'C']) is True
     assert check_columns(df, column_list=['Z', 'B', 'C']) is False
+    assert check_columns(df, column_list=['A', 'B','Z', 'C']) is False
 
 
 def test_check_numeric():

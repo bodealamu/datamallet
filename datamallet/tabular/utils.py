@@ -5,7 +5,21 @@ def time_index(df):
     """
     Checks to see if the index of the dataframe is a datetime object
     :param df: pandas dataframe that needs to be checked for a time index
-    :return:
+    :return: True or False
+
+    Usage
+    df4 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7],
+                    'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
+                    'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
+                   })
+    df4.index = pd.to_datetime(df4['E'])
+
+    >>> time_index(df=df4)
+    True
+
     """
     assert isinstance(df, pd.DataFrame), 'df must be a pandas dataframe object'
 
@@ -17,6 +31,17 @@ def check_dataframe(df):
     Checks to see that the provided object is a pandas dataframe
     :param df: pandas dataframe
     :return: bool
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    >>> check_dataframe(df=df)
+    True
+
     """
     if isinstance(df, pd.DataFrame):
         return True
@@ -30,6 +55,22 @@ def check_columns(df, column_list):
     :param df: pandas dataframe
     :param column_list: list of column names
     :return: bool, whether all columns in column_list are in df.columns
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    >>> check_columns(df=df, column_list=['A'])
+    True
+
+    >>> check_columns(df=df, column_list=['A','B])
+    True
+
+    >>> check_columns(df=df, column_list=['Z','A'])
+    False
     """
     assert isinstance(column_list, list), "column_list must be a list"
     assert isinstance(df, pd.DataFrame), 'df must be a pandas dataframe'
@@ -54,7 +95,21 @@ def check_numeric(df,column_list):
     Checks whether column_list is a subset of all numeric columns
     :param df:
     :param column_list:
-    :return:
+    :return:bool
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    >>> check_numeric(df=df, column_list=['A'])
+    True
+
+    >>> check_numeric(df=df, column_list=['C','D'])
+    False
+
     """
     assert isinstance(column_list, list), "column_list must be a list"
     assert isinstance(df, pd.DataFrame), "df must be a dataframe"
@@ -69,7 +124,25 @@ def check_categorical(df, column_list):
      (Categorical columns are columns of the types - Categorical, object or boolean.
     :param df:
     :param column_list:
-    :return:
+    :return:bool
+
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    df['D'] = df['D'].astype('category')
+
+    >>> check_categorical(df=df, column_list=['C','D'])
+    True
+
+    >>> check_categorical(df=df, column_list=['C', 'D', 'E','A'])
+    False
+
+    >>> check_categorical(df=df, column_list=['A', 'B'])
+    False
+
     """
     assert isinstance(column_list, list), "column_list must be a list"
     assert isinstance(df, pd.DataFrame), "df must be a dataframe"
@@ -86,7 +159,17 @@ def column_mean(df, skipna=True, numeric_only=True):
     :param df: pandas dataframe
     :param skipna:boolean, whether to skip Na values in mean calculation
     :param numeric_only: boolean, to include only numeric columns
-    :return:
+    :return: pandas series
+
+    Usage
+    df3 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7],
+                   })
+
+    >>> column_mean(df=df3)['A']
+    3.0
     """
 
     assert isinstance(df, pd.DataFrame), 'df must be of type dataframe'
@@ -134,6 +217,16 @@ def unique_count(df):
     dataframe and returns as a dictionary with col name as key and number of distinct values as value
     :param df: pandas dataframe
     :return: dictionary mapping column name in a dataframe to the number of unique values in that column
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    >>> unique_count(df=df)
+    {'A': 5, 'B': 5, 'C': 3, 'D':2, 'E':2}
     """
     unique_count_dict = dict()
 
@@ -150,6 +243,17 @@ def extract_numeric_cols(df):
     Utility function for obtaining all numeric columns in a dataframe
     :param df: pandas dataframe
     :return: list of column names of numeric type
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    >>> extract_numeric_cols(df=df)
+    ['A','B']
+
     """
     numeric_cols=None
 
@@ -165,6 +269,18 @@ def extract_object_cols(df):
     Extract columns with object data type from the dataframe
     :param df: pandas dataframe
     :return: list of column names of object type
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    df['D'] = df['D'].astype('category')
+
+    >>> extract_object_cols(df=df)
+    ['C']
     """
     object_cols = None
 
@@ -181,6 +297,23 @@ def extract_datetime_cols(df):
     Extract columns with datetime data type from the dataframe
     :param df: pandas dataframe
     :return: list of column names of datetime type
+
+    Usage
+    df4 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7],
+                    'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
+                    'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
+                   })
+    df4.index = pd.to_datetime(df4['E'])
+    df4['E'] = pd.to_datetime(df4['E'])
+    df4['F'] = pd.to_datetime(df4['F'])
+    df4['G'] = df4['F'] - df4['E']
+
+    >>> extract_datetime_cols(df=df4)
+    ['E','F']
+
     """
     datetime_cols = None
 
@@ -196,6 +329,22 @@ def extract_timedelta_cols(df):
     Extract columns with timedelta data type from the dataframe
     :param df: pandas dataframe
     :return: list of column names of timedelta type
+
+    Usage
+    df4 = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':[2,3,4,5,6],
+                   'D':[4,7,2,5,7],
+                    'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
+                    'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
+                   })
+    df4.index = pd.to_datetime(df4['E'])
+    df4['E'] = pd.to_datetime(df4['E'])
+    df4['F'] = pd.to_datetime(df4['F'])
+    df4['G'] = df4['F'] - df4['E']
+
+    >>> extract_timedelta_cols(df=df4)
+    ['G']
     """
     time_cols=None
 
@@ -211,6 +360,18 @@ def extract_categorical_cols(df):
     Extract columns with categorical data type from the dataframe
     :param df: pandas dataframe
     :return: list of column names of categorical type
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    df['D'] = df['D'].astype('category')
+
+    >>> extract_categorical_cols(df=df)
+    ['D']
     """
     category_cols = None
 
@@ -226,6 +387,18 @@ def extract_bool_cols(df):
     Extract columns with boolean data type from the dataframe
     :param df: pandas dataframe
     :return: list of column names of boolean type
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    df['D'] = df['D'].astype('category')
+
+    >>> extract_bool_cols(df=df)
+    ['E']
     """
     boolean_cols = None
 
