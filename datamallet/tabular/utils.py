@@ -432,6 +432,25 @@ def extract_col_types(df):
     and the value is the list of column names of that type in the dataframe.
     :param df: pandas dataframe
     :return: dictionary containing data type and list of column names mapping
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    df['D'] = df['D'].astype('category')
+
+    >>> extract_col_types(df=df)
+    {'numeric': ['A', 'B'],
+    'object': ['C'],
+    'boolean': ['E'],
+    'categorical': ['D'],
+    'datetime': [],
+    'timedelta': []}
+
+
     """
     assert isinstance(df, pd.DataFrame), 'df must be of type pandas dataframe'
     numeric_columns = extract_numeric_cols(df=df)
@@ -481,6 +500,22 @@ def combine_categorical_columns(df, col_types):
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :return: a list of column names of types categorical, object, or boolean
+
+    Usage
+    df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+    df['D'] = df['D'].astype('category')
+
+    col_types = {'numeric': ['A', 'B'], 'object': ['C'], 'boolean': ['E'], 'categorical': ['D'], 'datetime': [],
+                'timedelta': []}
+
+    >>> combine_categorical_columns(df=df, col_types=col_types)
+    ['D','C','E']
+
     """
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
