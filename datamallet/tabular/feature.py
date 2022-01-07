@@ -179,13 +179,17 @@ class GroupbyTransformer(BaseEstimator, TransformerMixin):
                 austin    1
         Unknown lagos     3
 
-        >>> grouped_df = GroupbyTransformer(column_list=['Gender', 'City'], aggregation_method='sum').transform(df4)
+        >>> grouped_df = GroupbyTransformer(column_list=['Gender'], aggregation_method='sum').transform(df4)
 
         >>> print(grouped_df)
 
-grouped_df = GroupbyTransformer(column_list=['Gender'], aggregation_method='sum').transform(df4)
+                 Age
+        Gender
+        Female     7
+        Male       5
+        Unknown    3
 
-print(grouped_df)
+
         """
         self.column_list = column_list
         self.aggregation_method = aggregation_method
