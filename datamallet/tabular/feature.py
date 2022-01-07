@@ -66,6 +66,9 @@ class ColumnSubtraction(BaseEstimator, TransformerMixin):
         self.left = left
         self.right = right
         self.new_column_name = new_column_name
+        assert isinstance(left,str), "left must be a string with name of column"
+        assert isinstance(right, str), "right must be a string with name of column"
+        assert isinstance(new_column_name, str), "new_column_name must be a string"
 
     def fit(self, X, y=None):
         return self
