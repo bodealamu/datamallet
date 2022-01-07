@@ -1,4 +1,6 @@
-from datamallet.tabular.feature import (ColumnAdder,ColumnMultiplier)
+from datamallet.tabular.feature import (ColumnAdder,
+                                        ColumnMultiplier,
+                                        ColumnSubtraction)
 import pandas as pd
 
 df = pd.DataFrame({'A':[1,2,3,4,5],
@@ -29,5 +31,12 @@ def test_column_multiplier():
 
     assert 'Z' in multiplied_df.columns
     assert multiplied_df['Z'].sum() == 8
+
+
+def test_column_substraction():
+    subtracted_df = ColumnSubtraction(left='A', right='B', new_column_name='C').transform(df3)
+    assert 'C' in subtracted_df.columns
+    assert subtracted_df['C'].sum() == -1
+
 
 

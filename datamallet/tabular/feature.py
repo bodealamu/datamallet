@@ -59,9 +59,9 @@ class ColumnSubtraction(BaseEstimator, TransformerMixin):
     def __init__(self, left, right, new_column_name):
         """
 
-        :param left:
-        :param right:
-        :param new_column_name:
+        :param left: name of column on the left side of the minus side
+        :param right: name of column on the right side of the minus side
+        :param new_column_name:str, name of new column
         """
         self.left = left
         self.right = right
@@ -72,7 +72,6 @@ class ColumnSubtraction(BaseEstimator, TransformerMixin):
 
     def transform(self, X, y=None):
         if check_dataframe(X) and \
-                check_columns(X, [self.left,self.right]) and \
                 check_numeric(df=X, column_list=[self.left,self.right]):
             X[self.new_column_name] = X.loc[:, self.left] - X.loc[:, self.right]
         return X

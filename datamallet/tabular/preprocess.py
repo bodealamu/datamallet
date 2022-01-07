@@ -9,7 +9,24 @@ class ColumnDropper(BaseEstimator, TransformerMixin):
         """
         This class drops columns from a dataframe, this operation is done inplace.
 
-        :param column_list: list which contains the names of columns in the dataframe
+        :param column_list: list which contains the names of columns in the dataframe to be dropped
+
+        Usage
+        df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+        # initialize the ColumnDropper class
+        >>> column_dropper = ColumnDropper(column_list=['C','D','E'])
+
+        # call the transform method
+        >>> dropped_df = column_dropper.transform(X=df)
+
+        # check
+        >>> print(dropped_df.columns)
+        Index(['A', 'B'], dtype='object')
 
         """
         self.column_list = column_list
@@ -70,6 +87,23 @@ class ColumnRename(BaseEstimator, TransformerMixin):
         """
         Rename columns in place
         :param rename_dictionary: python dictionary with the old names as keys and new names as value.
+
+        Usage
+        df = pd.DataFrame({'A':[1,2,3,4,5],
+                   'B':[2,4,6,8,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
+
+        rename_dictionary={'A':'V',
+                           'B':'W'}
+
+        >>> columnrenamer = ColumnRename(rename_dictionary=rename_dictionary)
+        >>> renamed_df = columnrenamer.transform(X=df)
+
+        >>> print(renamed_df.columns)
+        Index(['V', 'W', 'C', 'D', 'E'], dtype='object')
+
         """
         self.rename_dictionary = rename_dictionary
 

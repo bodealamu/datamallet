@@ -10,10 +10,13 @@ df = pd.DataFrame({'A':[1,2,3,4,5],
 
 def test_column_dropper():
     column_dropper = ColumnDropper(column_list=['C','D','E'])
-    droped_df = column_dropper.transform(X=df)
+    dropped_df = column_dropper.transform(X=df)
 
-    assert 'A' in droped_df.columns
-    assert 'B' in droped_df.columns
+    assert 'A' in dropped_df.columns
+    assert 'B' in dropped_df.columns
+    assert 'C' not in dropped_df.columns
+    assert 'D' not in dropped_df.columns
+    assert 'E' not in dropped_df.columns
 
 
 def test_column_rename():
@@ -25,3 +28,4 @@ def test_column_rename():
     assert 'V' in renamed_df.columns
     assert 'B' not in renamed_df.columns
     assert 'W' in renamed_df.columns
+    # assert 'C' in renamed_df.columns
