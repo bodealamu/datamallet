@@ -45,6 +45,7 @@ class ColumnAdder(BaseEstimator, TransformerMixin):
         if check_dataframe(X) \
                 and check_columns(X, self.column_list) \
                 and check_numeric(df=X, column_list=self.column_list):
+            X = X.copy()
             X[self.new_column_name] = X.loc[:, self.column_list].sum(axis=1)
 
         return X
@@ -69,6 +70,7 @@ class ColumnMultiplier(BaseEstimator,TransformerMixin):
     def transform(self,X, y=None):
         if check_dataframe(X) and \
                 check_columns(X, self.column_list) and check_numeric(df=X, column_list=self.column_list):
+            X = X.copy()
             X[self.new_column_name] = X.loc[:, self.column_list].prod(axis=1,
                                                                       numeric_only=True,
                                                                       skipna=True)
@@ -96,6 +98,7 @@ class ColumnSubtraction(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         if check_dataframe(X) and \
                 check_numeric(df=X, column_list=[self.left,self.right]):
+            X = X.copy()
             X[self.new_column_name] = X.loc[:, self.left] - X.loc[:, self.right]
         return X
 
@@ -120,6 +123,7 @@ class ExpandingTransformer(BaseEstimator, TransformerMixin):
 
     def transform(self, X, y=None):
         if check_columns(column_list=self.column_list) and check_dataframe(X):
+            X = X.copy()
             for col in self.column_list:
                 X[col] = X[col].expanding(self.min_periods, axis=0).agg(self.aggregation_function)
 
@@ -136,6 +140,7 @@ class GroupbyTransformer(BaseEstimator, TransformerMixin):
 
     def transform(self, X, y=None):
         if check_dataframe(df=X) and check_columns(df=X, column_list=self.column_list):
+            X = X.copy()
             X = X.groupby(self.column_list).agg(self.aggregation_method)
 
             return X
