@@ -58,6 +58,19 @@ class ColumnMultiplier(BaseEstimator,TransformerMixin):
 
         :param column_list:
         :param new_column_name:
+
+        Usage
+        >>> df3 = pd.DataFrame({'A':[1,1,2,1,1],'B':[2,2,1,2,0],})
+        >>> multiplied_df = ColumnMultiplier(column_list=['A','B'], new_column_name='Z').transform(X=df3)
+        >>> print(multiplied_df)
+           A  B  Z
+        0  1  2  2
+        1  1  2  2
+        2  2  1  2
+        3  1  2  2
+        4  1  0  0
+
+
         """
         self.column_list = column_list
         self.new_column_name = new_column_name
@@ -84,6 +97,18 @@ class ColumnSubtraction(BaseEstimator, TransformerMixin):
         :param left: name of column on the left side of the minus side
         :param right: name of column on the right side of the minus side
         :param new_column_name:str, name of new column
+
+        Usage
+        >>> df3 = pd.DataFrame({'A':[1,1,2,1,1],'B':[2,2,1,2,0],})
+        >>> subtracted_df = ColumnSubtraction(left='A', right='B', new_column_name='C').transform(df3)
+        >>> print(subtracted_df)
+           A  B  C
+        0  1  2 -1
+        1  1  2 -1
+        2  2  1  1
+        3  1  2 -1
+        4  1  0  1
+
         """
         self.left = left
         self.right = right
