@@ -157,8 +157,40 @@ class ExpandingTransformer(BaseEstimator, TransformerMixin):
 
 class GroupbyTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, column_list, aggregation_method='mean'):
+        """
+
+        :param column_list:
+        :param aggregation_method:
+
+        Usage
+        >>> df4 = pd.DataFrame({'Age':[1,2,3,4,5],
+                   'Gender':['Male','Female','Unknown','Male','Female'],
+                    'City':['austin', 'austin', 'lagos','abuja', 'ibadan']
+                   })
+        >>> grouped_df = GroupbyTransformer(column_list=['Gender', 'City'], aggregation_method='mean').transform(df4)
+
+        >>> print(grouped_df)
+
+                        Age
+        Gender  City
+        Female  austin    2
+                ibadan    5
+        Male    abuja     4
+                austin    1
+        Unknown lagos     3
+
+        >>> grouped_df = GroupbyTransformer(column_list=['Gender', 'City'], aggregation_method='sum').transform(df4)
+
+        >>> print(grouped_df)
+
+grouped_df = GroupbyTransformer(column_list=['Gender'], aggregation_method='sum').transform(df4)
+
+print(grouped_df)
+        """
         self.column_list = column_list
         self.aggregation_method = aggregation_method
+        assert isinstance(column_list, list)
+        assert aggregation_method in ['mean', 'std', 'sum']
 
     def fit(self, X, y=None):
         return self
