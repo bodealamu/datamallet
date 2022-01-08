@@ -10,7 +10,7 @@ class ColumnAdder(BaseEstimator, TransformerMixin):
         """
         Adds columns together in a dataframe and creates a new column
 
-        :param column_list: list of columns to be added together
+        :param column_list: list of columns to be added together, they must all be numeric columns
         :param new_column_name:str, name of new column created from adding the columns in column list together
 
         Usage
@@ -53,8 +53,8 @@ class ColumnMultiplier(BaseEstimator,TransformerMixin):
         """
         Adds columns together and creates a new column
 
-        :param column_list:
-        :param new_column_name:
+        :param column_list:list of columns to be multiplied together, they must all be numeric columns
+        :param new_column_name:str, name of new column created from adding the columns in column list together
 
         Usage
         >>> df3 = pd.DataFrame({'A':[1,1,2,1,1],'B':[2,2,1,2,0],})
@@ -96,6 +96,8 @@ class ColumnSubtraction(BaseEstimator, TransformerMixin):
         :param new_column_name:str, name of new column
 
         Usage
+        >>> import pandas as pd
+        >>> from datamallet.tabular.feature import ColumnSubtraction
         >>> df3 = pd.DataFrame({'A':[1,1,2,1,1],'B':[2,2,1,2,0],})
         >>> subtracted_df = ColumnSubtraction(left='A', right='B', new_column_name='C').transform(df3)
         >>> print(subtracted_df)
@@ -139,6 +141,9 @@ class ExpandingTransformer(BaseEstimator, TransformerMixin):
         self.column_list = column_list
         self.min_periods = min_periods
         self.aggregation_function = aggregation_function
+        assert isinstance(column_list, list)
+        assert isinstance(min_periods, int)
+        assert aggregation_function in ['mean','max','std','sum','min']
 
     def fit(self, X, y=None):
         return self
@@ -156,8 +161,8 @@ class GroupbyTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, column_list, aggregation_method='mean'):
         """
 
-        :param column_list:
-        :param aggregation_method:
+        :param column_list:list of column names to be used for the aggregation (groupin)
+        :param aggregation_method:str, aggregation method, one of 'sum','mean','std'
 
         Usage
         >>> import pandas as pd
