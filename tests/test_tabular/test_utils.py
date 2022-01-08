@@ -74,8 +74,12 @@ def test_check_categorical():
 
 
 def test_column_mean():
-    assert isinstance(column_mean(df=df3), pd.Series)
+    assert isinstance(column_mean(df=df3,column_list=None), pd.Series)
     assert column_mean(df=df3)['A'] == 3.0
+    assert isinstance(column_mean(df=df3,column_list=['B','C']), pd.Series)
+    assert column_mean(df=df3,column_list=['B','C'])['B'] == 6.0
+    assert 'A' not in column_mean(df=df3,column_list=['B','C']).index
+    assert 'D' not in column_mean(df=df3,column_list=['B','C']).index
 
 
 def test_get_column_types():

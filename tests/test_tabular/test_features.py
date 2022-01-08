@@ -50,6 +50,9 @@ def test_expandingtransformer():
 
 def test_groupbytransformer():
     grouped_df = GroupbyTransformer(column_list=['Gender', 'City'], aggregation_method='mean').transform(df4)
+    assert grouped_df['Age']['Female']['austin'] == 2.0
+    grouped_df = GroupbyTransformer(column_list=['City'], aggregation_method='mean').transform(df4)
+    assert grouped_df['Age']['abuja'] == 4.0
 
 
 

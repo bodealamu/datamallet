@@ -153,16 +153,20 @@ def check_categorical(df, column_list):
     return set(column_list).issubset(set(combined_categorical))
 
 
-def column_mean(df, skipna=True, numeric_only=True):
+def column_mean(df, skipna=True, numeric_only=True,
+                column_list=None):
     """
     Calculates the mean value for all columns in dataframe
     :param df: pandas dataframe
     :param skipna:boolean, whether to skip Na values in mean calculation
     :param numeric_only: boolean, to include only numeric columns
+    :param column_list: list, column_list is list of column names for which to calculate the mean
     :return: pandas series
 
     Usage
-    df3 = pd.DataFrame({'A':[1,2,3,4,5],
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import column_mean
+    >>> df3 = pd.DataFrame({'A':[1,2,3,4,5],
                    'B':[2,4,6,8,10],
                    'C':[2,3,4,5,6],
                    'D':[4,7,2,5,7],
@@ -171,12 +175,18 @@ def column_mean(df, skipna=True, numeric_only=True):
     >>> column_mean(df=df3)['A']
     3.0
     """
+    mean = None
 
     assert isinstance(df, pd.DataFrame), 'df must be of type dataframe'
     assert isinstance(skipna, bool), 'skipna must be boolean'
     assert isinstance(numeric_only, bool), 'numeric_only must be boolean'
+    assert isinstance(column_list, list) or column_list is None, "column_list must be a list or None"
 
-    mean = df.mean(skipna=skipna,numeric_only=numeric_only)
+    if column_list is None:
+        mean = df.mean(skipna=skipna,numeric_only=numeric_only)
+    if isinstance(column_list, list):
+        if check_numeric(df=df, column_list=column_list):
+            mean = df.loc[:,column_list].mean(skipna=skipna,numeric_only=numeric_only)
 
     return mean
 
