@@ -43,7 +43,6 @@ class ColumnAdder(BaseEstimator, TransformerMixin):
 
     def transform(self, X, y=None):
         if check_dataframe(X) \
-                and check_columns(X, self.column_list) \
                 and check_numeric(df=X, column_list=self.column_list):
             X = X.copy()
             X[self.new_column_name] = X.loc[:, self.column_list].sum(axis=1)
