@@ -14,6 +14,8 @@ class ColumnAdder(BaseEstimator, TransformerMixin):
         :param new_column_name:str, name of new column created from adding the columns in column list together
 
         Usage
+        >>> import pandas as pd
+        >>> from datamallet.tabular.feature import ColumnAdder
         >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
         >>> column_adder = ColumnAdder(column_list=['A','B'],new_column_name='Z')
@@ -77,7 +79,7 @@ class ColumnMultiplier(BaseEstimator,TransformerMixin):
 
     def transform(self,X, y=None):
         if check_dataframe(X) and \
-                check_columns(X, self.column_list) and check_numeric(df=X, column_list=self.column_list):
+                 check_numeric(df=X, column_list=self.column_list):
             X = X.copy()
             X[self.new_column_name] = X.loc[:, self.column_list].prod(axis=1,
                                                                       numeric_only=True,
@@ -158,6 +160,8 @@ class GroupbyTransformer(BaseEstimator, TransformerMixin):
         :param aggregation_method:
 
         Usage
+        >>> import pandas as pd
+        >>> from datamallet.tabular.feature import GroupbyTransformer
         >>> df4 = pd.DataFrame({'Age':[1,2,3,4,5],
                    'Gender':['Male','Female','Unknown','Male','Female'],
                     'City':['austin', 'austin', 'lagos','abuja', 'ibadan']
