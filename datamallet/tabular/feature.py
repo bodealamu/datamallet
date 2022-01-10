@@ -149,7 +149,7 @@ class ExpandingTransformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
-        if check_columns(column_list=self.column_list) and check_dataframe(X):
+        if check_columns(column_list=self.column_list, df=X) and check_dataframe(X):
             X = X.copy()
             for col in self.column_list:
                 X[col] = X[col].expanding(self.min_periods, axis=0).agg(self.aggregation_function)

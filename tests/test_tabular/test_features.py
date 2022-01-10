@@ -1,7 +1,8 @@
-from datamallet.tabular.feature import (ColumnAdder,
+from datamallet.tabular.feature import (ColumnAdder,ExpandingTransformer,
                                         ColumnMultiplier,GroupbyTransformer,
                                         ColumnSubtraction)
 import pandas as pd
+import numpy as np
 
 df = pd.DataFrame({'A':[1,2,3,4,5],
                    'B':[2,4,6,8,10],
@@ -45,7 +46,15 @@ def test_column_substraction():
 
 
 def test_expandingtransformer():
-    pass
+    df = pd.DataFrame({"B": [0, 1, 2, np.nan, 4]})
+    expander = ExpandingTransformer(column_list=['B'],
+                                    min_periods=2,
+                                    aggregation_function='sum')
+
+    df_new = expander.transform(X=df)
+
+    assert df_new['B'].sum() == 14.0
+    assert isinstance(df_new, pd.DataFrame)
 
 
 def test_groupbytransformer():
