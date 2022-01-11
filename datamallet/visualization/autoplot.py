@@ -83,7 +83,20 @@ class AutoPlot(object):
         :param maximum_number_sectors: int, maximum number of sectors in pie charts
         :param maximum_number_boxplots:int, maximum_number_boxplots
         :param pie_chart_hole: boolean, whether to include a hole in pie chart or not
-        :param create_html:
+        :param create_html:boolean, whether to create an html file or not
+
+        Usage
+        >>> import pandas as pd
+        >>> from datamallet.visualization import AutoPlot
+        >>> df3 = pd.DataFrame({'A':[1,1,2,1,1], 'B':[2,2,1,2,0],})
+        >>> autoplot1 = AutoPlot(df=df3,filename='autoplot' ,create_html=True,include_scatter=True)
+        >>> print(autoplot1.chart_type()) # output may change as more chart types are added
+
+        ['scatter', 'correlation_plot', 'histogram', 'boxplot', 'violinplot']
+
+        >>> autoplot1.show()
+        # creates a file autoplot.html based on the filename you provide, all charts would be found there
+
         """
         self.df = df
         self.nbins = nbins
@@ -142,7 +155,7 @@ class AutoPlot(object):
         assert isinstance(box_notched, bool), "notched must be a boolean"
         assert isinstance(log_y, bool),"log_x must be a boolean"
         assert isinstance(log_x, bool),"log_y must be a boolean"
-        assert isinstance(size, str)
+        assert isinstance(size, str) or size is None
         assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
         assert histfunc in ['count', 'sum', 'avg', 'min',
                             'max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
@@ -182,6 +195,10 @@ class AutoPlot(object):
         object_cols = column_types['object']
 
         chart_types = list()
+
+        if len(numeric_cols) == 0:
+            # if no numeric columns,no charts can be made, return empty list
+            return chart_types
 
         if len(numeric_cols) > 1:
             chart_types.append('scatter')

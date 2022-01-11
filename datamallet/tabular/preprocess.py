@@ -1,6 +1,9 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-from .utils import check_columns, check_dataframe, column_mean
+from .utils import (check_columns, extract_numeric_cols,
+                    check_dataframe,
+                    column_mean,
+                    check_numeric)
 
 
 class ColumnDropper(BaseEstimator, TransformerMixin):
@@ -45,10 +48,10 @@ class ColumnDropper(BaseEstimator, TransformerMixin):
 
 
 class NaFiller(BaseEstimator, TransformerMixin):
-    def __init__(self,
-                 method=None,
+    def __init__(self,column_list,
+                 method='mean',
                  limit=None,
-                 column_list=None):
+                 ):
         """
           Transformer for filling missing values using various methods or values
 
@@ -126,7 +129,7 @@ class NaFiller(BaseEstimator, TransformerMixin):
         self.method = method
         self.limit = limit
         self.column_list = column_list
-        assert method in ['bfill', 'ffill','mean', None]
+        assert method in ['bfill', 'ffill','mean']
         assert isinstance(limit, int) or limit is None
         assert isinstance(column_list,list) or column_list is None
 
@@ -141,20 +144,35 @@ class NaFiller(BaseEstimator, TransformerMixin):
             if isinstance(self.column_list, list) and check_columns(df=X,column_list=self.column_list):
                 for col in self.column_list:
                     X[col] = X[col].fillna(method='bfill', limit=self.limit)
-            else:
+                return X
+            elif self.column_list is None:
                 X.fillna(method='bfill', inplace=True, limit=self.limit)
+                return X
+            else:
+                return X
 
         if self.method == 'ffill':
             if isinstance(self.column_list, list) and check_columns(df=X,column_list=self.column_list):
                 for col in self.column_list:
                     X[col] = X[col].fillna(method='ffill', limit=self.limit)
-            else:
+                return X
+            elif self.column_list is None:
                 X.fillna(method='ffill', inplace=True, limit=self.limit)
+                return X
+            else:
+                return X
 
         if self.method == 'mean':
-            X.fillna(value=column_mean(df=X, column_list=self.column_list), inplace=True,limit=self.limit)
 
-        return X
+            if isinstance(self.column_list, list) and check_numeric(df=X,column_list=self.column_list):
+                X.fillna(value=column_mean(df=X, column_list=self.column_list), inplace=True,limit=self.limit)
+                return X
+            if self.column_list is None:
+                numeric_cols = extract_numeric_cols(df=X)
+
+                # if no columns are specified, use only numeric columns
+                X.fillna(value=column_mean(df=X, column_list=numeric_cols), inplace=True, limit=self.limit)
+                return X
 
 
 class ColumnRename(BaseEstimator, TransformerMixin):

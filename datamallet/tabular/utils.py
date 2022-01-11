@@ -8,14 +8,12 @@ def time_index(df):
     :return: True or False
 
     Usage
-    df4 = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':[2,3,4,5,6],
-                   'D':[4,7,2,5,7],
-                    'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
-                    'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
-                   })
-    df4.index = pd.to_datetime(df4['E'])
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import time_index
+    >>> df4 = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':[2,3,4,5,6],'D':[4,7,2,5,7],
+       ... 'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
+       ... 'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],})
+    >>> df4.index = pd.to_datetime(df4['E'])
 
     >>> time_index(df=df4)
     True
@@ -33,11 +31,11 @@ def check_dataframe(df):
     :return: bool
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import check_dataframe
+
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
     >>> check_dataframe(df=df)
     True
@@ -57,11 +55,10 @@ def check_columns(df, column_list):
     :return: bool, whether all columns in column_list are in df.columns
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import check_columns
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
     >>> check_columns(df=df, column_list=['A'])
     True
@@ -98,11 +95,11 @@ def check_numeric(df,column_list):
     :return:bool
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import check_numeric
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],
+        ... 'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],'D':['male','male','male','female','female'],
+        ... 'E':[True,True,False,True,True]})
 
     >>> check_numeric(df=df, column_list=['A'])
     True
@@ -126,14 +123,10 @@ def check_categorical(df, column_list):
     :param column_list:
     :return:bool
 
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
-
-    df['D'] = df['D'].astype('category')
-
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import check_categorical
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
+    >>> df['D'] = df['D'].astype('category')
     >>> check_categorical(df=df, column_list=['C','D'])
     True
 
@@ -211,6 +204,14 @@ def get_unique(df, col_name):
     :param df: pandas dataframe
     :param col_name:str, name of column in pandas dataframe
     :return:
+
+    Usage
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import get_unique
+    >>> df = pd.DataFrame({'C':['dog','cat', 'sheep','dog','cat'],'D':['male','male','male','female','female']})
+    >>> print(get_unique(df=df, col_name='C'))
+    ['dog' 'cat' 'sheep']
+
     """
     assert isinstance(col_name, str), "col_name must be a string"
     assert isinstance(df, pd.DataFrame)
@@ -229,11 +230,11 @@ def unique_count(df):
     :return: dictionary mapping column name in a dataframe to the number of unique values in that column
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import unique_count
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],
+       ... 'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+       ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
     >>> unique_count(df=df)
     {'A': 5, 'B': 5, 'C': 3, 'D':2, 'E':2}
@@ -255,11 +256,11 @@ def extract_numeric_cols(df):
     :return: list of column names of numeric type
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import extract_numeric_cols
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5], 'B':[2,4,6,8,10],
+        ... 'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
     >>> extract_numeric_cols(df=df)
     ['A','B']
@@ -281,13 +282,13 @@ def extract_object_cols(df):
     :return: list of column names of object type
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import extract_object_cols
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],
+        ... 'E':[True,True,False,True,True]})
 
-    df['D'] = df['D'].astype('category')
+    >>> df['D'] = df['D'].astype('category')
 
     >>> extract_object_cols(df=df)
     ['C']
@@ -309,17 +310,16 @@ def extract_datetime_cols(df):
     :return: list of column names of datetime type
 
     Usage
-    df4 = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':[2,3,4,5,6],
-                   'D':[4,7,2,5,7],
-                    'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
-                    'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import extract_datetime_cols
+    >>> df4 = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':[2,3,4,5,6],'D':[4,7,2,5,7],
+        ... 'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
+        ... 'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
                    })
-    df4.index = pd.to_datetime(df4['E'])
-    df4['E'] = pd.to_datetime(df4['E'])
-    df4['F'] = pd.to_datetime(df4['F'])
-    df4['G'] = df4['F'] - df4['E']
+    >>> df4.index = pd.to_datetime(df4['E'])
+    >>> df4['E'] = pd.to_datetime(df4['E'])
+    >>> df4['F'] = pd.to_datetime(df4['F'])
+    >>> df4['G'] = df4['F'] - df4['E']
 
     >>> extract_datetime_cols(df=df4)
     ['E','F']
@@ -341,17 +341,15 @@ def extract_timedelta_cols(df):
     :return: list of column names of timedelta type
 
     Usage
-    df4 = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':[2,3,4,5,6],
-                   'D':[4,7,2,5,7],
-                    'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
-                    'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],
-                   })
-    df4.index = pd.to_datetime(df4['E'])
-    df4['E'] = pd.to_datetime(df4['E'])
-    df4['F'] = pd.to_datetime(df4['F'])
-    df4['G'] = df4['F'] - df4['E']
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import extract_timedelta_cols
+    >>> df4 = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':[2,3,4,5,6],'D':[4,7,2,5,7],
+        ... 'E':['1/2/2019','1/3/2019','1/4/2019','1/5/2019','1/6/2019'],
+        ... 'F':['1/3/2019','1/4/2019','1/5/2019','1/6/2019','1/8/2019'],})
+    >>> df4.index = pd.to_datetime(df4['E'])
+    >>> df4['E'] = pd.to_datetime(df4['E'])
+    >>> df4['F'] = pd.to_datetime(df4['F'])
+    >>> df4['G'] = df4['F'] - df4['E']
 
     >>> extract_timedelta_cols(df=df4)
     ['G']
@@ -372,13 +370,12 @@ def extract_categorical_cols(df):
     :return: list of column names of categorical type
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import extract_categorical_cols
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
-    df['D'] = df['D'].astype('category')
+    >>> df['D'] = df['D'].astype('category')
 
     >>> extract_categorical_cols(df=df)
     ['D']
@@ -399,13 +396,11 @@ def extract_bool_cols(df):
     :return: list of column names of boolean type
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
-    df['D'] = df['D'].astype('category')
+    >>> df['D'] = df['D'].astype('category')
 
     >>> extract_bool_cols(df=df)
     ['E']
@@ -425,6 +420,7 @@ def extract_datetimetz_cols(df):
     Extract columns with datetimetz data type from the dataframe
     :param df: pandas dataframe
     :return: list of column names of datetimetz type
+
     """
     datetime_cols = None
 
@@ -444,13 +440,12 @@ def extract_col_types(df):
     :return: dictionary containing data type and list of column names mapping
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import extract_col_types
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
-    df['D'] = df['D'].astype('category')
+    >>> df['D'] = df['D'].astype('category')
 
     >>> extract_col_types(df=df)
     {'numeric': ['A', 'B'],
@@ -490,7 +485,17 @@ def calculate_correlation(df, method='pearson'):
     Calculates the correlation of the entire dataframe based on the specified method
     :param df: pandas dataframe
     :param method:str, one of pearson, kendall or spearman used to compute the correlation
-    :return:
+    :return: Correlation matrix
+
+    Usage
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import calculate_correlation
+    >>> df = pd.DataFrame({"B": [0, 1, 2, 4],"A": [0, 1, 0,  4]})
+
+    >>> calculate_correlation(df=df, method='spearman')
+              B         A
+    B  1.000000  0.632456
+    A  0.632456  1.000000
     """
     assert method in ['pearson', 'kendall', 'spearman'], 'method must be one of pearson, kendall or spearman'
     corr = None
@@ -512,15 +517,14 @@ def combine_categorical_columns(df, col_types):
     :return: a list of column names of types categorical, object, or boolean
 
     Usage
-    df = pd.DataFrame({'A':[1,2,3,4,5],
-                   'B':[2,4,6,8,10],
-                   'C':['dog','cat', 'sheep','dog','cat'],
-                   'D':['male','male','male','female','female'],
-                   'E':[True,True,False,True,True]})
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import combine_categorical_columns
+    >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'C':['dog','cat', 'sheep','dog','cat'],
+        ... 'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
 
-    df['D'] = df['D'].astype('category')
+    >>> df['D'] = df['D'].astype('category')
 
-    col_types = {'numeric': ['A', 'B'], 'object': ['C'], 'boolean': ['E'], 'categorical': ['D'], 'datetime': [],
+    >>> col_types = {'numeric': ['A', 'B'], 'object': ['C'], 'boolean': ['E'], 'categorical': ['D'], 'datetime': [],
                 'timedelta': []}
 
     >>> combine_categorical_columns(df=df, col_types=col_types)

@@ -57,6 +57,8 @@ class ColumnMultiplier(BaseEstimator,TransformerMixin):
         :param new_column_name:str, name of new column created from adding the columns in column list together
 
         Usage
+        >>> import pandas as pd
+        >>> from datamallet.tabular.feature import ColumnMultiplier
         >>> df3 = pd.DataFrame({'A':[1,1,2,1,1],'B':[2,2,1,2,0],})
         >>> multiplied_df = ColumnMultiplier(column_list=['A','B'], new_column_name='Z').transform(X=df3)
         >>> print(multiplied_df)
@@ -135,6 +137,20 @@ class ExpandingTransformer(BaseEstimator, TransformerMixin):
         :param min_periods: int, minimum number of observations in window required to have a value
         :param aggregation_function: str, aggregation function to be applied, options are 'mean'
                , 'max', 'std' , 'sum', 'min'
+
+        Usage
+        >>> import pandas as pd
+        >>> from datamallet.tabular.feature import ExpandingTransformer
+        >>> df = pd.DataFrame({"B": [0, 1, 2, np.nan, 4], "A": [0, 1, 0, np.nan, 4]})
+        >>> expander = ExpandingTransformer(column_list=['B'],min_periods=2,aggregation_function='sum')
+        >>> df_new = expander.transform(X=df)
+        >>> print(df_new)
+             B    A
+        0  NaN  0.0
+        1  1.0  1.0
+        2  3.0  0.0
+        3  3.0  NaN
+        4  7.0  4.0
 
         """
 

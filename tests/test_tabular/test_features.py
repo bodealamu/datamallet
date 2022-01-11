@@ -53,7 +53,19 @@ def test_expandingtransformer():
 
     df_new = expander.transform(X=df)
 
+    df2= pd.DataFrame({"B": [0, 1, 2, np.nan, 4],
+                       "A": [0, 1, 0, np.nan, 4]})
+    expander = ExpandingTransformer(column_list=['B'],
+                                    min_periods=2,
+                                    aggregation_function='sum')
+
+    df_new2 = expander.transform(X=df2)
+
+    assert df_new2['B'].sum() == 14.0
     assert df_new['B'].sum() == 14.0
+    assert df['B'].sum() == 7.0
+    assert df2['A'].sum() == df_new2['A'].sum()
+    assert isinstance(df_new2, pd.DataFrame)
     assert isinstance(df_new, pd.DataFrame)
 
 
