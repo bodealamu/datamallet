@@ -40,11 +40,11 @@ datamallet currently has the following modules
 (data which can be found in a table (pandas dataframe) either pure tabular or timeseries). 
 The classes found in the tabular module can be used in a scikit-learn pipeline.<br>
 The `Tabular` module contains the following submodules:<br>
--`features` which contains scikit-learn compatible transformer classes for creating new features
+  -`features` which contains scikit-learn compatible transformer classes for creating new features
 (more classes are welcome).<br>
-- `preprocess` which contains transformers for preprocessing data.<br>
--`timeseries` which contains transformers for manipulating time series data.<br>
--`utils` which contains helper functions for data wrangling and carrying out checks.<br>
+  - `preprocess` which contains transformers for preprocessing data.<br>
+  -`timeseries` which contains transformers for manipulating time series data.<br>
+  -`utils` which contains helper functions for data wrangling and carrying out checks.<br>
 
 <br>
 
