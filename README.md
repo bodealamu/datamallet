@@ -36,9 +36,15 @@ datamallet currently has the following modules
   All these charts can be created automatrically using the `Autoplot` class in the visualization module, 
   they can also be created using individual functions in the `plot` module.
   
-2) `Tabular` module which contains scikit-learn compatible transformers for data manipulation for tabular data,
-(data which can be found in a table either pure tabular/timeseries). 
-The classes found in the tabular module can be used in a scikit-learn pipeline.
+2) `Tabular` module contains scikit-learn compatible transformers for data manipulation for tabular data,
+(data which can be found in a table (pandas dataframe) either pure tabular or timeseries). 
+The classes found in the tabular module can be used in a scikit-learn pipeline.<br>
+The `Tabular` module contains the following submodules:<br>
+-`features` which contains scikit-learn compatible transformer classes for creating new features
+(more classes are welcome).<br>
+- `preprocess` which contains transformers for preprocessing data.<br>
+-`timeseries` which contains transformers for manipulating time series data.<br>
+-`utils` which contains helper functions for data wrangling and carrying out checks.<br>
 
 <br>
 
