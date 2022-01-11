@@ -42,9 +42,9 @@ The classes found in the tabular module can be used in a scikit-learn pipeline.<
 The `Tabular` module contains the following submodules:<br>
   -`features` which contains scikit-learn compatible transformer classes for creating new features
      (more classes are welcome).<br>
-  - `preprocess` which contains transformers for preprocessing data.<br>
   -`timeseries` which contains transformers for manipulating time series data.<br>
   -`utils` which contains helper functions for data wrangling and carrying out checks.<br>
+  - `preprocess` which contains transformers for preprocessing data.<br>
 
 <br>
 
