@@ -19,6 +19,13 @@ datamallet is available on pip and can be installed using the command below:<br>
 
 `pip install datamallet ` <br>
 
+## Tests<br>
+from the main directory, you can run the tests by simply running the pytest command.<br>
+
+ `pytest`
+ 
+ As of `v0.7.1`, every single function is tested. <br>
+
 
 ## Modules
 datamallet currently has the following modules
@@ -56,5 +63,3 @@ The idea is for this library to be the de-facto tool for expediting data science
 
 <br>
 
-# Tests<br>
-from the main directory, you can run the tests by simply running the pytest command
