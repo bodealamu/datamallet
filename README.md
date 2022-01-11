@@ -23,7 +23,7 @@ datamallet is available on pip and can be installed using the command below:<br>
 ## Modules
 datamallet currently has the following modules
 1) `Visualization` module which contains helper functions 
- for automatic visualization and for creating different types of charts such as:
+ for automatic visualization and for creating different types of charts such as:<br>
   -Scatter plots.<br>
   -Correlation plots.<br>
   -Histogram.<br>
