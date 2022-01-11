@@ -24,14 +24,14 @@ datamallet is available on pip and can be installed using the command below:<br>
 datamallet currently has the following modules
 1) `Visualization` module which contains helper functions 
  for automatic visualization and for creating different types of charts such as:
-  -Scatter plots.
-  -Correlation plots.
-  -Histogram.
-  -Box plots.
-  -Violin plots.
-  -Treemaps.
-  -Sun burst Charts.
-  -Pie Charts.
+  -Scatter plots.<br>
+  -Correlation plots.<br>
+  -Histogram.<br>
+  -Box plots.<br>
+  -Violin plots.<br>
+  -Treemaps.<br>
+  -Sun burst Charts.<br>
+  -Pie Charts.<br>
   
   All these charts can be created automatrically using the `Autoplot` class in the visualization module, 
   they can also be created using individual functions in the `plot` module.
