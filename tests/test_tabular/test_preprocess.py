@@ -1,5 +1,5 @@
 from datamallet.tabular.preprocess import (ColumnDropper,
-                                           NaFiller,
+                                           NaFiller,ConstantValueFiller,
                                            ColumnRename)
 import pandas as pd
 import numpy as np
@@ -65,6 +65,18 @@ def test_NaFiller():
     assert cx['A'].mean() == 4.4
     assert cx['C'].mean() == 4.2
     assert cx['D'].mean() == 5.0
+
+
+def test_constantvaluefiller():
+    df2 = pd.DataFrame({'A': [np.nan, 2, 3, 4, 5, 8], 'B': [2, np.nan, np.nan, np.nan, 10, 9],
+                        'C': [1, 3, 5, np.nan, np.nan, 7]})
+    cvf = ConstantValueFiller(fill_dict={'A': 100, 'B': 200, 'C': 300}, limit=1)
+    vx = cvf.transform(X=df2)
+    assert vx['A'].sum() == 122
+    cvf = ConstantValueFiller(fill_dict={'A': 100, 'B': 200, 'C': 300}, limit=None)
+    vx = cvf.transform(X=df2)
+    assert vx['C'].sum() == 616
+    assert vx['A'].sum() == 122
 
 
 def test_column_rename():
