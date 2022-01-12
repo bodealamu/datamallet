@@ -1,5 +1,6 @@
 from datamallet.tabular.utils import (extract_numeric_cols,
                                       check_columns,
+                                      check_dictionary,
                                       check_dataframe,column_mean,
                                       check_categorical,
                                       get_unique,extract_col_types,
@@ -50,6 +51,16 @@ def test_time_index():
 
 def test_check_dataframe():
     assert check_dataframe(df=df3) is True
+
+
+def test_check_dictionary():
+    df = pd.DataFrame({'A': [1, 2, 3, 4, 5],
+                       'B': [2, 4, 6, 8, 10],
+                       'C': ['dog', 'cat', 'sheep', 'dog', 'cat'],
+                       'D': ['male', 'male', 'male', 'female', 'female'],
+                       'E': [True, True, False, True, True]})
+    assert check_dictionary(df=df, column_dict={'A':2,'Z':3}) is False
+    assert check_dictionary(df=df, column_dict={'A':2,'B':3}) is True
 
 
 def test_check_columns():
