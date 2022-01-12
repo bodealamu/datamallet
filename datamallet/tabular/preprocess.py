@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-from .utils import (check_columns, extract_numeric_cols,
+from .utils import (check_columns,
+                    extract_numeric_cols,
+                    check_dictionary,
                     check_dataframe,
                     column_mean,
                     check_numeric)
@@ -173,6 +175,47 @@ class NaFiller(BaseEstimator, TransformerMixin):
                 # if no columns are specified, use only numeric columns
                 X.fillna(value=column_mean(df=X, column_list=numeric_cols), inplace=True, limit=self.limit)
                 return X
+
+
+class ConstantValueFiller(BaseEstimator, TransformerMixin):
+    def __init__(self, fill_dict, limit=None):
+        """
+        Performs Missing value imputation using a dictionary,
+        this dictionary has the column name as key and the value to use to fill as value
+        :param fill_dict: dict, dictionary which maps column name to value
+        :param limit:int, (default = None) the maximum number of missing value per column to be filled,
+                if None, all missing values would be filled
+
+        Usage
+        >>> import pandas as pd
+        >>> import numpy as np
+        >>> df2 = pd.DataFrame({'A':[np.nan,2,3,4,5,8],'B':[2,np.nan,np.nan,np.nan,10,9],'C':[1,3,5, np.nan, np.nan,7]})
+        >>> cvf = ConstantValueFiller(fill_dict={'A':100, 'B':200,'C':300}, limit=1)
+        >>> vx = cvf.transform(X=df2)
+        >>> print(vx)
+               A      B      C
+        0  100.0    2.0    1.0
+        1    2.0  200.0    3.0
+        2    3.0    NaN    5.0
+        3    4.0    NaN  300.0
+        4    5.0   10.0    NaN
+        5    8.0    9.0    7.0
+        """
+        self.fill_dict = fill_dict
+        self.limit = limit
+        assert isinstance(fill_dict, dict), "fill_dict is expected to be a dictionary"
+        assert isinstance(limit, int) or limit is None
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        X = X.copy()
+
+        if check_dictionary(df=X, column_dict=self.fill_dict) and check_dataframe(df=X):
+            X.fillna(value=self.fill_dict, inplace=True, limit=self.limit)
+
+        return X
 
 
 class ColumnRename(BaseEstimator, TransformerMixin):
