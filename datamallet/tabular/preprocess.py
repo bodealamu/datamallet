@@ -178,11 +178,11 @@ class NaFiller(BaseEstimator, TransformerMixin):
 
 
 class ConstantValueFiller(BaseEstimator, TransformerMixin):
-    def __init__(self, fill_dict, limit=None):
+    def __init__(self, value, limit=None):
         """
-        Performs Missing value imputation using a dictionary,
+        Performs Missing value imputation using a constant value or dictionary,
         this dictionary has the column name as key and the value to use to fill as value
-        :param fill_dict: dict, dictionary which maps column name to value
+        :param value:  dictionary which maps column name to value or interger or string
         :param limit:int, (default = None) the maximum number of missing value per column to be filled,
                 if None, all missing values would be filled
 
@@ -190,7 +190,7 @@ class ConstantValueFiller(BaseEstimator, TransformerMixin):
         >>> import pandas as pd
         >>> import numpy as np
         >>> df2 = pd.DataFrame({'A':[np.nan,2,3,4,5,8],'B':[2,np.nan,np.nan,np.nan,10,9],'C':[1,3,5, np.nan, np.nan,7]})
-        >>> cvf = ConstantValueFiller(fill_dict={'A':100, 'B':200,'C':300}, limit=1)
+        >>> cvf = ConstantValueFiller(value={'A':100, 'B':200,'C':300}, limit=1)
         >>> vx = cvf.transform(X=df2)
         >>> print(vx)
                A      B      C
@@ -201,9 +201,9 @@ class ConstantValueFiller(BaseEstimator, TransformerMixin):
         4    5.0   10.0    NaN
         5    8.0    9.0    7.0
         """
-        self.fill_dict = fill_dict
+        self.value = value
         self.limit = limit
-        assert isinstance(fill_dict, dict), "fill_dict is expected to be a dictionary"
+        assert isinstance(value, dict) or value is not None, "fill_dict is expected to be a dictionary"
         assert isinstance(limit, int) or limit is None
 
     def fit(self, X, y=None):
@@ -212,10 +212,18 @@ class ConstantValueFiller(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         X = X.copy()
 
-        if check_dictionary(df=X, column_dict=self.fill_dict) and check_dataframe(df=X):
-            X.fillna(value=self.fill_dict, inplace=True, limit=self.limit)
+        if check_dataframe(df=X):
+            if isinstance(self.value, int) or isinstance(self.value, float) or isinstance(self.value, str):
+                X.fillna(value=self.value, inplace=True, limit=self.limit)
+                return X
+            if check_dictionary(df=X, column_dict=self.value):
+                X.fillna(value=self.value, inplace=True, limit=self.limit)
+                return X
 
         return X
+
+
+# class
 
 
 class ColumnRename(BaseEstimator, TransformerMixin):
