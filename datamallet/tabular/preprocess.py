@@ -200,6 +200,17 @@ class ConstantValueFiller(BaseEstimator, TransformerMixin):
         3    4.0    NaN  300.0
         4    5.0   10.0    NaN
         5    8.0    9.0    7.0
+
+        >>> cvf = ConstantValueFiller(value=200, limit=None)
+        >>> vx = cvf.transform(X=df2)
+        >>> print(vx)
+               A      B      C
+        0  200.0    2.0    1.0
+        1    2.0  200.0    3.0
+        2    3.0  200.0    5.0
+        3    4.0  200.0  200.0
+        4    5.0   10.0  200.0
+        5    8.0    9.0    7.0
         """
         self.value = value
         self.limit = limit
