@@ -47,6 +47,40 @@ def check_dataframe(df):
         return False
 
 
+def check_dictionary(df, column_dict):
+    """
+    Checks the keys of a dictionary to see if it belongs to columns in a dataframe.
+    :param df:pandas dataframe
+    :param column_dict: dictionary that needs to be checked to see of its keys are column names
+    :return:boolean, whether the keys of the dictionary are column names
+
+    Usage
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import check_dictionary
+    >>> df = pd.DataFrame({'A': [1, 2, 3, 4, 5],'B': [2, 4, 6, 8, 10],'C': ['dog', 'cat', 'sheep', 'dog', 'cat'],
+        ... 'D': ['male', 'male', 'male', 'female', 'female'],
+        ... 'E': [True, True, False, True, True]})
+    >>> check_dictionary(df=df, column_dict={'A':2,'B':3})
+    True
+    >>> check_dictionary(df=df, column_dict={'A':2,'Z':3})
+    False
+
+    """
+    assert isinstance(column_dict, dict), "column_dict must be a dictionary"
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+
+    length_dictionary = len(column_dict)
+    df_cols = df.columns
+
+    columns_count = 0
+
+    for key,value in column_dict.items():
+        if key in df_cols:
+            columns_count += 1
+
+    return columns_count == length_dictionary
+
+
 def check_columns(df, column_list):
     """
     Checks to see if provided column_list is part of dataframe columns
