@@ -234,9 +234,6 @@ class ConstantValueFiller(BaseEstimator, TransformerMixin):
         return X
 
 
-# class
-
-
 class ColumnRename(BaseEstimator, TransformerMixin):
     def __init__(self, rename_dictionary):
         """
