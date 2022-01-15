@@ -1,5 +1,5 @@
 # datamallet 
-![Screenshot](datamallet.jpg)
+![Screenshot](https://github.com/bodealamu/datamallet/raw/main/datamallet.jpg)
 
 Datamallet is a collection of helpful functions and modules built by Data scientists for Data scientists, to help 
 expedite the data science workflow. <br>
