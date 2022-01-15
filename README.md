@@ -71,12 +71,15 @@ The `Tabular` module contains the following submodules:<br>
                     create_html=True,
                     filename='autoplot')`<br>
                     
-`autoplot.show()`<br>
+`list_of_charts = autoplot.show()`<br>
 
-An html file with filename autoplot.html would be created (check the current directory, a sample is also 
-found in this repo).<br>
+An html file with filename `autoplot.html` would be created (check the current directory, a sample is also 
+found in this repo),
 the show method also creates a list of the plotly graph objects, so you have the option of not creating the chart but 
 using the list of graph objects to display the charts.<br>
+
+`for chart in list_of_charts:`<br>
+    `chart.show()`
 
 ## Future roadmap
 <br>
