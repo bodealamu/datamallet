@@ -25,7 +25,31 @@ from the main directory, you can run the tests by simply running the pytest comm
 
  `pytest`
  
- As of `v0.7.1`, every single function is tested. <br>
+
+## Quick start<br>
+### Automatic Data Visualization
+`from datamallet.visualization import AutoPlot`<br>
+`tips = px.data.tips()`<br>
+`from datamallet.visualization import AutoPlot`
+
+`autoplot = AutoPlot(df=tips,include_scatter=True,include_pie=True,include_box=True,
+                    include_sunburst=True,
+                    include_violin=True,
+                    include_treemap=True,
+                    include_histogram=True,
+                    include_correlation=True,
+                    create_html=True,
+                    filename='autoplot')`<br>
+                    
+`list_of_charts = autoplot.show()`<br>
+
+An html file with filename `autoplot.html` would be created (check the current directory, a sample is also 
+found in this repo),
+the show method also creates a list of the plotly graph objects, so you have the option of not creating the chart but 
+using the list of graph objects to display the charts.<br>
+
+`for chart in list_of_charts:`<br>
+    `chart.show()`
 
 
 ## Modules
@@ -56,36 +80,6 @@ The `Tabular` module contains the following submodules:<br>
 
 <br>
 
-## Quick start<br>
-### Automatic Data Visualization
-`from datamallet.visualization import AutoPlot`<br>
-`tips = px.data.tips()`<br>
-`from datamallet.visualization import AutoPlot`
 
-`autoplot = AutoPlot(df=tips,include_scatter=True,include_pie=True,include_box=True,
-                    include_sunburst=True,
-                    include_violin=True,
-                    include_treemap=True,
-                    include_histogram=True,
-                    include_correlation=True,
-                    create_html=True,
-                    filename='autoplot')`<br>
-                    
-`list_of_charts = autoplot.show()`<br>
 
-An html file with filename `autoplot.html` would be created (check the current directory, a sample is also 
-found in this repo),
-the show method also creates a list of the plotly graph objects, so you have the option of not creating the chart but 
-using the list of graph objects to display the charts.<br>
-
-`for chart in list_of_charts:`<br>
-    `chart.show()`
-
-## Future roadmap
-<br>
-In the future, modules concerned with other parts of Machine learning 
-(e.g. Computer vision, NLP, recommendation engine etc) can be added.<br> 
-The idea is for this library to be the de-facto tool for expediting data science tasks
-
-<br>
 
