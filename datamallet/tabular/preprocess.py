@@ -273,6 +273,55 @@ class ColumnRename(BaseEstimator, TransformerMixin):
         return X
 
 
+class NADropper(BaseEstimator, TransformerMixin):
+    def __init__(self, axis=1,how='all',thresh=None):
+        """
+        Transformer for dropping columns with missing value.
+        :param axis: 0 or 'index', drops rows which contain missing value, 1 or 'columns' drops columns which contain missing value.
+        :param how: str, 'any','all'. drop row or column if any NA is present, drop row or column if all values are missing.
+        :param thresh: int, require that many non NA values
+
+        Usage
+        >>> import pandas as pd
+        >>> import numpy as np
+        >>> df3 = pd.DataFrame({'A':[np.nan,2,3,4,5],'B':[2,np.nan,np.nan,np.nan,10],
+            ... 'C':['dog','cat', 'sheep','dog','cat'],'D':['male','male','male','female','female'],
+            ... 'E':[True,True,False,True,True]})
+        >>> nadropper = NADropper(axis='columns', how='any')
+        >>> droped2 = nadropper.transform(X=df2)
+               C       D      E
+        0    dog    male   True
+        1    cat    male   True
+        2  sheep    male  False
+        3    dog  female   True
+        4    cat  female   True
+
+        """
+        self.axis = axis
+        self.how = how
+        self.thresh = thresh
+        assert isinstance(thresh,int) or thresh is None,"thresh is expected to be an integer"
+        assert how in ['any','all']
+        assert axis in [0,1,'index','columns'],""
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        if check_dataframe(df=X):
+            X = X.copy()
+            X.dropna(axis=self.axis, how=self.how, thresh=self.thresh, inplace=True)
+
+        return X
+
+
+# class
+
+
+
+
+
+
 
 
 

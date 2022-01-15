@@ -1,5 +1,7 @@
 from datamallet.tabular.preprocess import (ColumnDropper,
-                                           NaFiller,ConstantValueFiller,
+                                           NaFiller,
+                                           NADropper,
+                                           ConstantValueFiller,
                                            ColumnRename)
 import pandas as pd
 import numpy as np
@@ -18,6 +20,12 @@ d = pd.DataFrame({'A':[np.nan,2,3,4,5,8],
                    'B':[2,np.nan,np.nan,np.nan,10,9],
                    'C':[1,3,5, np.nan, np.nan,7],
                    'D':[4,np.nan,np.nan, np.nan, np.nan,7]})
+
+df3 = pd.DataFrame({'A':[np.nan,2,3,4,5],
+                   'B':[2,np.nan,np.nan,np.nan,10],
+                   'C':['dog','cat', 'sheep','dog','cat'],
+                   'D':['male','male','male','female','female'],
+                   'E':[True,True,False,True,True]})
 
 
 def test_column_dropper():
@@ -95,5 +103,20 @@ def test_column_rename():
     assert 'C' in renamed_df.columns
     assert 'D' in renamed_df.columns
     assert 'E' in renamed_df.columns
+
+
+def test_nadropper():
+    nadropper = NADropper(axis='columns', how='any')
+    droped2 = nadropper.transform(X=df2)
+    assert 'A' not in droped2.columns
+    assert 'B' not in droped2.columns
+    nadropper = NADropper(axis='columns', how='all')
+    droped = nadropper.transform(X=df2)
+    assert 'A' in droped.columns
+    assert 'B' in droped.columns
+    nadropper = NADropper(axis='index', how='any', )
+    d = nadropper.transform(X=df2)
+    assert len(d) == 1
+
 
 
