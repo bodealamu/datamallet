@@ -29,8 +29,10 @@ from the main directory, you can run the tests by simply running the pytest comm
 ## Quick start<br>
 ### Automatic Data Visualization
 `from datamallet.visualization import AutoPlot`<br>
-`tips = px.data.tips()`<br>
+`import plotly.express as px`<br>
 `from datamallet.visualization import AutoPlot`
+
+`tips = px.data.tips()`<br>
 
 `autoplot = AutoPlot(df=tips,include_scatter=True,include_pie=True,include_box=True,
                     include_sunburst=True,
