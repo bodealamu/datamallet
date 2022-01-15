@@ -587,3 +587,43 @@ def combine_categorical_columns(df, col_types):
         combined.extend(boolean_cols)
 
     return combined
+
+
+def missing_summary(df):
+    """
+    Returns the number of missing value per column in a pandas dataframe
+    :param df: pandas dataframe
+    :return: dict with column name as key and number of missing value as value
+
+    Usage
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import missing_summary
+    >>> df = pd.DataFrame(dict(age=[5, 6, np.NaN],born=[pd.NaT, pd.Timestamp('1939-05-27'),pd.Timestamp('1940-04-25')],
+    ... name=['Alfred', 'Batman', ''],toy=[None, 'Batmobile', 'Joker']))
+    >>> missing_summary(df=df)
+    {'age': 1, 'born': 1, 'name': 0, 'toy': 1}
+
+    """
+    assert isinstance(df,pd.DataFrame), "df must be a pandas dataframe"
+
+    return df.isna().sum().to_dict()
+
+
+def percentage_missing(df):
+    """
+    Determine the percentage of missing values per column
+    :param df: pandas dataframe
+    :return: dictionary showing the percentage of missing values per column
+    """
+    assert isinstance(df,pd.DataFrame)
+    percentage_missing_dict = dict()
+    length_df = len(df)
+
+    missing_dict = missing_summary(df=df)
+
+    for col,num_missing in missing_dict.items():
+        percentage_missing_dict[col] = round((num_missing/length_df)*100,2)
+
+    return percentage_missing_dict
+
+

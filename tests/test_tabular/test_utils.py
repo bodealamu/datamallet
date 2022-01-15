@@ -13,8 +13,11 @@ from datamallet.tabular.utils import (extract_numeric_cols,
                                       calculate_correlation,
                                       combine_categorical_columns,
                                       get_column_types,
+                                      percentage_missing,
+                                      missing_summary,
                                       check_numeric)
 import pandas as pd
+import numpy as np
 
 # test data, dont alter
 df = pd.DataFrame({'A':[1,2,3,4,5],
@@ -42,6 +45,12 @@ df4.index = pd.to_datetime(df4['E'])
 df4['E'] = pd.to_datetime(df4['E'])
 df4['F'] = pd.to_datetime(df4['F'])
 df4['G'] = df4['F'] - df4['E']
+
+df5 = pd.DataFrame(dict(age=[5, 6, np.NaN],
+                   born=[pd.NaT, pd.Timestamp('1939-05-27'),
+                         pd.Timestamp('1940-04-25')],
+                   name=['Alfred', 'Batman', ''],
+                   toy=[None, 'Batmobile', 'Joker']))
 
 
 def test_time_index():
@@ -170,6 +179,18 @@ def test_combine_categorical_columns():
 
     assert isinstance(combine_categorical_columns(df=df, col_types=col_types), list)
     assert isinstance(combine_categorical_columns(df=df3, col_types=col_types3), list)
+
+
+def test_percentage_missing():
+    p = percentage_missing(df=df5)
+    assert p['born'] == 33.33
+    assert p['toy'] == 33.33
+
+
+def test_missing_summary():
+    ms = missing_summary(df=df5)
+    assert ms['name'] == 0
+
 
 
 
