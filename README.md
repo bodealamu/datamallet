@@ -56,7 +56,24 @@ The `Tabular` module contains the following submodules:<br>
 
 <br>
 
-# Future roadmap
+## Quick start<br>
+### Automatic Data Visualization
+`from datamallet.visualization import AutoPlot`<br>
+`tips = px.data.tips()`<br>
+`from datamallet.visualization import AutoPlot`
+
+`autoplot = AutoPlot(df=tips,include_scatter=True,include_pie=True,include_box=True,
+                    include_sunburst=True,
+                    include_violin=True,
+                    include_treemap=True,
+                    include_histogram=True,
+                    include_correlation=True,
+                    create_html=True,
+                    filename='autoplot')`<br>
+                    
+`autoplot.show()`
+
+## Future roadmap
 <br>
 In the future, modules concerned with other parts of Machine learning 
 (e.g. Computer vision, NLP, recommendation engine etc) can be added.<br> 
