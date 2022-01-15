@@ -320,6 +320,19 @@ class DropPercentageMissing(BaseEstimator, TransformerMixin):
         """
         Drops column which have a percentage of missing value greater than or equal to the threshold
         :param threshold: int
+
+        Usage
+         >>> import pandas as pd
+        >>> from datamallet.tabular.preprocess import DropPercentageMissing
+        >>> df = pd.DataFrame(dict(age=[5, 6, np.NaN],born=[pd.NaT, pd.Timestamp('1939-05-27'),pd.Timestamp('1940-04-25')],
+        ... name=['Alfred', 'Batman', ''],toy=[None, 'Batmobile', 'Joker']))
+        >>> bn = DropPercentageMissing(threshold=20).transform(X=df)
+        >>> print(bn)
+             name
+        0  Alfred
+        1  Batman
+        2
+
         """
         assert isinstance(threshold, int)
         self.threshold = threshold
