@@ -614,6 +614,15 @@ def percentage_missing(df):
     Determine the percentage of missing values per column
     :param df: pandas dataframe
     :return: dictionary showing the percentage of missing values per column
+
+    Usage
+    >>> import pandas as pd
+    >>> from datamallet.tabular.utils import percentage_missing
+    >>> df = pd.DataFrame(dict(age=[5, 6, np.NaN],born=[pd.NaT, pd.Timestamp('1939-05-27'),pd.Timestamp('1940-04-25')],
+    ... name=['Alfred', 'Batman', ''],toy=[None, 'Batmobile', 'Joker']))
+
+    >>> percentage_missing(df)
+    {'age': 33.33, 'born': 33.33, 'name': 0.0, 'toy': 33.33}
     """
     assert isinstance(df,pd.DataFrame)
     percentage_missing_dict = dict()

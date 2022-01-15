@@ -1,5 +1,6 @@
 from datamallet.tabular.preprocess import (ColumnDropper,
                                            NaFiller,
+                                           DropPercentageMissing,
                                            NADropper,
                                            ConstantValueFiller,
                                            ColumnRename)
@@ -117,6 +118,12 @@ def test_nadropper():
     nadropper = NADropper(axis='index', how='any', )
     d = nadropper.transform(X=df2)
     assert len(d) == 1
+
+
+def test_dropPercentageMissing():
+    bn = DropPercentageMissing(threshold=20).transform(X=df)
+
+    assert 'toy' not in bn.columns
 
 
 

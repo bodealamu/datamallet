@@ -4,7 +4,7 @@ from .utils import (check_columns,
                     extract_numeric_cols,
                     check_dictionary,
                     check_dataframe,
-                    column_mean,
+                    column_mean,percentage_missing,
                     check_numeric)
 
 
@@ -315,7 +315,34 @@ class NADropper(BaseEstimator, TransformerMixin):
         return X
 
 
-# class
+class DropPercentageMissing(BaseEstimator, TransformerMixin):
+    def __init__(self, threshold=50):
+        """
+        Drops column which have a percentage of missing value greater than or equal to the threshold
+        :param threshold: int
+        """
+        assert isinstance(threshold, int)
+        self.threshold = threshold
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        assert isinstance(X, pd.DataFrame)
+        X = X.copy()
+        percentage_mis_dict = percentage_missing(df=X)
+        drop_list = list()
+
+        for column, percentage in percentage_mis_dict.items():
+            if percentage >= self.threshold:
+                drop_list.append(column)
+
+        X.drop(axis='columns', inplace=True,labels=drop_list)
+
+        return X
+
+
+
 
 
 
