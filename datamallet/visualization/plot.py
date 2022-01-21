@@ -501,6 +501,113 @@ def create_scatter(df,
     return figure_list
 
 
+def create_density(df,
+                   col_types,
+                   nbinsx=20,
+                   nbinsy=20,
+                   maximum_color_groups=4,
+                   typr_of_chart='contour',
+                   filename='density_charts',
+                   orientation='v',
+                   marginal_x=None,
+                   marginal_y=None,
+                   log_x=False,
+                   log_y=False,
+                   histfunc='sum',
+                   histnorm=None,
+                   create_html=True
+                   ):
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
+                                        "name as keys and column type as value"
+    keys = col_types.keys()
+    assert 'numeric' in keys, "col_types dictionary missing key numeric"
+    assert 'object' in keys, "col_types dictionary missing key object"
+    assert 'boolean' in keys, "col_types dictionary missing key boolean"
+    assert 'categorical' in keys, "col_types dictionary missing key categorical"
+    assert 'datetime' in keys, "col_types dictionary missing key datetime"
+    assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
+    assert isinstance(nbinsx,int)
+    assert isinstance(nbinsy, int)
+    assert isinstance(log_y, bool)
+    assert isinstance(log_x, bool)
+    assert marginal_x in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
+                                                                     "'box','violin','histogram'"
+    assert marginal_y in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
+                                                                     "'box','violin','histogram'"
+    assert histfunc in ['count', 'sum', 'avg', 'min',
+                        'max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
+    assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
+    assert orientation in ['v', 'h']
+    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert typr_of_chart in ['contour','heatmap']
+
+    figure_list = list()
+    numeric_cols = col_types['numeric']
+
+    if len(numeric_cols) < 2:
+        # density contour at least 2 columns of numeric type
+        return figure_list
+
+    # create pairing for x and y values
+    plot_pairs = create_pairs(df, numeric_cols=numeric_cols)
+
+    columns_with_distinct = columns_with_distinct_values(df,
+                                                         maximum_number_distinct_values=maximum_color_groups,
+                                                         categorical_only=True)
+
+    for pair in plot_pairs:
+        x,y = pair
+        for z in numeric_cols:
+            for color in columns_with_distinct:
+                title = "Density plot of {} vs {},with {} on z axis".format(x,y,z)
+                if typr_of_chart == 'contour':
+                    plot = px.density_contour(data_frame=df,
+                                              x=x,
+                                              y=y,
+                                              z=z,
+                                              color=color,
+                                              histnorm=histnorm,
+                                              histfunc=histfunc,
+                                              nbinsx=nbinsx,
+                                              nbinsy=nbinsy,
+                                              log_y=log_y,
+                                              log_x=log_x,
+                                              marginal_x=marginal_x,
+                                              marginal_y=marginal_y,
+                                              orientation=orientation,
+                                              title=title)
+                    figure_list.append(plot)
+
+                if typr_of_chart == 'heatmap':
+
+                    plot = px.density_heatmap(data_frame=df,
+                                              x=x,
+                                              y=y,
+                                              z=z,
+                                              histnorm=histnorm,
+                                              histfunc=histfunc,
+                                              nbinsx=nbinsx,
+                                              nbinsy=nbinsy,
+                                              log_y=log_y,
+                                              log_x=log_x,
+                                              marginal_x=marginal_x,
+                                              marginal_y=marginal_y,
+                                              orientation=orientation,
+                                              title=title)
+                    figure_list.append(plot)
+
+    if create_html:
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
+
+
+
+
+
 
 
 
