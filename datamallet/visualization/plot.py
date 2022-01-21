@@ -559,9 +559,9 @@ def create_density(df,
     for pair in plot_pairs:
         x,y = pair
         for z in numeric_cols:
-            for color in columns_with_distinct:
-                title = "Density plot of {} vs {},with {} on z axis".format(x,y,z)
-                if typr_of_chart == 'contour':
+            if typr_of_chart == 'contour':
+                for color in columns_with_distinct:
+                    title = "Density contour of {} vs {},with {} on z axis".format(x, y, z)
                     plot = px.density_contour(data_frame=df,
                                               x=x,
                                               y=y,
@@ -579,23 +579,24 @@ def create_density(df,
                                               title=title)
                     figure_list.append(plot)
 
-                if typr_of_chart == 'heatmap':
+            if typr_of_chart == 'heatmap':
+                title = "Density heatmap of {} vs {},with {} on z axis".format(x, y, z)
 
-                    plot = px.density_heatmap(data_frame=df,
-                                              x=x,
-                                              y=y,
-                                              z=z,
-                                              histnorm=histnorm,
-                                              histfunc=histfunc,
-                                              nbinsx=nbinsx,
-                                              nbinsy=nbinsy,
-                                              log_y=log_y,
-                                              log_x=log_x,
-                                              marginal_x=marginal_x,
-                                              marginal_y=marginal_y,
-                                              orientation=orientation,
-                                              title=title)
-                    figure_list.append(plot)
+                plot = px.density_heatmap(data_frame=df,
+                                          x=x,
+                                          y=y,
+                                          z=z,
+                                          histnorm=histnorm,
+                                          histfunc=histfunc,
+                                          nbinsx=nbinsx,
+                                          nbinsy=nbinsy,
+                                          log_y=log_y,
+                                          log_x=log_x,
+                                          marginal_x=marginal_x,
+                                          marginal_y=marginal_y,
+                                          orientation=orientation,
+                                          title=title)
+                figure_list.append(plot)
 
     if create_html:
         figures_to_html(figs=figure_list, filename=filename)
