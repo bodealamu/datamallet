@@ -66,6 +66,8 @@ datamallet currently has the following modules
   -Treemaps.<br>
   -Sun burst Charts.<br>
   -Pie Charts.<br>
+  -Density Contour Charts.<br>
+  -Density Heatmap.<br>
   
   All these charts can be created automatrically using the `Autoplot` class in the visualization module, 
   they can also be created using individual functions in the `plot` module.
