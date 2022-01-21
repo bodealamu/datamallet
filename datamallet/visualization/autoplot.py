@@ -4,7 +4,7 @@ from .plot import (create_pie,
                    create_treemap,
                    create_violin,
                    create_sunburst,
-                   create_correlation_plot,
+                   create_correlation_plot,create_density_chart,
                    create_histogram)
 from .utils import (columns_with_distinct_values,
                     extract_col_types,
@@ -16,6 +16,7 @@ class AutoPlot(object):
     def __init__(self,
                  df,
                  nbins=30,
+                 nbinsy=30,
                  scatter_maximum_color_groups=5,
                  marginal_x=None,
                  marginal_y=None,
@@ -37,6 +38,8 @@ class AutoPlot(object):
                  include_pie=True,
                  include_histogram=True,
                  include_violin=True,
+                 include_density_heatmap=True,
+                 include_density_contour=True,
                  violinmode='group',
                  violin_box=True,
                  violin_points='all',
@@ -46,15 +49,17 @@ class AutoPlot(object):
                  maximum_number_sectors=3,
                  maximum_number_boxplots=5,
                  maximum_number_violinplots=5,
+                 density_max_color_groups=2,
                  pie_chart_hole=False,
                  create_html=True,
-                 scatter_orientation='v',
+                 orientation='v',
                  opacity = 1.0
                  ):
         """
         Entry point for automated data visualization
         :param df:
         :param nbins:
+        :param nbinsy:
         :param marginals:
         :param cumulative:
         :param filename:
@@ -74,6 +79,8 @@ class AutoPlot(object):
         :param include_pie: boolean, whether to include pie
         :param include_histogram: boolean, whether to include histogram
         :param include_violin: boolean, whether to include violin plots
+        :param include_density_heatmap:boolean, whether to include density heatmap charts
+        :param include_density_contour: boolean, whether to include density contour charts
         :param violinmode: str, display mode for violin charts
         :param violin_box: boolean, whether to include box plot in violin
         :param violin_points: str, how to display points in a violin plot
@@ -82,8 +89,10 @@ class AutoPlot(object):
         :param correlation_method: str, method to use to compute correlation
         :param maximum_number_sectors: int, maximum number of sectors in pie charts
         :param maximum_number_boxplots:int, maximum_number_boxplots
+        :param density_max_color_groups:int, maximum number of color points in density chart
         :param pie_chart_hole: boolean, whether to include a hole in pie chart or not
         :param create_html:boolean, whether to create an html file or not
+        :param orientation: str, orientation of the figure, 'v' or 'h'
 
         Usage
         >>> import pandas as pd
@@ -100,8 +109,9 @@ class AutoPlot(object):
         """
         self.df = df
         self.nbins = nbins
+        self.nbinsy = nbinsy
         self.scatter_maximum_color_groups = scatter_maximum_color_groups
-        self.scatter_orientation = scatter_orientation
+        self.orientation = orientation
         self.opacity=opacity
         self.marginal_x = marginal_x
         self.marginal_y = marginal_y
@@ -124,6 +134,8 @@ class AutoPlot(object):
         self.include_pie = include_pie
         self.include_histogram = include_histogram
         self.include_violin = include_violin
+        self.include_density_contour = include_density_contour
+        self.include_density_heatmap = include_density_heatmap
         self.violinmode = violinmode
         self.violin_box = violin_box
         self.violin_points = violin_points
@@ -133,6 +145,7 @@ class AutoPlot(object):
         self.maximum_number_sectors = maximum_number_sectors
         self.maximum_number_boxplots = maximum_number_boxplots
         self.maximum_number_violinplots = maximum_number_violinplots
+        self.density_max_color_groups = density_max_color_groups
         self.create_html = create_html
         self.pie_chart_hole = pie_chart_hole
         self.pie_sectors = columns_with_distinct_values(df=self.df, categorical_only=True,
@@ -142,8 +155,8 @@ class AutoPlot(object):
         assert isinstance(scatter_maximum_color_groups, int)
         assert marginal_x in ['rug', 'box', 'violin', 'histogram', None]
         assert marginal_y in ['rug', 'box', 'violin', 'histogram', None]
-        assert isinstance(scatter_orientation, str)
-        assert scatter_orientation in ['v', 'h']
+        assert isinstance(orientation, str)
+        assert orientation in ['v', 'h']
         assert isinstance(cumulative, bool), "cumulative must be a boolean"
         assert '.' not in filename, "filename doesn't need an extension"
         assert isinstance(filename, str), "filename must be a string with a dot or an extension"
@@ -169,6 +182,7 @@ class AutoPlot(object):
         assert isinstance(maximum_number_sectors,int)
         assert isinstance(maximum_number_boxplots,int)
         assert isinstance(maximum_number_violinplots,int)
+        assert isinstance(density_max_color_groups, int)
         assert isinstance(pie_chart_hole, bool)
         assert isinstance(opacity, float)
         assert opacity <= 1.0
@@ -181,9 +195,6 @@ class AutoPlot(object):
         assert isinstance(include_sunburst,bool)
         assert isinstance(include_violin, bool)
         assert isinstance(create_html,bool)
-        # assert marginal_x in ['rug', 'box', 'violin', 'histogram', None]
-        # assert marginal_y in ['rug', 'box', 'violin', 'histogram', None]
-        # assert isinstance(cumulative, bool), "cumulative must be a boolean"
 
     def chart_type(self):
         column_types = self.column_types
@@ -203,6 +214,8 @@ class AutoPlot(object):
         if len(numeric_cols) > 1:
             chart_types.append('scatter')
             chart_types.append('correlation_plot')
+            chart_types.append('density_contour')
+            chart_types.append('density_heatmap')
         if len(numeric_cols) > 0:
             chart_types.append('histogram')
             chart_types.append('boxplot')
@@ -251,7 +264,7 @@ class AutoPlot(object):
                                                        col_types= self.column_types,
                                                        marginal_y=self.marginal_x,
                                                        marginal_x=self.marginal_y,
-                                                       orientation=self.scatter_orientation,
+                                                       orientation=self.orientation,
                                                        opacity=self.opacity,
                                                        maximum_color_groups=self.scatter_maximum_color_groups,
                                                        log_x=self.log_x,
@@ -319,6 +332,42 @@ class AutoPlot(object):
                                                 color=None)
 
                     figure_list.extend(violin_list)
+
+                if chart == 'density_contour' and self.include_density_contour:
+                    density_contour_list = create_density_chart(df=self.df,
+                                                                col_types=self.column_types,
+                                                                nbinsx=self.nbins,
+                                                                nbinsy=self.nbinsy,
+                                                                maximum_color_groups=self.density_max_color_groups,
+                                                                typr_of_chart='contour',
+                                                                orientation=self.orientation,
+                                                                marginal_x=self.marginal_x,
+                                                                marginal_y=self.marginal_y,
+                                                                log_x=self.log_x,
+                                                                log_y=self.log_y,
+                                                                histfunc=self.histfunc,
+                                                                histnorm=self.histnorm,
+                                                                create_html=False
+                                                                )
+                    figure_list.extend(density_contour_list)
+
+                if chart == 'density_heatmap' and self.include_density_contour:
+                    density_heatmap_list = create_density_chart(df=self.df,
+                                                                col_types=self.column_types,
+                                                                nbinsx=self.nbins,
+                                                                nbinsy=self.nbinsy,
+                                                                maximum_color_groups=self.density_max_color_groups,
+                                                                typr_of_chart='heatmap',
+                                                                orientation=self.orientation,
+                                                                marginal_x=self.marginal_x,
+                                                                marginal_y=self.marginal_y,
+                                                                log_x=self.log_x,
+                                                                log_y=self.log_y,
+                                                                histfunc=self.histfunc,
+                                                                histnorm=self.histnorm,
+                                                                create_html=False
+                                                                )
+                    figure_list.extend(density_heatmap_list)
 
         if self.create_html:
             figures_to_html(figs=figure_list, filename=self.filename)
