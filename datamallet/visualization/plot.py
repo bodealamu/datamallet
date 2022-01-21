@@ -1,9 +1,8 @@
 from .utils import (hierarchical_path, columns_with_distinct_values,
                     create_pairs,
                     figures_to_html)
-from datamallet.tabular.utils import (check_dataframe,check_categorical,
+from datamallet.tabular.utils import (check_categorical,
                                       check_numeric,
-                                      check_columns,
                                       extract_numeric_cols,
                                       calculate_correlation)
 import pandas as pd
