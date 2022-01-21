@@ -5,6 +5,7 @@ from datamallet.visualization.plot import (create_box,
                                            create_correlation_plot,
                                            create_sunburst,
                                            create_treemap,
+                                           create_density_chart,
                                            create_scatter)
 from datamallet.tabular.utils import extract_col_types
 import pandas as pd
@@ -227,6 +228,51 @@ def test_create_scatter():
     assert isinstance(scatter_list3[0], plotly.graph_objs.Figure)
     assert isinstance(scatter_listc, list), 'the output is expected to be an empty list '
     assert len(scatter_listc) == 0, 'no charts are created because no numeric cols'
+
+
+def test_create_density_chart():
+    sample_df = pd.DataFrame({'A': [1, 2, 3, 4, 5],
+                        'B': [2, 4, 6, 8, 10],
+                        'C': [2, 3, 4, 5, 6],
+                        'D': [4, 7, 2, 5, 7],
+                        'E': [True, True, False, True, True],
+                        })
+    sample_df2 = pd.DataFrame({'A': [1, 2, 3, 4, 5],
+                        'B': [2, 4, 6, 8, 10],
+                        'C': [2, 3, 4, 5, 6],
+                        'D': [4, 7, 2, 5, 7],
+                        })
+
+    col_type = extract_col_types(df=sample_df)
+    col_type2 = extract_col_types(df=sample_df2)
+
+    sample_charts = create_density_chart(df=sample_df,
+                                         col_types=col_type,
+                                         typr_of_chart='contour', create_html=False,
+                                         filename='density_contour')
+    sample_charts2 = create_density_chart(df=sample_df,
+                                          col_types=col_type,
+                                          typr_of_chart='heatmap', create_html=False,
+                                          filename='density_contour')
+    sample_charts3 = create_density_chart(df=sample_df2,
+                                          col_types=col_type2,
+                                          typr_of_chart='contour', create_html=False,
+                                          filename='density_contour')
+    sample_charts4 = create_density_chart(df=sample_df2,
+                                          col_types=col_type2,
+                                          typr_of_chart='heatmap', create_html=False,
+                                          filename='density_contour')
+    assert isinstance(sample_charts, list)
+    assert isinstance(sample_charts[0], plotly.graph_objs.Figure)
+    assert isinstance(sample_charts2, list)
+    assert isinstance(sample_charts2[0], plotly.graph_objs.Figure)
+    assert isinstance(sample_charts3, list)
+    assert isinstance(sample_charts3[0], plotly.graph_objs.Figure)
+    assert isinstance(sample_charts4, list)
+    assert isinstance(sample_charts4[0], plotly.graph_objs.Figure)
+
+
+
 
 
 

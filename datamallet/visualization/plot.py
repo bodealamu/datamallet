@@ -501,22 +501,22 @@ def create_scatter(df,
     return figure_list
 
 
-def create_density(df,
-                   col_types,
-                   nbinsx=20,
-                   nbinsy=20,
-                   maximum_color_groups=4,
-                   typr_of_chart='contour',
-                   filename='density_charts',
-                   orientation='v',
-                   marginal_x=None,
-                   marginal_y=None,
-                   log_x=False,
-                   log_y=False,
-                   histfunc='sum',
-                   histnorm=None,
-                   create_html=True
-                   ):
+def create_density_chart(df,
+                         col_types,
+                         nbinsx=20,
+                         nbinsy=20,
+                         maximum_color_groups=4,
+                         typr_of_chart='contour',
+                         filename='density_charts',
+                         orientation='v',
+                         marginal_x=None,
+                         marginal_y=None,
+                         log_x=False,
+                         log_y=False,
+                         histfunc='sum',
+                         histnorm=None,
+                         create_html=True
+                         ):
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
@@ -555,6 +555,9 @@ def create_density(df,
     columns_with_distinct = columns_with_distinct_values(df,
                                                          maximum_number_distinct_values=maximum_color_groups,
                                                          categorical_only=True)
+
+    if len(columns_with_distinct) == 0:
+        columns_with_distinct.append(None)
 
     for pair in plot_pairs:
         x,y = pair
