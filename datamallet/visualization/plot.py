@@ -27,7 +27,7 @@ def create_pie(df,
     :param create_html:boolean, whether the figures should be converted to HTML or not
     :param hole:boolean, hole in the pie chart
     :param filename:str, a suitable name for the produced html file, exclude the extension
-    :return: list which contains graph objects
+    :return: list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(numeric_cols, list), "numeric_cols must be a list"
@@ -82,7 +82,7 @@ def create_violin(df,
     :param display_box: boolean, whether to display a box within the violin chart
     :param color:
     :param maximum_number_violinplots:
-    :return:
+    :return:list which contains plotly graph objects
     """
     assert isinstance(df,pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
@@ -92,12 +92,13 @@ def create_violin(df,
     assert isinstance(display_box,bool), "display_box must be a boolean"
     assert isinstance(maximum_number_violinplots, int), "maximum_number_violinplots must be an integer"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
-    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
-    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
-    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
-    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
-    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
-    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    keys = col_types.keys()
+    assert 'numeric' in keys, "col_types dictionary missing key numeric"
+    assert 'object' in keys, "col_types dictionary missing key object"
+    assert 'boolean' in keys, "col_types dictionary missing key boolean"
+    assert 'categorical' in keys, "col_types dictionary missing key categorical"
+    assert 'datetime' in keys, "col_types dictionary missing key datetime"
+    assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert violinmode in ['group', 'overlay'],"violinmode must be either group or overlay"
     assert points in ['all', 'outliers', 'suspectedoutliers', False],"accepted values for points 'all', 'outliers', " \
                                                                      "'suspectedoutliers'"
@@ -158,17 +159,18 @@ def create_box(df,
     :param create_html:boolean, whether to create an html file or not
     :param maximum_number_boxplots: int,
     :param orientation: str, how the plot should be orientated, 'v' for vertical, 'h' for horizontal
-    :return:
+    :return:list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
-    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
-    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
-    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
-    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
-    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
-    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    keys = col_types.keys()
+    assert 'numeric' in keys, "col_types dictionary missing key numeric"
+    assert 'object' in keys, "col_types dictionary missing key object"
+    assert 'boolean' in keys, "col_types dictionary missing key boolean"
+    assert 'categorical' in keys, "col_types dictionary missing key categorical"
+    assert 'datetime' in keys, "col_types dictionary missing key datetime"
+    assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert isinstance(points, str), "points must be a string"
     assert points in ['all', 'outliers', 'suspectedoutliers', False],"accepted values for points 'all', " \
                                                                      "'outliers', " \
@@ -227,7 +229,7 @@ def create_treemap(df,
     :param create_html: boolean, whether to create an html file or not
     :param filename:
     :param limit:int, maximum path depth
-    :return:
+    :return:list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(create_html, bool),"create_html must be a boolean"
@@ -235,12 +237,13 @@ def create_treemap(df,
     assert limit > 1, "limit must be at least 2, to have a meaningful hierarchical chart"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
-    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
-    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
-    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
-    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
-    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
-    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    keys = col_types.keys()
+    assert 'numeric' in keys, "col_types dictionary missing key numeric"
+    assert 'object' in keys, "col_types dictionary missing key object"
+    assert 'boolean' in keys, "col_types dictionary missing key boolean"
+    assert 'categorical' in keys, "col_types dictionary missing key categorical"
+    assert 'datetime' in keys, "col_types dictionary missing key datetime"
+    assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
@@ -280,7 +283,7 @@ def create_sunburst(df,
     :param create_html: boolean, whether to create an html file or not
     :param filename:
     :param limit:int, maximum path depth
-    :return:
+    :return:list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(create_html, bool),"create_html must be a boolean"
@@ -288,12 +291,13 @@ def create_sunburst(df,
     assert limit > 1, "limit must be at least 2, to have a meaningful hierarchical chart"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert isinstance(col_types, dict), "col_types must be a dictionary"
-    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
-    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
-    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
-    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
-    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
-    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    keys = col_types.keys()
+    assert 'numeric' in keys, "col_types dictionary missing key numeric"
+    assert 'object' in keys, "col_types dictionary missing key object"
+    assert 'boolean' in keys, "col_types dictionary missing key boolean"
+    assert 'categorical' in keys, "col_types dictionary missing key categorical"
+    assert 'datetime' in keys, "col_types dictionary missing key datetime"
+    assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert '.' not in filename, "filename doesn't need an extension"
 
     figure_list = list()
@@ -376,10 +380,10 @@ def create_histogram(df,
     :param cumulative:bool
     :param histfunc:str, histfunc must be one of 'count', 'sum', 'avg','min','max'
     :param histnorm:str, normalization method for histogram 'percent','probability','density','probability density'
-    :param filename: filename:str, name of file, the extension must be excluded
+    :param filename: str, name of file, the extension must be excluded
     :param create_html: boolean, whether to create an html file or not
     :param orientation: str, the orientation of the figure, 'v' or 'h'
-    :return:
+    :return:list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(numeric_cols, list), "numeric_cols must be a list"
@@ -431,7 +435,7 @@ def create_scatter(df,
     :param df:
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
-    :param filename:
+    :param filename:str, name of file, the extension must be excluded
     :param marginal_x:options for including marginal charts on x axis
     :param marginal_y:options for including marginal charts on y axis
     :param log_x:boolean, whether to create a log axis
@@ -440,17 +444,18 @@ def create_scatter(df,
     :param create_html: boolean, whether to create an html file or not
     :param opacity: float, value between 0 and 1. Sets the opacity for markers
     :param maximum_color_groups: int, maximum number of color groups in the scatter plot
-    :return:
+    :return:list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
-    assert 'numeric' in col_types.keys(), "col_types dictionary missing key numeric"
-    assert 'object' in col_types.keys(), "col_types dictionary missing key object"
-    assert 'boolean' in col_types.keys(), "col_types dictionary missing key boolean"
-    assert 'categorical' in col_types.keys(), "col_types dictionary missing key categorical"
-    assert 'datetime' in col_types.keys(), "col_types dictionary missing key datetime"
-    assert 'timedelta' in col_types.keys(), "col_types dictionary missing key timedelta"
+    keys = col_types.keys()
+    assert 'numeric' in keys, "col_types dictionary missing key numeric"
+    assert 'object' in keys, "col_types dictionary missing key object"
+    assert 'boolean' in keys, "col_types dictionary missing key boolean"
+    assert 'categorical' in keys, "col_types dictionary missing key categorical"
+    assert 'datetime' in keys, "col_types dictionary missing key datetime"
+    assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
     assert isinstance(log_y, bool)
@@ -517,6 +522,26 @@ def create_density_chart(df,
                          histnorm=None,
                          create_html=True
                          ):
+    """
+    Create density chart and density heatmap charts
+    :param df: pandas dataframe
+    :param col_types:  dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
+    :param nbinsx: int, number of bins on x axis
+    :param nbinsy: int, number of bins on y axis
+    :param maximum_color_groups: int, maximum number of color groups in the density charts
+    :param typr_of_chart: str, 'contour' or 'heatmap'
+    :param filename: str, name of file, the extension must be excluded
+    :param orientation: str, the orientation of the figure, 'v' or 'h'
+    :param marginal_x: options for including marginal charts on x axis, one of 'rug', 'box', 'violin', 'histogram',None
+    :param marginal_y: options for including marginal charts on y axis, one of 'rug', 'box', 'violin', 'histogram',None
+    :param log_x: boolean, whether to create a log x axis
+    :param log_y: boolean, whether to create a log y axis
+    :param histfunc: histfunc must be one of 'count', 'sum', 'avg','min','max'
+    :param histnorm: str, normalization method for histogram 'percent','probability','density','probability density'
+    :param create_html: boolean, whether to create an html file or not
+    :return:list which contains plotly graph objects
+    """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
     assert isinstance(col_types, dict), "col_types must be a dictionary with column " \
                                         "name as keys and column type as value"
@@ -527,8 +552,8 @@ def create_density_chart(df,
     assert 'categorical' in keys, "col_types dictionary missing key categorical"
     assert 'datetime' in keys, "col_types dictionary missing key datetime"
     assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
-    assert isinstance(nbinsx,int)
-    assert isinstance(nbinsy, int)
+    assert isinstance(nbinsx,int) or nbinsx is None
+    assert isinstance(nbinsy, int) or nbinsy is None
     assert isinstance(log_y, bool)
     assert isinstance(log_x, bool)
     assert marginal_x in ['rug', 'box', 'violin', 'histogram',None], "marginal must be one of 'rug'," \
@@ -540,6 +565,7 @@ def create_density_chart(df,
     assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
     assert orientation in ['v', 'h']
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert '.' not in filename, "filename doesn't need an extension"
     assert typr_of_chart in ['contour','heatmap']
 
     figure_list = list()
