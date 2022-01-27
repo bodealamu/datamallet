@@ -154,7 +154,7 @@ def create_box(df,
                     boxes are placed on top of each other.
     :param notched: boolean, True or False, boxes are drawn with notches
     :param color:
-    :param filename:
+    :param filename::str, filename for the html file
     :param create_html:boolean, whether to create an html file or not
     :param maximum_number_boxplots: int,
     :param orientation: str, how the plot should be orientated, 'v' for vertical, 'h' for horizontal
@@ -226,7 +226,7 @@ def create_treemap(df,
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
-    :param filename:
+    :param filename::str, filename for the html file
     :param limit:int, maximum path depth
     :return:list which contains plotly graph objects
     """
@@ -280,7 +280,7 @@ def create_sunburst(df,
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
-    :param filename:
+    :param filename::str, filename for the html file
     :param limit:int, maximum path depth
     :return:list which contains plotly graph objects
     """
@@ -426,7 +426,7 @@ def create_scatter(df,
                    marginal_y=None,
                    log_x=False,
                    log_y=False,
-                   orientation='v',
+                   orientation='v',size=None,
                    opacity=1.0,
                    maximum_color_groups=5,
                    create_html=True):
@@ -494,7 +494,7 @@ def create_scatter(df,
                               opacity=opacity,
                               orientation=orientation,
                               marginal_x=marginal_x,
-                              marginal_y=marginal_y,
+                              marginal_y=marginal_y,size=size,
                               color=color,
                               title='Plot of {} vs {} with color {}'.format(x,y,color))
             figure_list.append(plot)

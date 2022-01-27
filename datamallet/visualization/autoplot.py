@@ -57,20 +57,24 @@ class AutoPlot(object):
                  ):
         """
         Entry point for automated data visualization
-        :param df:
-        :param nbins:
-        :param nbinsy:
-        :param marginals:
+        :param df: pandas dataframe
+        :param nbins:int, number of bins on x axis
+        :param nbinsy:int, number of bins on y axis
+        :param marginals:str, marginal must be one of 'rug','box','violin','histogram
         :param cumulative:
-        :param filename:
-        :param box_points:
-        :param boxmode:
-        :param box_notched:
-        :param log_x:
-        :param log_y:
-        :param size:
-        :param histfunc:
-        :param histnorm:
+        :param filename:str, filename for the html file
+        :param box_points:str, whether to show the points in a box plot possible options are 'outliers', 'all',False,
+                 'suspectedoutliers'
+        :param boxmode:str, how to display the boxes in a boxplot.
+                    Options are 'group' or 'overlay'. In group mode,
+                    boxes are placed beside each other, in overlay mode,
+                    boxes are placed on top of each other.
+        :param box_notched:boolean, True or False, boxes are drawn with notches
+        :param log_x:boolean, whether to create a log x axis
+        :param log_y:boolean, whether to create a log y axis
+        :param size:column name to use for size parameter
+        :param histfunc: str, histfunc must be one of 'count', 'sum', 'avg','min','max'
+        :param histnorm:str, normalization method for histogram 'percent','probability','density','probability density'
         :param include_scatter: boolean, whether to include scatter plots
         :param include_box: boolean, whether to include box plots
         :param include_treemap: boolean, whether to include treemaps
@@ -84,8 +88,8 @@ class AutoPlot(object):
         :param violinmode: str, display mode for violin charts
         :param violin_box: boolean, whether to include box plot in violin
         :param violin_points: str, how to display points in a violin plot
-        :param treemap_path_limit:
-        :param sunburst_path_limit:
+        :param treemap_path_limit:int, represents the depth of treemap
+        :param sunburst_path_limit:int, represents the depth of sunburst chart
         :param correlation_method: str, method to use to compute correlation
         :param maximum_number_sectors: int, maximum number of sectors in pie charts
         :param maximum_number_boxplots:int, maximum_number_boxplots
@@ -179,10 +183,10 @@ class AutoPlot(object):
         assert sunburst_path_limit > 1
         assert correlation_method in ['pearson', 'kendall', 'spearman']
         assert maximum_number_sectors > 1
-        assert isinstance(maximum_number_sectors,int)
-        assert isinstance(maximum_number_boxplots,int)
-        assert isinstance(maximum_number_violinplots,int)
-        assert isinstance(density_max_color_groups, int)
+        assert isinstance(maximum_number_sectors,int), "maximum_number_sectors must be an int"
+        assert isinstance(maximum_number_boxplots,int), "maximum_number_boxplots must be an int"
+        assert isinstance(maximum_number_violinplots,int), "maximum_number_violinplots must be an int"
+        assert isinstance(density_max_color_groups, int), "density_max_color_groups must be an int"
         assert isinstance(pie_chart_hole, bool)
         assert isinstance(opacity, float)
         assert opacity <= 1.0
@@ -260,7 +264,7 @@ class AutoPlot(object):
                 if chart == 'scatter' and self.include_scatter:
                     # if len(categorical) == 0:
 
-                    scatter_plot_list = create_scatter(df=self.df,
+                    scatter_plot_list = create_scatter(df=self.df,size=self.size,
                                                        col_types= self.column_types,
                                                        marginal_y=self.marginal_x,
                                                        marginal_x=self.marginal_y,
