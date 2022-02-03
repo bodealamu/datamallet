@@ -13,6 +13,7 @@ def create_pie(df,
                numeric_cols,
                list_of_categorical_columns,
                create_html=False,
+               opacity=1.0,
                hole=False,
                filename='pie'):
     """
@@ -24,6 +25,7 @@ def create_pie(df,
                                                         maximum_number_distinct_values=maximum_number_sectors)
             Also output of extract_categorical_cols in tabular/utils module
     :param create_html:boolean, whether the figures should be converted to HTML or not
+    :param opacity: float, Value between 0 and 1. Sets the opacity for markers
     :param hole:boolean, hole in the pie chart
     :param filename:str, a suitable name for the produced html file, exclude the extension
     :return: list which contains plotly graph objects
@@ -34,6 +36,9 @@ def create_pie(df,
     assert len(list_of_categorical_columns) != 0, "list_of_categorical_columns must not be empty"
     assert len(numeric_cols) != 0, "numeric_cols must not be empty"
     assert isinstance(create_html, bool), "create_html must be a boolean"
+    assert isinstance(opacity,float),"opacity must be a float"
+    assert opacity <= 1.0, "opacity must be a number between 0 and 1"
+    assert opacity >= 0.0, "opacity must be a number between 0 and 1"
     assert isinstance(hole, bool), "hole must be a boolean"
     assert isinstance(filename, str), "filename must be a string without a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"

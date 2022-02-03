@@ -53,7 +53,7 @@ class AutoPlot(object):
                  pie_chart_hole=False,
                  create_html=True,
                  orientation='v',
-                 opacity = 1.0
+                 opacity=1.0
                  ):
         """
         Entry point for automated data visualization
@@ -155,41 +155,25 @@ class AutoPlot(object):
         self.pie_sectors = columns_with_distinct_values(df=self.df, categorical_only=True,
                                                         maximum_number_distinct_values=self.maximum_number_sectors)
         assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
-        assert isinstance(nbins, int), "nbins must be an integer"
-        assert isinstance(scatter_maximum_color_groups, int)
+        assert isinstance(nbins, int) or nbins is None, "nbins must be an integer or None"
+        assert isinstance(nbinsy, int) or nbinsy is None, "nbinsy must be an integer or None"
+        assert isinstance(scatter_maximum_color_groups, int),'scatter_maximum_color_groups must be an int'
         assert marginal_x in ['rug', 'box', 'violin', 'histogram', None]
         assert marginal_y in ['rug', 'box', 'violin', 'histogram', None]
-        assert isinstance(orientation, str)
-        assert orientation in ['v', 'h']
         assert isinstance(cumulative, bool), "cumulative must be a boolean"
         assert '.' not in filename, "filename doesn't need an extension"
         assert isinstance(filename, str), "filename must be a string with a dot or an extension"
         assert box_points in ['all', 'outliers', 'suspectedoutliers', False], "accepted values for points 'all', " \
                                                                           "'outliers', " \
                                                                           "'suspectedoutliers'"
-        assert isinstance(boxmode, str), "boxmode must be a string"
         assert boxmode in ['group', 'overlay'], "boxmode must be either group or overlay"
         assert isinstance(box_notched, bool), "notched must be a boolean"
         assert isinstance(log_y, bool),"log_x must be a boolean"
         assert isinstance(log_x, bool),"log_y must be a boolean"
-        assert isinstance(size, str) or size is None
+        assert size in self.column_types['numeric'] or size is None, "size must be the name of a numeric column or None"
         assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
         assert histfunc in ['count', 'sum', 'avg', 'min',
                             'max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
-        assert violinmode in ['group', 'overlay'], "violinmode must be either group or overlay"
-        assert isinstance(violin_box, bool)
-        assert violin_points in ['all', 'outliers', 'suspectedoutliers', False]
-        assert treemap_path_limit > 1
-        assert sunburst_path_limit > 1
-        assert correlation_method in ['pearson', 'kendall', 'spearman']
-        assert maximum_number_sectors > 1
-        assert isinstance(maximum_number_sectors,int), "maximum_number_sectors must be an int"
-        assert isinstance(maximum_number_boxplots,int), "maximum_number_boxplots must be an int"
-        assert isinstance(maximum_number_violinplots,int), "maximum_number_violinplots must be an int"
-        assert isinstance(density_max_color_groups, int), "density_max_color_groups must be an int"
-        assert isinstance(pie_chart_hole, bool)
-        assert isinstance(opacity, float)
-        assert opacity <= 1.0
         assert isinstance(include_pie, bool)
         assert isinstance(include_treemap,bool)
         assert isinstance(include_box, bool)
@@ -198,9 +182,40 @@ class AutoPlot(object):
         assert isinstance(include_scatter,bool)
         assert isinstance(include_sunburst,bool)
         assert isinstance(include_violin, bool)
-        assert isinstance(create_html,bool)
+        assert isinstance(include_density_contour,bool)
+        assert isinstance(include_density_heatmap,bool)
+        assert violinmode in ['group', 'overlay'], "violinmode must be either group or overlay"
+        assert isinstance(violin_box, bool)
+        assert violin_points in ['all', 'outliers', 'suspectedoutliers', False]
+        assert treemap_path_limit > 1
+        assert sunburst_path_limit > 1
+        assert correlation_method in ['pearson', 'kendall', 'spearman']
+        assert maximum_number_sectors > 1,"maximumnumber_sectors must be an int greater than 1"
+        assert isinstance(maximum_number_sectors,int), "maximum_number_sectors must be an int"
+        assert isinstance(maximum_number_boxplots,int), "maximum_number_boxplots must be an int"
+        assert isinstance(maximum_number_violinplots,int), "maximum_number_violinplots must be an int"
+        assert isinstance(density_max_color_groups, int), "density_max_color_groups must be an int"
+        assert isinstance(pie_chart_hole, bool),"pie_chart_hole must be a boolean"
+        assert isinstance(create_html, bool),"create_html must be a boolean"
+        assert orientation in ['v', 'h'],"orientation must be a string with either v or h"
+        assert isinstance(opacity, float), "opacity must be a float"
+        assert opacity <= 1.0, "opacity must be a float"
+        assert opacity >= 0.0, "opacity must be a number between 0 and 1"
 
     def chart_type(self):
+        """
+        Function for determining the eligible chart types
+        :return: list of charts which should be made based on the supplied dataframe
+
+         Usage
+        >>> import pandas as pd
+        >>> from datamallet.visualization import AutoPlot
+        >>> df3 = pd.DataFrame({'A':[1,1,2,1,1], 'B':[2,2,1,2,0],})
+        >>> autoplot1 = AutoPlot(df=df3,filename='autoplot' ,create_html=True,include_scatter=True)
+        >>> print(autoplot1.chart_type()) # output may change as more chart types are added
+
+        ['scatter', 'correlation_plot', 'histogram', 'boxplot', 'violinplot']
+        """
         column_types = self.column_types
         numeric_cols = column_types['numeric']
         datetime_cols = column_types['datetime']
@@ -224,7 +239,7 @@ class AutoPlot(object):
             chart_types.append('histogram')
             chart_types.append('boxplot')
             chart_types.append('violinplot')
-        if len(categorical_cols) >0 or len(boolean_cols) > 0 or len(object_cols):
+        if len(categorical_cols) >0 or len(boolean_cols) > 0 or len(object_cols) > 0:
             chart_types.append('treemaps')
             chart_types.append('sunburst')
         if len(datetime_cols) !=0 or len(timedelta_cols) != 0:
@@ -235,6 +250,10 @@ class AutoPlot(object):
         return chart_types
 
     def show(self):
+        """
+        Plotting function, creates the charts in an html file
+        :return: list of plotly graph objects
+        """
         chart_types = self.chart_type()
 
         object_cols = self.column_types['object']
