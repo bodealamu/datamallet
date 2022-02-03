@@ -96,7 +96,7 @@ def create_violin(df,
     assert isinstance(display_box,bool), "display_box must be a boolean"
     assert isinstance(maximum_number_violinplots, int), "maximum_number_violinplots must be an integer"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
-    assert color in col_types['categorical'] or color in col_types['boolean'] or color in col_types['object']
+    assert color in col_types['categorical'] or color in col_types['boolean'] or color in col_types['object'] or color is None
     keys = col_types.keys()
     assert 'numeric' in keys, "col_types dictionary missing key numeric"
     assert 'object' in keys, "col_types dictionary missing key object"

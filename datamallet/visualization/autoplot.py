@@ -210,7 +210,10 @@ class AutoPlot(object):
         assert opacity >= 0.0, "opacity must be a number between 0 and 1"
         assert isinstance(color,str) or color is None, "color must be a string"
         col_types = self.column_types
-        assert color in col_types['categorical'] or color in col_types['boolean'] or color in col_types['object']
+        cat_cols = col_types['categorical']
+        bool_cols = col_types['boolean']
+        obj_cols = col_types['object']
+        assert (color in cat_cols) or (color in bool_cols) or (color in obj_cols) or color is None
         assert color_hierachical_charts in self.column_types['numeric'] or color_hierachical_charts is None, "color_hierachical_charts must be the name of a numeric column or None"
 
     def chart_type(self):
