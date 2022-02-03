@@ -53,7 +53,9 @@ class AutoPlot(object):
                  pie_chart_hole=False,
                  create_html=True,
                  orientation='v',
-                 opacity=1.0
+                 opacity=1.0,
+                 color=None,
+                 color_hierachical_charts=None
                  ):
         """
         Entry point for automated data visualization
@@ -97,6 +99,9 @@ class AutoPlot(object):
         :param pie_chart_hole: boolean, whether to include a hole in pie chart or not
         :param create_html:boolean, whether to create an html file or not
         :param orientation: str, orientation of the figure, 'v' or 'h'
+        :param opacity:float, opacity set for the markers, value between 0 and 1
+        :param color: str, color option for boxplots
+        :param color_hierachical_charts: str, color option for treemaps and sunburst charts
 
         Usage
         >>> import pandas as pd
@@ -117,6 +122,7 @@ class AutoPlot(object):
         self.scatter_maximum_color_groups = scatter_maximum_color_groups
         self.orientation = orientation
         self.opacity=opacity
+        self.color = color
         self.marginal_x = marginal_x
         self.marginal_y = marginal_y
         self.cumulative = cumulative
@@ -152,6 +158,7 @@ class AutoPlot(object):
         self.density_max_color_groups = density_max_color_groups
         self.create_html = create_html
         self.pie_chart_hole = pie_chart_hole
+        self.color_hierachical_charts = color_hierachical_charts
         self.pie_sectors = columns_with_distinct_values(df=self.df, categorical_only=True,
                                                         maximum_number_distinct_values=self.maximum_number_sectors)
         assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
@@ -201,6 +208,10 @@ class AutoPlot(object):
         assert isinstance(opacity, float), "opacity must be a float"
         assert opacity <= 1.0, "opacity must be a float"
         assert opacity >= 0.0, "opacity must be a number between 0 and 1"
+        assert isinstance(color,str) or color is None, "color must be a string"
+        col_types = self.column_types
+        assert color in col_types['categorical'] or color in col_types['boolean'] or color in col_types['object']
+        assert color_hierachical_charts in self.column_types['numeric'] or color_hierachical_charts is None, "color_hierachical_charts must be the name of a numeric column or None"
 
     def chart_type(self):
         """
@@ -275,15 +286,16 @@ class AutoPlot(object):
                     pie_list = create_pie(df=self.df,
                                           numeric_cols=numeric_cols,
                                           list_of_categorical_columns=self.pie_sectors,
+                                          opacity=self.opacity,
                                           create_html=False,
                                           hole=self.pie_chart_hole,
                                           filename='pie')
 
                     figure_list.extend(pie_list)
                 if chart == 'scatter' and self.include_scatter:
-                    # if len(categorical) == 0:
 
-                    scatter_plot_list = create_scatter(df=self.df,size=self.size,
+                    scatter_plot_list = create_scatter(df=self.df,
+                                                       size=self.size,
                                                        col_types= self.column_types,
                                                        marginal_y=self.marginal_x,
                                                        marginal_x=self.marginal_y,
@@ -298,6 +310,7 @@ class AutoPlot(object):
 
                 if chart == 'correlation_plot' and self.include_correlation:
                     correlation_plot_list = create_correlation_plot(df=self.df,
+                                                                    create_html=False,
                                                                     correlation_method=self.correlation_method)
                     figure_list.extend(correlation_plot_list)
 
@@ -310,7 +323,8 @@ class AutoPlot(object):
                                                       histfunc=self.histfunc,
                                                       histnorm=self.histnorm,
                                                       filename='histogram',
-                                                      create_html=False)
+                                                      create_html=False,
+                                                      orientation=self.orientation)
 
                     figure_list.extend(histogram_list)
 
@@ -321,7 +335,7 @@ class AutoPlot(object):
                                           points=self.points,
                                           boxmode=self.boxmode,
                                           notched=self.notched,
-                                          color=None,
+                                          color=self.color,
                                           filename='box',
                                           create_html=False)
 
@@ -331,6 +345,7 @@ class AutoPlot(object):
                     treemap_list = create_treemap(df=self.df,
                                                   col_types=self.column_types,
                                                   create_html=False,
+                                                  color=self.color_hierachical_charts,
                                                   filename='treemap',
                                                   limit=self.treemap_path_limit)
                     figure_list.extend(treemap_list)
@@ -339,6 +354,7 @@ class AutoPlot(object):
                     sunburst_list = create_sunburst(df=self.df,
                                                     col_types=self.column_types,
                                                     create_html=False,
+                                                    color=self.color_hierachical_charts,
                                                     filename='sunburst',
                                                     limit=self.sunburst_path_limit)
 
@@ -352,7 +368,7 @@ class AutoPlot(object):
                                                 create_html=False,
                                                 points=self.violin_points,
                                                 display_box=self.violin_box,
-                                                color=None)
+                                                color=self.color)
 
                     figure_list.extend(violin_list)
 

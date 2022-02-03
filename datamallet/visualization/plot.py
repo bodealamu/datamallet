@@ -96,6 +96,7 @@ def create_violin(df,
     assert isinstance(display_box,bool), "display_box must be a boolean"
     assert isinstance(maximum_number_violinplots, int), "maximum_number_violinplots must be an integer"
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert color in col_types['categorical'] or color in col_types['boolean'] or color in col_types['object']
     keys = col_types.keys()
     assert 'numeric' in keys, "col_types dictionary missing key numeric"
     assert 'object' in keys, "col_types dictionary missing key object"
@@ -222,6 +223,7 @@ def create_box(df,
 def create_treemap(df,
                    col_types,
                    create_html=True,
+                   color=None,
                    filename='treemap',
                    limit=2
                    ):
@@ -231,6 +233,7 @@ def create_treemap(df,
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
+    :param color: str, column name to use for color
     :param filename::str, filename for the html file
     :param limit:int, maximum path depth
     :return:list which contains plotly graph objects
@@ -261,6 +264,7 @@ def create_treemap(df,
 
             plot = px.treemap(data_frame=df,
                               path=path_list,
+                              color=color,
                               values=col,
                               title='Treemap of {} across paths {}'.format(col, str(path_list))
                               )
@@ -275,6 +279,7 @@ def create_treemap(df,
 
 def create_sunburst(df,
                     col_types,
+                    color=None,
                     create_html=True,
                     filename='sunburst',
                     limit=2
@@ -285,6 +290,7 @@ def create_sunburst(df,
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
+    :param color: str, column name to color the chart
     :param filename::str, filename for the html file
     :param limit:int, maximum path depth
     :return:list which contains plotly graph objects
@@ -303,6 +309,7 @@ def create_sunburst(df,
     assert 'datetime' in keys, "col_types dictionary missing key datetime"
     assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert '.' not in filename, "filename doesn't need an extension"
+    assert color in col_types['numeric'] or color is None
 
     figure_list = list()
 
@@ -314,6 +321,7 @@ def create_sunburst(df,
         for col in numeric_cols:
 
             plot = px.sunburst(data_frame=df,
+                               color=color,
                                path=path_list,
                                values=col,
                                title='Sunburst chart of {} across paths {}'.format(col, str(path_list))
@@ -470,6 +478,7 @@ def create_scatter(df,
                                                                      "'box','violin','histogram'"
     assert isinstance(opacity, float), "opacity must be a float"
     assert opacity <= 1.0, "opacity must be between 0 and 1"
+    assert opacity >= 0.0,"opacity must be a float between 0 and 1"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert orientation in ['v', 'h']
     assert isinstance(maximum_color_groups, int)
@@ -499,7 +508,8 @@ def create_scatter(df,
                               opacity=opacity,
                               orientation=orientation,
                               marginal_x=marginal_x,
-                              marginal_y=marginal_y,size=size,
+                              marginal_y=marginal_y,
+                              size=size,
                               color=color,
                               title='Plot of {} vs {} with color {}'.format(x,y,color))
             figure_list.append(plot)
