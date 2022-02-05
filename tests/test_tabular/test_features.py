@@ -79,7 +79,7 @@ def test_groupbytransformer():
     assert grouped_df['Age']['abuja'] == 4.0
 
 
-def test_SimpleEncoder():
+def test_simple_encoder():
     df = pd.DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
                        'C': [1, 2, 3]})
     encoded_df = SimpleEncoder().transform(X=df)
