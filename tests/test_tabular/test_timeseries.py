@@ -1,5 +1,5 @@
 import pandas as pd
-from datamallet.tabular.timeseries import Resampler
+from datamallet.tabular.timeseries import Resampler, RollingWindow
 
 d = {'price': [10, 11, 9, 13, 14, 18, 17, 19,10, 11, 9, 13, 14, 18, 17, 19,50, 60, 40, 100, 50, 100, 40,10, 11, 9, 13, 14, 18, 17, 19,10,],
      'volume': [50, 60, 40, 100, 50, 100, 40, 50,10, 11, 9, 13, 14, 18, 17, 19,50, 60, 40, 100, 50, 100, 40,10, 11, 9, 13, 14, 18, 17, 19,10,]}
@@ -32,3 +32,9 @@ def test_resampler():
     assert df_r2.shape[0] == 16
     assert df_r3.shape[0] == 16
     assert df_r4.shape[0] == 16
+
+
+def test_rollingwindow():
+    roller = RollingWindow(window='4H', aggregation_method='max')
+    df_r = roller.transform(X=df)
+    assert df_r['price'].sum() == 1164.0

@@ -61,10 +61,10 @@ class Resampler(BaseEstimator,TransformerMixin):
 
 
 class RollingWindow(BaseEstimator,TransformerMixin):
-    def __init__(self, window, aggregation_method='mean'):
+    def __init__(self, window, aggregation_method='mean', center=False, closed=None):
         """
         RollingWindow is a transformer for calculating rolling aggregations for time series data.
-        :param window: str, or date offset representing the target resolution
+        :param window: str, Size of the moving window.
                     1D represents a day
                     1H represents an hour
                     1T represents a minute
@@ -77,11 +77,12 @@ class RollingWindow(BaseEstimator,TransformerMixin):
 
                     more info here https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
 
-        :param aggregation_method:str, aggregation method, one of mean, std, max, min, sum
-
+        :param aggregation_method:str, aggregation method, one of mean, std, max, min, sum, var, corr
+        :param center: boolean, whether to center the result
+        :param closed: one of None, 'right','left','both','neither'
         Usage
         >>> import pandas as pd
-        >>> from datamallet.tabular.timeseries import Resampler
+        >>> from datamallet.tabular.timeseries import RollingWindow
         >>> price = [10, 11, 9, 13, 14, 18, 17, 19,10, 11, 9, 13, 14, 18, 17, 19,50, 60, 40, 100, 50, 100, 40,10, 11, 9, 13, 14, 18, 17, 19,10,]
         >>> volume = [50, 60, 40, 100, 50, 100, 40, 50,10, 11, 9, 13, 14, 18, 17, 19,50, 60, 40, 100, 50, 100, 40,10, 11, 9, 13, 14, 18, 17, 19,10,]
         >>> d = {'price':price,'volume':volume}
@@ -90,19 +91,20 @@ class RollingWindow(BaseEstimator,TransformerMixin):
         >>> df.index = df['week_starting']
         >>> df.drop('week_starting', inplace=True, axis=1)
 
-        >>> resampler = Resampler(rule='24H', aggregation_method='mean')
-        >>> df_r = resampler.transform(X=df)
+        >>> roller = RollingWindow(window='24H', aggregation_method='mean')
+        >>> df_r = roller.transform(X=df)
         >>> print(df_r)
-                        price     volume
-        week_starting
-        2018-01-01     28.000  43.791667
-        2018-01-02     13.875  13.875000
+
 
         """
         self.window = window
         self.aggregation_method = aggregation_method
+        self.center = center
+        self.closed = closed
         assert isinstance(window, str), "rule must be a string"
-        assert aggregation_method in ['mean','std','min','max','sum']
+        assert aggregation_method in ['mean','std','min','max','sum','var','corr']
+        assert isinstance(center,bool),"center must be a boolean"
+        assert closed in [None,'right','left','both','neither']
 
     def fit(self, X, y=None):
         return self
@@ -110,7 +112,10 @@ class RollingWindow(BaseEstimator,TransformerMixin):
     def transform(self, X, y=None):
         X = X.copy()
         if check_dataframe(X) and time_index(X):
-            rolling_x = X.rolling(rule=self.window).agg(self.aggregation_method)
+            rolling_x = X.rolling(window=self.window,
+                                  center=self.center,
+                                  axis=0,
+                                  closed=self.closed).agg(self.aggregation_method)
             return rolling_x
 
         else:
