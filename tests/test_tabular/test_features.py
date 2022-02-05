@@ -1,5 +1,8 @@
-from datamallet.tabular.feature import (ColumnAdder,ExpandingTransformer,
-                                        ColumnMultiplier,GroupbyTransformer,
+from datamallet.tabular.feature import (ColumnAdder,
+                                        ExpandingTransformer,
+                                        ColumnMultiplier,
+                                        GroupbyTransformer,
+                                        SimpleEncoder,
                                         ColumnSubtraction)
 import pandas as pd
 import numpy as np
@@ -74,6 +77,13 @@ def test_groupbytransformer():
     assert grouped_df['Age']['Female']['austin'] == 2.0
     grouped_df = GroupbyTransformer(column_list=['City'], aggregation_method='mean').transform(df4)
     assert grouped_df['Age']['abuja'] == 4.0
+
+
+def test_SimpleEncoder():
+    df = pd.DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
+                       'C': [1, 2, 3]})
+    encoded_df = SimpleEncoder().transform(X=df)
+    assert 'B_c' in encoded_df.columns
 
 
 

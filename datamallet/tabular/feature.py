@@ -1,5 +1,6 @@
+import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-from .utils import check_columns, check_dataframe, check_numeric
+from .utils import check_columns, check_dataframe, check_numeric, combine_categorical_columns, extract_col_types
 
 
 class ColumnAdder(BaseEstimator, TransformerMixin):
@@ -224,6 +225,59 @@ class GroupbyTransformer(BaseEstimator, TransformerMixin):
             X = X.copy()
             X = X.groupby(self.column_list).agg(self.aggregation_method)
 
+            return X
+
+
+class SimpleEncoder(BaseEstimator, TransformerMixin):
+    def __init__(self,columns=None,
+                 dummy_na=False,
+                 sparse=False,
+                 drop_first=False ):
+        """
+        Performs One hot encoding of categorical fatures
+        :param columns: Column names in the DataFrame to be encoded.
+        :param dummy_na:bool, Add a column to indicate NaNs, if False NaNs are ignored
+        :param sparse:bool, Whether the dummy-encoded columns should be backed by a SparseArray (True)
+                or a regular NumPy array (False)
+        :param drop_first:bool, Whether to get k-1 dummies out of k categorical levels by removing the first level
+        """
+        self.columns = columns
+        self.dummy_na = dummy_na
+        self.sparse = sparse
+        self.drop_first = drop_first
+        assert isinstance(columns,list) or columns in [None,'auto']
+        assert isinstance(dummy_na,bool)
+        assert isinstance(sparse, bool)
+        assert isinstance(drop_first, bool)
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        if check_dataframe(df=X) and (self.columns in [None,'auto']):
+            X = X.copy()
+            if self.columns is None or (isinstance(self.columns,list) and check_columns(X,self.columns)):
+                X_encoded = pd.get_dummies(data=X,
+                                           sparse=self.sparse,
+                                           drop_first=self.drop_first,
+                                           dummy_na=self.dummy_na,
+                                           columns=self.columns)
+
+                return X_encoded
+
+            if self.columns is 'auto':
+                categorical_cols = combine_categorical_columns(df=X,
+                                                               col_types=extract_col_types(df=X))
+                X_encoded = pd.get_dummies(data=X,
+                                           columns=categorical_cols,
+                                           sparse=self.sparse,
+                                           drop_first=self.drop_first,
+                                           dummy_na=self.dummy_na,
+                                           )
+
+                return X_encoded
+
+        else:
             return X
 
 
