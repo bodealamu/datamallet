@@ -97,7 +97,7 @@ def check_columns(df, column_list):
     >>> check_columns(df=df, column_list=['A'])
     True
 
-    >>> check_columns(df=df, column_list=['A','B])
+    >>> check_columns(df=df, column_list=['A','B'])
     True
 
     >>> check_columns(df=df, column_list=['Z','A'])

@@ -147,7 +147,7 @@ class ConstantValueFiller(BaseEstimator, TransformerMixin):
 
 
 class NaFiller(BaseEstimator, TransformerMixin):
-    def __init__(self,column_list,
+    def __init__(self,column_list=None,
                  method='mean',
                  limit=None,
                  ):

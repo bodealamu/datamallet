@@ -254,7 +254,7 @@ class SimpleEncoder(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
-        if check_dataframe(df=X) and (self.columns in [None,'auto']):
+        if check_dataframe(df=X) and ((self.columns in [None,'auto']) or isinstance(self.columns, list)):
             X = X.copy()
             if self.columns is None or (isinstance(self.columns,list) and check_columns(X,self.columns)):
                 X_encoded = pd.get_dummies(data=X,

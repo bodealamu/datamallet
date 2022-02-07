@@ -55,7 +55,9 @@ class AutoPlot(object):
                  orientation='v',
                  opacity=1.0,
                  color=None,
-                 color_hierachical_charts=None
+                 color_hierachical_charts=None,
+                 width=None,
+                 height=None
                  ):
         """
         Entry point for automated data visualization
@@ -161,6 +163,8 @@ class AutoPlot(object):
         self.color_hierachical_charts = color_hierachical_charts
         self.pie_sectors = columns_with_distinct_values(df=self.df, categorical_only=True,
                                                         maximum_number_distinct_values=self.maximum_number_sectors)
+        self.width = width
+        self.height = height
         assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
         assert isinstance(nbins, int) or nbins is None, "nbins must be an integer or None"
         assert isinstance(nbinsy, int) or nbinsy is None, "nbinsy must be an integer or None"
@@ -215,6 +219,8 @@ class AutoPlot(object):
         obj_cols = col_types['object']
         assert (color in cat_cols) or (color in bool_cols) or (color in obj_cols) or color is None
         assert color_hierachical_charts in self.column_types['numeric'] or color_hierachical_charts is None, "color_hierachical_charts must be the name of a numeric column or None"
+        assert isinstance(width, int) or width is None
+        assert isinstance(height, int) or height is None
 
     def chart_type(self):
         """
@@ -289,7 +295,7 @@ class AutoPlot(object):
                     pie_list = create_pie(df=self.df,
                                           numeric_cols=numeric_cols,
                                           list_of_categorical_columns=self.pie_sectors,
-                                          opacity=self.opacity,
+                                          opacity=self.opacity,width=self.width,height=self.height,
                                           create_html=False,
                                           hole=self.pie_chart_hole,
                                           filename='pie')
@@ -303,7 +309,7 @@ class AutoPlot(object):
                                                        marginal_y=self.marginal_x,
                                                        marginal_x=self.marginal_y,
                                                        orientation=self.orientation,
-                                                       opacity=self.opacity,
+                                                       opacity=self.opacity,width=self.width,height=self.height,
                                                        maximum_color_groups=self.scatter_maximum_color_groups,
                                                        log_x=self.log_x,
                                                        log_y=self.log_y,
@@ -314,6 +320,8 @@ class AutoPlot(object):
                 if chart == 'correlation_plot' and self.include_correlation:
                     correlation_plot_list = create_correlation_plot(df=self.df,
                                                                     create_html=False,
+                                                                    width=self.width,
+                                                                    height=self.height,
                                                                     correlation_method=self.correlation_method)
                     figure_list.extend(correlation_plot_list)
 
@@ -321,6 +329,8 @@ class AutoPlot(object):
                     histogram_list = create_histogram(df=self.df,
                                                       numeric_cols=numeric_cols,
                                                       nbins=self.nbins,
+                                                      width=self.width,
+                                                      height=self.height,
                                                       marginal=self.marginal_x,
                                                       cumulative=self.cumulative,
                                                       histfunc=self.histfunc,
@@ -336,6 +346,8 @@ class AutoPlot(object):
                                           maximum_number_boxplots=self.maximum_number_boxplots,
                                           col_types= self.column_types,
                                           points=self.points,
+                                          width=self.width,
+                                          height=self.height,
                                           boxmode=self.boxmode,
                                           notched=self.notched,
                                           color=self.color,
@@ -348,6 +360,8 @@ class AutoPlot(object):
                     treemap_list = create_treemap(df=self.df,
                                                   col_types=self.column_types,
                                                   create_html=False,
+                                                  width=self.width,
+                                                  height=self.height,
                                                   color=self.color_hierachical_charts,
                                                   filename='treemap',
                                                   limit=self.treemap_path_limit)
@@ -357,6 +371,8 @@ class AutoPlot(object):
                     sunburst_list = create_sunburst(df=self.df,
                                                     col_types=self.column_types,
                                                     create_html=False,
+                                                    width=self.width,
+                                                    height=self.height,
                                                     color=self.color_hierachical_charts,
                                                     filename='sunburst',
                                                     limit=self.sunburst_path_limit)
@@ -368,6 +384,8 @@ class AutoPlot(object):
                                                 col_types= self.column_types,
                                                 maximum_number_violinplots=self.maximum_number_violinplots,
                                                 filename='violin',
+                                                width=self.width,
+                                                height=self.height,
                                                 create_html=False,
                                                 points=self.violin_points,
                                                 display_box=self.violin_box,
@@ -380,6 +398,8 @@ class AutoPlot(object):
                                                                 col_types=self.column_types,
                                                                 nbinsx=self.nbins,
                                                                 nbinsy=self.nbinsy,
+                                                                width=self.width,
+                                                                height=self.height,
                                                                 maximum_color_groups=self.density_max_color_groups,
                                                                 typr_of_chart='contour',
                                                                 orientation=self.orientation,
@@ -398,6 +418,8 @@ class AutoPlot(object):
                                                                 col_types=self.column_types,
                                                                 nbinsx=self.nbins,
                                                                 nbinsy=self.nbinsy,
+                                                                width=self.width,
+                                                                height=self.height,
                                                                 maximum_color_groups=self.density_max_color_groups,
                                                                 typr_of_chart='heatmap',
                                                                 orientation=self.orientation,

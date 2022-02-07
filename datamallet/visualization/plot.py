@@ -13,6 +13,8 @@ def create_pie(df,
                numeric_cols,
                list_of_categorical_columns,
                create_html=False,
+               width=None,
+               height=None,
                opacity=1.0,
                hole=False,
                filename='pie'):
@@ -42,6 +44,8 @@ def create_pie(df,
     assert isinstance(hole, bool), "hole must be a boolean"
     assert isinstance(filename, str), "filename must be a string without a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
 
     figure_list = list()
 
@@ -52,7 +56,7 @@ def create_pie(df,
             for name in list_of_categorical_columns:
                 plot = px.pie(names=name,
                               data_frame=df,
-                              values=value,
+                              values=value,width=width, height=height,
                               hole=hole,
                               title='Pie chart showing distribution of {} across {} segments'.format(value, name))
 
@@ -67,6 +71,8 @@ def create_pie(df,
 def create_violin(df,
                   col_types,
                   filename='violin',
+                  width=None,
+                  height=None,
                   create_html=True,
                   violinmode='group',
                   points='all',
@@ -108,6 +114,8 @@ def create_violin(df,
     assert points in ['all', 'outliers', 'suspectedoutliers', False],"accepted values for points 'all', 'outliers', " \
                                                                      "'suspectedoutliers'"
     assert '.' not in filename, "filename doesn't need an extension"
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
 
     figure_list = list()
 
@@ -122,7 +130,7 @@ def create_violin(df,
 
                 plot = px.violin(data_frame=df,
                                  x=category,
-                                 y=col,
+                                 y=col,width=width, height=height,
                                  points=points,
                                  violinmode=violinmode,
                                  box=display_box,
@@ -140,6 +148,8 @@ def create_box(df,
                col_types,
                points='outliers',
                boxmode='group',
+               width=None,
+               height=None,
                notched=False,
                color=None,
                filename='box',
@@ -189,6 +199,8 @@ def create_box(df,
     assert '.' not in filename, "filename doesn't need an extension"
     assert isinstance(orientation,str), "orientation must be a string"
     assert orientation in ['v','h'], "options for orientation are 'v' or 'h' "
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
 
     figure_list = list()
     numeric_cols = col_types['numeric']
@@ -203,7 +215,7 @@ def create_box(df,
 
                 plot = px.box(data_frame=df,
                               x=category,
-                              y=col,
+                              y=col,width=width, height=height,
                               points=points,
                               boxmode=boxmode,
                               notched=notched,
@@ -224,6 +236,8 @@ def create_treemap(df,
                    col_types,
                    create_html=True,
                    color=None,
+                   width=None,
+                   height=None,
                    filename='treemap',
                    limit=2
                    ):
@@ -252,6 +266,8 @@ def create_treemap(df,
     assert 'datetime' in keys, "col_types dictionary missing key datetime"
     assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert '.' not in filename, "filename doesn't need an extension"
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
 
     figure_list = list()
 
@@ -265,7 +281,7 @@ def create_treemap(df,
             plot = px.treemap(data_frame=df,
                               path=path_list,
                               color=color,
-                              values=col,
+                              values=col,width=width, height=height,
                               title='Treemap of {} across paths {}'.format(col, str(path_list))
                               )
 
@@ -280,6 +296,8 @@ def create_treemap(df,
 def create_sunburst(df,
                     col_types,
                     color=None,
+                    width=None,
+                    height=None,
                     create_html=True,
                     filename='sunburst',
                     limit=2
@@ -310,6 +328,8 @@ def create_sunburst(df,
     assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
     assert '.' not in filename, "filename doesn't need an extension"
     assert color in col_types['numeric'] or color is None
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
 
     figure_list = list()
 
@@ -323,7 +343,7 @@ def create_sunburst(df,
             plot = px.sunburst(data_frame=df,
                                color=color,
                                path=path_list,
-                               values=col,
+                               values=col,width=width, height=height,
                                title='Sunburst chart of {} across paths {}'.format(col, str(path_list))
                                )
 
@@ -338,6 +358,8 @@ def create_sunburst(df,
 def create_correlation_plot(df,
                             correlation_method='pearson',
                             create_html=False,
+                            width=None,
+                            height=None,
                             filename='correlation_plot'):
     """
     Creates a correlation plot for the provided dataframe
@@ -354,6 +376,8 @@ def create_correlation_plot(df,
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
     assert correlation_method in ['pearson', 'kendall', 'spearman']
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
 
     figure_list = list()
 
@@ -361,7 +385,7 @@ def create_correlation_plot(df,
 
         correlation = calculate_correlation(df=df, method=correlation_method)
 
-        plot = px.imshow(img=correlation,
+        plot = px.imshow(img=correlation,width=width, height=height,
                          title='Correlation plot using {} method'.format(correlation_method))
 
         figure_list.append(plot)
@@ -376,6 +400,8 @@ def create_histogram(df,
                      numeric_cols,
                      nbins=20,
                      marginal=None,
+                     width=None,
+                     height=None,
                      cumulative=False,
                      histfunc='sum',
                      histnorm=None,
@@ -409,6 +435,9 @@ def create_histogram(df,
     assert '.' not in filename, "filename doesn't need an extension"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert orientation in ['v','h']
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
+
 
     figure_list = list()
 
@@ -416,7 +445,7 @@ def create_histogram(df,
         for col in numeric_cols:
             plot = px.histogram(data_frame=df,
                                 nbins=nbins,
-                                x=col,
+                                x=col,width=width, height=height,
                                 marginal=marginal,
                                 cumulative=cumulative,
                                 histfunc=histfunc,
@@ -436,6 +465,8 @@ def create_scatter(df,
                    col_types,
                    filename='scatter',
                    marginal_x=None,
+                   width=None,
+                   height=None,
                    marginal_y=None,
                    log_x=False,
                    log_y=False,
@@ -482,6 +513,9 @@ def create_scatter(df,
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert orientation in ['v', 'h']
     assert isinstance(maximum_color_groups, int)
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
+
 
     figure_list = list()
     numeric_cols = col_types['numeric']
@@ -502,7 +536,7 @@ def create_scatter(df,
         for color in columns_with_distinct:
             plot = px.scatter(data_frame=df,
                               x=x,
-                              y=y,
+                              y=y,width=width, height=height,
                               log_y=log_y,
                               log_x=log_x,
                               opacity=opacity,
@@ -524,6 +558,8 @@ def create_density_chart(df,
                          col_types,
                          nbinsx=None,
                          nbinsy=None,
+                         width=None,
+                         height=None,
                          maximum_color_groups=4,
                          typr_of_chart='contour',
                          filename='density_charts',
@@ -581,6 +617,10 @@ def create_density_chart(df,
     assert isinstance(filename, str), "filename must be a string with a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
     assert typr_of_chart in ['contour','heatmap']
+    assert isinstance(width, int) or width is None
+    assert isinstance(height, int) or height is None
+    # assert width > 0 or width is None
+    # assert height > 0 or height is None
 
     figure_list = list()
     numeric_cols = col_types['numeric']
@@ -608,7 +648,7 @@ def create_density_chart(df,
                     plot = px.density_contour(data_frame=df,
                                               x=x,
                                               y=y,
-                                              z=z,
+                                              z=z,width=width, height=height,
                                               color=color,
                                               histnorm=histnorm,
                                               histfunc=histfunc,
@@ -628,7 +668,7 @@ def create_density_chart(df,
                 plot = px.density_heatmap(data_frame=df,
                                           x=x,
                                           y=y,
-                                          z=z,
+                                          z=z,width=width, height=height,
                                           histnorm=histnorm,
                                           histfunc=histfunc,
                                           nbinsx=nbinsx,
