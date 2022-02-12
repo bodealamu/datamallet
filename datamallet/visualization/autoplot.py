@@ -102,7 +102,7 @@ class AutoPlot(object):
         :param create_html:boolean, whether to create an html file or not
         :param orientation: str, orientation of the figure, 'v' or 'h'
         :param opacity:float, opacity set for the markers, value between 0 and 1
-        :param color: str, color option for boxplots
+        :param color: str, color option for boxplots, histogram
         :param color_hierachical_charts: str, color option for treemaps and sunburst charts
 
         Usage
@@ -329,6 +329,7 @@ class AutoPlot(object):
                     histogram_list = create_histogram(df=self.df,
                                                       numeric_cols=numeric_cols,
                                                       nbins=self.nbins,
+                                                      color=self.color,
                                                       width=self.width,
                                                       height=self.height,
                                                       marginal=self.marginal_x,

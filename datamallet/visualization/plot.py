@@ -407,7 +407,8 @@ def create_histogram(df,
                      histnorm=None,
                      filename='histogram',
                      create_html=True,
-                     orientation='v'
+                     orientation='v',
+                     color=None
                      ):
     """
 
@@ -438,20 +439,22 @@ def create_histogram(df,
     assert isinstance(width, int) or width is None
     assert isinstance(height, int) or height is None
 
-
     figure_list = list()
 
     if check_numeric(df=df,column_list=numeric_cols):
         for col in numeric_cols:
             plot = px.histogram(data_frame=df,
                                 nbins=nbins,
-                                x=col,width=width, height=height,
+                                x=col,
+                                width=width,
+                                height=height,
                                 marginal=marginal,
                                 cumulative=cumulative,
                                 histfunc=histfunc,
                                 histnorm=histnorm,
                                 orientation=orientation,
-                                title='Distribution of {}'.format(col)
+                                title='Distribution of {}'.format(col),
+                                color=color
                                 )
             figure_list.append(plot)
 
@@ -668,7 +671,9 @@ def create_density_chart(df,
                 plot = px.density_heatmap(data_frame=df,
                                           x=x,
                                           y=y,
-                                          z=z,width=width, height=height,
+                                          z=z,
+                                          width=width,
+                                          height=height,
                                           histnorm=histnorm,
                                           histfunc=histfunc,
                                           nbinsx=nbinsx,
