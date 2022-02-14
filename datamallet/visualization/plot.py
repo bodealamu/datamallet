@@ -27,6 +27,8 @@ def create_pie(df,
                                                         maximum_number_distinct_values=maximum_number_sectors)
             Also output of extract_categorical_cols in tabular/utils module
     :param create_html:boolean, whether the figures should be converted to HTML or not
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param opacity: float, Value between 0 and 1. Sets the opacity for markers
     :param hole:boolean, hole in the pie chart
     :param filename:str, a suitable name for the produced html file, exclude the extension
@@ -87,6 +89,8 @@ def create_violin(df,
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :param filename: str, filename for the html file
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param create_html: boolean, whether to create an html file or not
     :param violinmode: str, how you want the charts to be displayed
     :param points: str, how the points in the violin chart should be displayed
@@ -171,6 +175,8 @@ def create_box(df,
                     Options are 'group' or 'overlay'. In group mode,
                     boxes are placed beside each other, in overlay mode,
                     boxes are placed on top of each other.
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param notched: boolean, True or False, boxes are drawn with notches
     :param color:
     :param filename::str, filename for the html file
@@ -251,6 +257,8 @@ def create_treemap(df,
                     It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
     :param color: str, column name to use for color
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param filename::str, filename for the html file
     :param limit:int, maximum path depth
     :return:list which contains plotly graph objects
@@ -312,6 +320,8 @@ def create_sunburst(df,
                     It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
     :param color: str, column name to color the chart
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param filename::str, filename for the html file
     :param limit:int, maximum path depth
     :return:list which contains plotly graph objects
@@ -370,6 +380,8 @@ def create_correlation_plot(df,
     :param df: pandas dataframe
     :param correlation_method: str, method for computing correlation, one of kendall, pearson, spearman
     :param create_html: boolean, whether to create html file or not
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param filename:str, name of file, the extension is excluded
     :return: list of graph objects
     """
@@ -422,6 +434,8 @@ def create_histogram(df,
     :param numeric_cols:list of columns with numeric columns
     :param nbins:int, number of bins
     :param marginal:str, marginal must be one of 'rug','box','violin','histogram
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param cumulative:bool
     :param histfunc:str, histfunc must be one of 'count', 'sum', 'avg','min','max'
     :param histnorm:str, normalization method for histogram 'percent','probability','density','probability density'
@@ -498,6 +512,8 @@ def create_scatter(df,
                     It is the output of extract_col_types in tabular module
     :param filename:str, name of file, the extension must be excluded
     :param marginal_x:options for including marginal charts on x axis
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param marginal_y:options for including marginal charts on y axis
     :param log_x:boolean, whether to create a log axis
     :param log_y:boolean, whether to create a log axis
@@ -533,7 +549,6 @@ def create_scatter(df,
     assert isinstance(maximum_color_groups, int)
     assert isinstance(width, int) or width is None
     assert isinstance(height, int) or height is None
-
 
     figure_list = list()
     numeric_cols = col_types['numeric']
@@ -597,6 +612,8 @@ def create_density_chart(df,
                     It is the output of extract_col_types in tabular module
     :param nbinsx: int, number of bins on x axis
     :param nbinsy: int, number of bins on y axis
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
     :param maximum_color_groups: int, maximum number of color groups in the density charts
     :param typr_of_chart: str, 'contour' or 'heatmap'
     :param filename: str, name of file, the extension must be excluded
@@ -637,8 +654,6 @@ def create_density_chart(df,
     assert typr_of_chart in ['contour','heatmap']
     assert isinstance(width, int) or width is None
     assert isinstance(height, int) or height is None
-    # assert width > 0 or width is None
-    # assert height > 0 or height is None
 
     figure_list = list()
     numeric_cols = col_types['numeric']
