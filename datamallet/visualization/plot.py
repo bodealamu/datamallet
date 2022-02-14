@@ -316,7 +316,7 @@ def create_sunburst(df,
                     ):
     """
 
-    :param df:
+    :param df:pandas dataframe
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :param create_html: boolean, whether to create an html file or not
@@ -357,7 +357,9 @@ def create_sunburst(df,
             plot = px.sunburst(data_frame=df,
                                color=color,
                                path=path_list,
-                               values=col,width=width, height=height,
+                               values=col,
+                               width=width,
+                               height=height,
                                title='Sunburst chart of {} across paths {}'.format(col, str(path_list))
                                )
 
@@ -445,6 +447,8 @@ def create_histogram(df,
     :param orientation: str, the orientation of the figure, 'v' or 'h'
     :param color: str, column name to color the chart
     :param opacity: float Value between 0 and 1. Sets the opacity for markers
+    :param barmode:
+    :param barnorm:
     :return:list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
@@ -455,7 +459,7 @@ def create_histogram(df,
     assert histfunc in ['count', 'sum', 'avg', 'min',
                         'max'], "histfunc must be one of 'count', 'sum', 'avg','min','max' "
     assert histnorm in ['percent', 'probability', 'density', 'probability density', None]
-    assert isinstance(filename, str), "filename must be a string with a dot or an extension"
+    assert isinstance(filename, str), "filename must be a string without a dot or an extension"
     assert '.' not in filename, "filename doesn't need an extension"
     assert isinstance(create_html, bool), "create_html must be a boolean"
     assert orientation in ['v','h']
@@ -509,7 +513,7 @@ def create_scatter(df,
                    maximum_color_groups=5,
                    create_html=True):
     """
-    :param df:
+    :param df:pandas dataframe
     :param col_types: dictionary that contains mapping of column type to list of column names
                     It is the output of extract_col_types in tabular module
     :param filename:str, name of file, the extension must be excluded
@@ -722,6 +726,100 @@ def create_density_chart(df,
         figures_to_html(figs=figure_list, filename=filename)
 
     return figure_list
+
+
+def create_bar(df,
+               col_types,
+               maximum_number_bars=10,
+               color=None,
+               orientation='v',
+               opacity=1.0,
+               barmode='group',
+               filename='barcharts',
+               width=None,
+               height=None,
+               log_x=False,
+               log_y=False,
+               create_html=True):
+    """
+    Creates barcharts for numeric data as they compare across categories
+    :param df: pandas dataframe
+    :param col_types: dictionary that contains mapping of column type to list of column names
+                    It is the output of extract_col_types in tabular module
+    :param maximum_number_bars: int, maximum number of bars in all charts
+    :param color: str, column name to color the chart
+    :param orientation: str, the orientation of the figure, 'v' or 'h'
+    :param opacity:
+    :param barmode:
+    :param filename::str, filename for the html file
+    :param width: int, width of chart in pixels
+    :param height: int, height of chart in pixels
+    :return: list which contains plotly graph objects
+    """
+    assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
+    assert isinstance(col_types, dict), "col_types must be a dictionary"
+    keys = col_types.keys()
+    assert 'numeric' in keys, "col_types dictionary missing key numeric"
+    assert 'object' in keys, "col_types dictionary missing key object"
+    assert 'boolean' in keys, "col_types dictionary missing key boolean"
+    assert 'categorical' in keys, "col_types dictionary missing key categorical"
+    assert 'datetime' in keys, "col_types dictionary missing key datetime"
+    assert 'timedelta' in keys, "col_types dictionary missing key timedelta"
+    assert isinstance(maximum_number_bars,int), "maximum_number_bars must be an int"
+    combined = list()
+    categorical = col_types['categorical']
+    object_cols = col_types['object']
+    boolean_cols = col_types['boolean']
+    combined.extend(categorical)
+    combined.extend(object_cols)
+    combined.extend(boolean_cols)
+    combined.extend([None])
+    assert color in combined,"color column must be categorical in nature"
+    assert orientation in ['v', 'h'], "orientation must be a string with either v or h"
+    assert opacity <= 1.0, "opacity must be a number between 0 and 1"
+    assert opacity >= 0.0, "opacity must be a number between 0 and 1"
+    assert barmode in ['group', 'overlay', 'relative']
+    assert isinstance(filename, str), "filename must be a string without a dot or an extension"
+    assert '.' not in filename, "filename doesn't need an extension"
+    assert isinstance(width, int) or width is None,"width must be an int or None"
+    assert isinstance(height, int) or height is None,"height must be an int or None"
+    assert isinstance(log_y,bool)
+    assert isinstance(log_x,bool)
+    assert isinstance(create_html,bool)
+
+    figure_list = list()
+    numeric_cols = col_types['numeric']
+
+    categorical_columns = columns_with_distinct_values(df=df,
+                                                       maximum_number_distinct_values=maximum_number_bars)
+
+    if len(numeric_cols) != 0 and len(categorical_columns) != 0:
+        for col in numeric_cols:
+            for category in categorical_columns:
+
+                plot = px.bar(data_frame=df,
+                              x=category,
+                              y=col,
+                              color=color,
+                              opacity=opacity,
+                              orientation=orientation,
+                              barmode=barmode,
+                              log_y=log_y,
+                              log_x=log_x,
+                              width=width,
+                              height=height,
+                              title="Barchart of {} across {} categories".format(col,category)
+                              )
+
+                figure_list.append(plot)
+
+    if create_html:
+
+        figures_to_html(figs=figure_list, filename=filename)
+
+    return figure_list
+
+
 
 
 
