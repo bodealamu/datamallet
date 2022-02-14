@@ -77,6 +77,7 @@ def create_violin(df,
                   violinmode='group',
                   points='all',
                   display_box=True,
+                  orientation='v',
                   color=None,
                   maximum_number_violinplots=7
                   ):
@@ -116,6 +117,7 @@ def create_violin(df,
     assert '.' not in filename, "filename doesn't need an extension"
     assert isinstance(width, int) or width is None
     assert isinstance(height, int) or height is None
+    assert orientation in ['v', 'h'], "orientation must be a string with either v or h"
 
     figure_list = list()
 
@@ -134,6 +136,7 @@ def create_violin(df,
                                  points=points,
                                  violinmode=violinmode,
                                  box=display_box,
+                                 orientation=orientation,
                                  color=color,
                                  title='Violinplot showing distribution of {} across {} categories'.format(col,category))
                 figure_list.append(plot)
@@ -484,7 +487,8 @@ def create_scatter(df,
                    marginal_y=None,
                    log_x=False,
                    log_y=False,
-                   orientation='v',size=None,
+                   orientation='v',
+                   size=None,
                    opacity=1.0,
                    maximum_color_groups=5,
                    create_html=True):

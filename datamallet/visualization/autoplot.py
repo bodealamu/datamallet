@@ -301,7 +301,9 @@ class AutoPlot(object):
                     pie_list = create_pie(df=self.df,
                                           numeric_cols=numeric_cols,
                                           list_of_categorical_columns=self.pie_sectors,
-                                          opacity=self.opacity,width=self.width,height=self.height,
+                                          opacity=self.opacity,
+                                          width=self.width,
+                                          height=self.height,
                                           create_html=False,
                                           hole=self.pie_chart_hole,
                                           filename='pie')
@@ -396,6 +398,7 @@ class AutoPlot(object):
                                                 filename='violin',
                                                 width=self.width,
                                                 height=self.height,
+                                                orientation=self.orientation,
                                                 create_html=False,
                                                 points=self.violin_points,
                                                 display_box=self.violin_box,
