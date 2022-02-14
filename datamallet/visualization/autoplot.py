@@ -57,7 +57,9 @@ class AutoPlot(object):
                  color=None,
                  color_hierachical_charts=None,
                  width=None,
-                 height=None
+                 height=None,
+                 barmode='relative',
+                 barnorm=None
                  ):
         """
         Entry point for automated data visualization
@@ -165,6 +167,8 @@ class AutoPlot(object):
                                                         maximum_number_distinct_values=self.maximum_number_sectors)
         self.width = width
         self.height = height
+        self.barmode = barmode
+        self.barnorm = barnorm
         assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
         assert isinstance(nbins, int) or nbins is None, "nbins must be an integer or None"
         assert isinstance(nbinsy, int) or nbinsy is None, "nbinsy must be an integer or None"
@@ -221,6 +225,8 @@ class AutoPlot(object):
         assert color_hierachical_charts in self.column_types['numeric'] or color_hierachical_charts is None, "color_hierachical_charts must be the name of a numeric column or None"
         assert isinstance(width, int) or width is None
         assert isinstance(height, int) or height is None
+        assert barmode in ['group', 'overlay', 'relative']
+        assert barnorm in [None, 'fraction', 'percent']
 
     def chart_type(self):
         """
@@ -337,6 +343,9 @@ class AutoPlot(object):
                                                       histfunc=self.histfunc,
                                                       histnorm=self.histnorm,
                                                       filename='histogram',
+                                                      barmode=self.barmode,
+                                                      barnorm=self.barnorm,
+                                                      opacity=self.opacity,
                                                       create_html=False,
                                                       orientation=self.orientation)
 

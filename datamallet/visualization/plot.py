@@ -408,7 +408,10 @@ def create_histogram(df,
                      filename='histogram',
                      create_html=True,
                      orientation='v',
-                     color=None
+                     color=None,
+                     opacity=1.0,
+                     barmode='relative',
+                     barnorm=None
                      ):
     """
 
@@ -422,6 +425,7 @@ def create_histogram(df,
     :param filename: str, name of file, the extension must be excluded
     :param create_html: boolean, whether to create an html file or not
     :param orientation: str, the orientation of the figure, 'v' or 'h'
+    :param opacity: float Value between 0 and 1. Sets the opacity for markers
     :return:list which contains plotly graph objects
     """
     assert isinstance(df, pd.DataFrame), "df must be a pandas dataframe"
@@ -438,6 +442,10 @@ def create_histogram(df,
     assert orientation in ['v','h']
     assert isinstance(width, int) or width is None
     assert isinstance(height, int) or height is None
+    assert isinstance(opacity,float)
+    assert 1.0 >= opacity >= 0.0
+    assert barmode in ['group','overlay','relative']
+    assert barnorm in [None,'fraction','percent']
 
     figure_list = list()
 
@@ -454,7 +462,10 @@ def create_histogram(df,
                                 histnorm=histnorm,
                                 orientation=orientation,
                                 title='Distribution of {}'.format(col),
-                                color=color
+                                color=color,
+                                opacity=opacity,
+                                barmode=barmode,
+                                barnorm=barnorm
                                 )
             figure_list.append(plot)
 
