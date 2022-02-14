@@ -362,6 +362,7 @@ class AutoPlot(object):
                                           height=self.height,
                                           boxmode=self.boxmode,
                                           notched=self.notched,
+                                          orientation=self.orientation,
                                           color=self.color,
                                           filename='box',
                                           create_html=False)
