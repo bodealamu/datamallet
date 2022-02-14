@@ -268,6 +268,7 @@ class AutoPlot(object):
         if len(categorical_cols) >0 or len(boolean_cols) > 0 or len(object_cols) > 0:
             chart_types.append('treemaps')
             chart_types.append('sunburst')
+            chart_types.append('bar')
         if len(datetime_cols) !=0 or len(timedelta_cols) != 0:
             chart_types.append('timeseries_plot')
         if len(self.pie_sectors) !=0:
