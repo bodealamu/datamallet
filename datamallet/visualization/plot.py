@@ -95,6 +95,7 @@ def create_violin(df,
     :param violinmode: str, how you want the charts to be displayed
     :param points: str, how the points in the violin chart should be displayed
     :param display_box: boolean, whether to display a box within the violin chart
+    :param orientation: str, the orientation of the figure, 'v' or 'h'
     :param color:
     :param maximum_number_violinplots:
     :return:list which contains plotly graph objects
@@ -442,6 +443,7 @@ def create_histogram(df,
     :param filename: str, name of file, the extension must be excluded
     :param create_html: boolean, whether to create an html file or not
     :param orientation: str, the orientation of the figure, 'v' or 'h'
+    :param color: str, column name to color the chart
     :param opacity: float Value between 0 and 1. Sets the opacity for markers
     :return:list which contains plotly graph objects
     """
