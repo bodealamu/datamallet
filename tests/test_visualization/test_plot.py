@@ -6,7 +6,8 @@ from datamallet.visualization.plot import (create_box,
                                            create_sunburst,
                                            create_treemap,
                                            create_density_chart,
-                                           create_scatter)
+                                           create_scatter,
+                                           create_bar)
 from datamallet.tabular.utils import extract_col_types
 import pandas as pd
 import plotly
@@ -270,6 +271,23 @@ def test_create_density_chart():
     assert isinstance(sample_charts3[0], plotly.graph_objs.Figure)
     assert isinstance(sample_charts4, list)
     assert isinstance(sample_charts4[0], plotly.graph_objs.Figure)
+
+
+def test_bar():
+    fig_list = create_bar(df=df2,
+                          col_types=extract_col_types(df=df2),
+                          maximum_number_bars=10,
+                          color='E',
+                          opacity=1.0,
+                          barmode='overlay',
+                          filename='bars',
+                          orientation='v',
+                          width=None,
+                          height=None,
+                          log_x=False,
+                          log_y=True,
+                          create_html=True)
+    assert len(fig_list) != 0
 
 
 
