@@ -4,8 +4,10 @@ from .plot import (create_pie,
                    create_treemap,
                    create_violin,
                    create_sunburst,
-                   create_correlation_plot,create_density_chart,
-                   create_histogram)
+                   create_correlation_plot,
+                   create_density_chart,
+                   create_histogram,
+                   create_bar)
 from .utils import (columns_with_distinct_values,
                     extract_col_types,
                     figures_to_html)
@@ -40,6 +42,7 @@ class AutoPlot(object):
                  include_violin=True,
                  include_density_heatmap=True,
                  include_density_contour=True,
+                 include_bar=False,
                  violinmode='group',
                  violin_box=True,
                  violin_points='all',
@@ -49,6 +52,7 @@ class AutoPlot(object):
                  maximum_number_sectors=3,
                  maximum_number_boxplots=5,
                  maximum_number_violinplots=5,
+                 maximum_number_bars=10,
                  density_max_color_groups=2,
                  pie_chart_hole=False,
                  create_html=True,
@@ -67,7 +71,7 @@ class AutoPlot(object):
         :param nbins:int, number of bins on x axis
         :param nbinsy:int, number of bins on y axis
         :param marginals:str, marginal must be one of 'rug','box','violin','histogram
-        :param cumulative:
+        :param cumulative:bool, for histograms whether to cumulate the output
         :param filename:str, filename for the html file
         :param box_points:str, whether to show the points in a box plot possible options are 'outliers', 'all',False,
                  'suspectedoutliers'
@@ -99,6 +103,7 @@ class AutoPlot(object):
         :param correlation_method: str, method to use to compute correlation
         :param maximum_number_sectors: int, maximum number of sectors in pie charts
         :param maximum_number_boxplots:int, maximum_number_boxplots
+        :param maximum_number_bars:int, maximum number of bars
         :param density_max_color_groups:int, maximum number of color points in density chart
         :param pie_chart_hole: boolean, whether to include a hole in pie chart or not
         :param create_html:boolean, whether to create an html file or not
@@ -150,6 +155,7 @@ class AutoPlot(object):
         self.include_violin = include_violin
         self.include_density_contour = include_density_contour
         self.include_density_heatmap = include_density_heatmap
+        self.include_bar = include_bar
         self.violinmode = violinmode
         self.violin_box = violin_box
         self.violin_points = violin_points
@@ -159,6 +165,7 @@ class AutoPlot(object):
         self.maximum_number_sectors = maximum_number_sectors
         self.maximum_number_boxplots = maximum_number_boxplots
         self.maximum_number_violinplots = maximum_number_violinplots
+        self.maximum_number_bars = maximum_number_bars
         self.density_max_color_groups = density_max_color_groups
         self.create_html = create_html
         self.pie_chart_hole = pie_chart_hole
@@ -199,6 +206,7 @@ class AutoPlot(object):
         assert isinstance(include_violin, bool)
         assert isinstance(include_density_contour,bool)
         assert isinstance(include_density_heatmap,bool)
+        assert isinstance(include_bar, bool)
         assert violinmode in ['group', 'overlay'], "violinmode must be either group or overlay"
         assert isinstance(violin_box, bool)
         assert violin_points in ['all', 'outliers', 'suspectedoutliers', False]
@@ -297,6 +305,23 @@ class AutoPlot(object):
 
         if len(chart_types) != 0:
             for chart in chart_types:
+                if chart == 'bar' and self.include_bar:
+                    bar_list = create_bar(df=self.df,
+                                          col_types=self.column_types,
+                                          maximum_number_bars=self.maximum_number_bars,
+                                          color=self.color,
+                                          orientation=self.orientation,
+                                          opacity=self.opacity,
+                                          barmode=self.barmode,
+                                          filename='bars',
+                                          width=self.width,
+                                          height=self.height,
+                                          log_y=False,
+                                          log_x=False,
+                                          create_html=False
+                                          )
+
+                    figure_list.extend(bar_list)
                 if chart == 'pie' and self.include_pie:
 
                     pie_list = create_pie(df=self.df,
