@@ -84,5 +84,76 @@ class ColumnRename(BaseEstimator, TransformerMixin):
         return X
 
 
+class FunctionMapper(BaseEstimator, TransformerMixin):
+    def __init__(self,
+                 func,
+                 axis='columns',
+                 new_col_name=None,
+                 col_name=None):
+        """
+        Rename columns in place
+        :param func: python function to be applied on dataframe.
+        :param axis: str, axis to apply the function.
+        :param new_col_name: str, column name of new column.
+        :param col_name: str, column name to apply.
+
+        Usage
+        >>> from datamallet.tabular.preprocess import FunctionMapper
+        >>> import pandas as pd
+        >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
+
+
+        """
+        self.func = func
+        self.axis = axis
+        self.col_name = col_name
+        self.new_col_name = new_col_name
+
+    def fit(self, X, y=None):
+        assert self.axis in ['columns', 'index']
+        return self
+
+    def transform(self, X, y=None):
+        if check_dataframe(df=X):
+            X = X.copy()
+            if self.col_name is None:
+                X[self.new_col_name] = X.apply(self.func, axis=self.axis)
+            if check_columns(df=X,column_list=[self.col_name]):
+                X[self.new_col_name] = X[self.col_name].apply(self.func)
+
+        return X
+
+
+class ColumnSelector(BaseEstimator, TransformerMixin):
+    def __init__(self,
+                 column_list
+                 ):
+        """
+        Selects certain columns in a dataframe
+        :param column_list: list of column names.
+
+        Usage
+        >>> from datamallet.tabular.preprocess import ColumnSelector
+        >>> import pandas as pd
+        >>> df = pd.DataFrame({'A':[1,2,3,4,5],'B':[2,4,6,8,10],'D':['male','male','male','female','female'],'E':[True,True,False,True,True]})
+
+
+        """
+        self.column_list = column_list
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        if check_dataframe(df=X):
+            X = X.copy()
+
+            if check_columns(df=X,column_list=self.column_list):
+                X= X.loc[:,self.column_list]
+
+        return X
+
+
+
 
 
